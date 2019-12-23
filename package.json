@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "npx next build"
   },
   "heroku-postbuild": "heroku-nextjs-build",
   "devDependencies": {
