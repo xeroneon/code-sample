@@ -1,5 +1,6 @@
 import React from 'react';
 import App from 'next/app';
+import Nav from 'components/Nav'
 
 class MyApp extends App {
     // Only uncomment this method if you have blocking data requirements for
@@ -16,7 +17,12 @@ class MyApp extends App {
 
     render() {
         const { Component, pageProps } = this.props;
-        return <Component {...pageProps} />;
+        return (
+            <>
+                <Nav/>
+                <Component {...pageProps} />
+            </>
+        );
     }
 }
 

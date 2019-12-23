@@ -6,10 +6,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js",
-    "build": "npx next build"
+    "start": "NODE_DEV=production nodemon server/server.js",
+    "dev": "nodemon server/server.js",
+    "build": "NODE_PATH=. npx next build",
+    "heroku-postbuild": "heroku-nextjs-build"
   },
-  "heroku-postbuild": "heroku-nextjs-build",
   "devDependencies": {
     "eslint": "^6.7.2",
     "eslint-plugin-react": "^7.17.0",
@@ -19,11 +20,17 @@
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "mongoose": "^5.8.0",
+    "mongoose-bcrypt": "^1.6.0",
     "next": "^9.1.5",
     "node-sass": "^4.13.0",
     "nodemon": "^2.0.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
