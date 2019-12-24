@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_DEV=production nodemon server/server.js",
-    "dev": "nodemon server/server.js",
+    "dev": "NODE_DEV=dev nodemon server/server.js",
     "build": "NODE_PATH=. npx next build",
     "heroku-postbuild": "heroku-nextjs-build"
   },
@@ -21,6 +21,7 @@
     "@zeit/next-sass": "^1.0.1",
     "body-parser": "^1.19.0",
     "connect-mongo": "^3.2.0",
+    "contentful": "^7.11.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",

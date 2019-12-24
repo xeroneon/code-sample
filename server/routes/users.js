@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User")
+const User = require("../models/User");
+// const client = require('../config/contentful');
 
 router.post("/create", async (req, res, next) => {
     console.log("here")
@@ -24,5 +25,11 @@ router.get("/login", async (req, res) => {
     console.log(isValid);
     res.end();
 });
+// example contentful request
+// router.get("/test", async (req, res) => {
+//     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");
+//     console.log(entry);
+//     res.end();
+// });
 
 module.exports = router;
