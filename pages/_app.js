@@ -1,6 +1,10 @@
 import React from 'react';
 import App from 'next/app';
-import Nav from 'components/Nav'
+import Nav from 'components/Nav/Nav'
+import 'public/reset.css'
+
+// Contexts
+import { UserProvider } from 'contexts/UserProvider'
 
 class MyApp extends App {
     // Only uncomment this method if you have blocking data requirements for
@@ -19,8 +23,10 @@ class MyApp extends App {
         const { Component, pageProps } = this.props;
         return (
             <>
-                <Nav/>
-                <Component {...pageProps} />
+                <UserProvider>
+                    <Nav/>
+                    <Component {...pageProps} />
+                </UserProvider>
             </>
         );
     }

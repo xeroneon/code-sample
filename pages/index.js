@@ -1,10 +1,14 @@
 import React from "react"
+import styles from "./index.module.css"
 // import PropTypes from "prop-types"
 
 function Index() {
     return (
         <>
-            <form method="post" action="/api/users/create">
+            <div className={styles.hero}>
+
+            </div>
+            {/* <form method="post" action="/api/users/create">
                 <label>name</label>
                 <input type="text" name="name"/>
                 <label>last name</label>
@@ -14,7 +18,7 @@ function Index() {
                 <label>password</label>
                 <input type="password" name="password"/>
                 <input type="submit" />
-            </form>
+            </form> */}
         </>
     )
 }

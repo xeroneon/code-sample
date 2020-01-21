@@ -26,6 +26,31 @@ const UserSchema = new Schema({
         required: true,
         bcrypt: true,
     },
+    country: {
+        type: String,
+        required: true
+    },
+    zip: {
+        type: String,
+        required: true
+    },
+    accountType: {
+        type: String,
+        required: true
+    },
+    alerts: {
+        type: Boolean,
+        required: true
+    },
+    tags: {
+        type: Array,
+        required: true
+    },
+    deals: {
+        type: Boolean,
+        required: true
+    }
+    
 });
 
 UserSchema.plugin(bcrypt);

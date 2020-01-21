@@ -27,7 +27,7 @@
     "express-session": "^1.17.0",
     "mongoose": "^5.8.0",
     "mongoose-bcrypt": "^1.6.0",
-    "next": "^9.1.5",
+    "next": "^9.2",
     "node-sass": "^4.13.0",
     "nodemon": "^2.0.1",
     "passport": "^0.4.1",

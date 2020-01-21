@@ -12,18 +12,31 @@ router.post("/create", async (req, res, next) => {
         email,
         password
     })
-    await req.login(user, function(err) {
+    req.login(user, function(err) {
         if (err) { return next(err); }
         res.redirect("/");
     });
 });
 
-router.get("/login", async (req, res) => {
+router.get("/login", async (req, res, next) => {
     const { email, password } = req.body
     const user = await User.findOne({email});
+    if (!user) {
+        return res.json({
+            message: "User not found, Try Again"
+        })
+    }
     const isValid = await user.verifyPassword(password);
-    console.log(isValid);
-    res.end();
+    if (isValid) {
+        req.login(user, function(err) {
+            if (err) { return next(err); }
+            return res.redirect("/");
+        }); 
+    } else {
+        return res.json({
+            message: "Password not valid"
+        })
+    }
 });
 // example contentful request
 // router.get("/test", async (req, res) => {
