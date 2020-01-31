@@ -1,0 +1,40 @@
+.wrapper {
+    width: 100%;
+    position: relative;
+    height: auto;
+}
+
+.wrapper > label {
+    position: absolute;
+    font-size: 24px;
+    top: 17px;
+    left: 20px;
+    color: #225B91;
+    font-family: 'CircularStd-Black';
+    pointer-events: none;
+}
+
+.input {
+    width: 100%;
+    background: #F4F4F4;
+    border: none;
+    height: 45px;
+    font-family: 'CircularStd-Book';
+    font-size: 20px;
+    text-align: right;
+    color: #959595;
+    padding-right: 20px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    margin: 5px 0 0 0;
+}
+
+.input > option{
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    background: white;
+    border: none !important;
+    width: inherit;
+}

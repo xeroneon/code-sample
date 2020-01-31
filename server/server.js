@@ -48,7 +48,7 @@ nextApp.prepare().then(() => {
     ));
 
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user._id);
     });
       
     passport.deserializeUser(function(id, done) {
@@ -61,7 +61,9 @@ nextApp.prepare().then(() => {
     app.use(passport.session());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use("/api/users", require("./routes/users")); 
+    app.use("/api/users", require("./routes/users"));
+    app.use("/api/tags", require("./routes/tags"));
+    app.use("/api/articles", require("./routes/articles"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });

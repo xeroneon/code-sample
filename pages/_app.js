@@ -1,10 +1,20 @@
 import React from 'react';
 import App from 'next/app';
-import Nav from 'components/Nav/Nav'
-import 'public/reset.css'
+import Nav from 'components/Nav/Nav';
+import Footer from 'components/Footer/Footer';
+import Modal from 'react-modal';
+import AuthModal from 'components/AuthModal/AuthModal'
+import 'public/reset.css';
+import './globalStyles.css';
+
+import 'flickity/css/flickity.css';
 
 // Contexts
-import { UserProvider } from 'contexts/UserProvider'
+import { UserProvider } from 'contexts/UserProvider';
+import { ModalProvider } from 'contexts/ModalProvider';
+
+
+Modal.setAppElement('#__next');
 
 class MyApp extends App {
     // Only uncomment this method if you have blocking data requirements for
@@ -18,14 +28,18 @@ class MyApp extends App {
     //
     //   return { ...appProps }
     // }
-
+        
     render() {
         const { Component, pageProps } = this.props;
         return (
             <>
                 <UserProvider>
-                    <Nav/>
-                    <Component {...pageProps} />
+                    <ModalProvider>
+                        <Nav/>
+                        <Component {...pageProps} />
+                        <Footer />
+                        <AuthModal />
+                    </ModalProvider>
                 </UserProvider>
             </>
         );

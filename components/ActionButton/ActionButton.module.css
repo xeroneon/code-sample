@@ -1,0 +1,10 @@
+.root {
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    background: #225B91;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'CircularStd-Black';
+}

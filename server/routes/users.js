@@ -4,17 +4,25 @@ const User = require("../models/User");
 // const client = require('../config/contentful');
 
 router.post("/create", async (req, res, next) => {
-    console.log("here")
-    const { name, lastname, email, password } = req.body;
+    const { name, lastname, email, password, country, zip, accountType, alerts, tags, deals } = req.body;
     const user = await User.create({
         name,
         lastname,
         email,
-        password
-    })
+        password,
+        country,
+        zip,
+        accountType,
+        alerts,
+        tags,
+        deals
+    }).catch(e => console.log(e));
+
     req.login(user, function(err) {
         if (err) { return next(err); }
-        res.redirect("/");
+        res.json({
+            user: {password: '', ...user}
+        });
     });
 });
 
