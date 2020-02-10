@@ -26,6 +26,10 @@ const UserSchema = new Schema({
         required: true,
         bcrypt: true,
     },
+    image: {
+        type: String,
+        required: true
+    },
     country: {
         type: String,
         required: true
@@ -45,6 +49,9 @@ const UserSchema = new Schema({
     tags: {
         type: Array,
         required: true
+    },
+    goals: {
+        type: Array,
     },
     deals: {
         type: Boolean,

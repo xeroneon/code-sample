@@ -14,17 +14,6 @@ function Index(props) {
                 <h5>Preventative care meets holistic practice. The true future of healthcare</h5>
             </div>
             <TrendingCarousel items={props.trending} />
-            {/* <form method="post" action="/api/users/create">
-                <label>name</label>
-                <input type="text" name="name"/>
-                <label>last name</label>
-                <input type="text" name="lastname"/>
-                <label>email</label>
-                <input type="text" name="email"/>
-                <label>password</label>
-                <input type="password" name="password"/>
-                <input type="submit" />
-            </form> */}
         </>
     )
 }
@@ -33,7 +22,7 @@ function Index(props) {
 Index.getInitialProps = async () => {
     // console.log(ctx.req)
     const trending = await fetch('get',`${process.env.BASEURL_DEV}/api/articles/trending`);
-    console.log(trending);
+    console.log("Trending", trending.data);
     return { trending: trending.data };
 }
 

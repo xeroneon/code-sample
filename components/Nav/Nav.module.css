@@ -18,6 +18,38 @@
     align-items: center;
 }
 
+.avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.tooltip {
+    background:#FFF !important;
+    opacity: 1 !important;
+    font-family: 'CircularStd-Book';
+    -webkit-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+    -moz-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+}
+
+.tooltip p {
+    font-size: 18px;
+    padding: 20px;
+}
+
+.tooltip p:hover {
+    cursor: pointer;
+}
+
 .button {
     background: none;
     border: none;

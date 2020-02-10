@@ -4,7 +4,7 @@
     padding: 20px;
 }
 
-.root img {
+.thumbnailImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -23,4 +23,13 @@
     font-family: 'CircularStd-Book';
     font-size: 1em;
     padding-top: 15px;
+}
+
+.authorImage {
+    position: absolute;
+    right: 30px;
+    bottom: 80px;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
 }

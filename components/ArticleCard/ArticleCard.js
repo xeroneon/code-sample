@@ -7,8 +7,9 @@ function ArticleCard(props) {
         <>
             <div className={styles.root}>
                 <div className={styles.thumbnail}>
-                    <img src={props.featuredImage} />
+                    <img src={props.featuredImage} className={styles.thumbnailImage}/>
                 </div>
+                <img src={props.authorImage} className={styles.authorImage}/>
                 <h4>{props.title}</h4>
             </div>
         </>
@@ -18,7 +19,9 @@ function ArticleCard(props) {
 ArticleCard.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
-    featuredImage: PropTypes.string
+    featuredImage: PropTypes.string,
+    authorImage: PropTypes.string,
+    authorId: PropTypes.string
 }
 
 export default ArticleCard;

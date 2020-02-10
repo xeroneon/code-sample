@@ -1,0 +1,39 @@
+.wrapper {
+    width: 100%;
+    height: auto;
+    font-family: 'CircularStd-Book';
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropzone {
+    border: #eee 2px dashed;
+    background: #FAFAFA;
+    color: #BDBDBD;
+    height: 300px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.dropzone p {
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+    padding: 40px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box; 
+}
+
+.preview {
+    width: 80%;
+    margin: auto;
+}

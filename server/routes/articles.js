@@ -1,16 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const client = require('../../helpers/contentful');
+const contentful = require('../../helpers/contentful');
+const User = require("../models/User");
+const { client } = contentful;
 
 router.get("/trending", async (req, res) => {
-    console.log("hello")
-    client.client.getEntries({
+    const articles = await client.getEntries({
         content_type: 'article',
         'sys.revision[gte]': 1,
         include: 10,
     })
-        .then((response) => res.send(response.items))
-        .catch(console.error)
+
+    // console.log(articles.items[0].fields.author)
+
+    const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
+        console.log(article)
+        const user = await User.findById(article.fields.author.fields.authorId);
+        return { ... article, author: {...user._doc }}
+    }))
+
+    console.log("AUTHORS", articlesWithAuthor)
+
+    res.send(articlesWithAuthor);
+//         .then((response) => res.send(response.items))
+//         .catch(console.error)
 });
 
 

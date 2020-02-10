@@ -1,20 +1,36 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styles from './Nav.module.css';
 import { ModalContext } from 'contexts/ModalProvider';
+import { UserContext } from 'contexts/UserProvider';
+import axios from 'axios';
+import ReactTooltip from 'react-tooltip';
 
 import Cookies from 'js-cookie';
 
 function Nav() {
 
     const { setOpen, setPage } = useContext(ModalContext);
-    const [ loggedIn, setLoggedIn ] = useState(false);
+    const { user, setUser } = useContext(UserContext)
 
     useEffect(() => {
-        console.log(Cookies.get())
         if (Cookies.get('connect.sid') !== undefined) {
-            setLoggedIn(true)
+            axios.get('/api/users').then(res => {
+                console.log(res.data.user)
+                setUser(res.data.user);
+            });
         }
-    })
+    }, [])
+
+    useEffect(() => {
+        ReactTooltip.rebuild();
+    },[user])
+
+    async function logout() {
+        const res = await axios.get('/api/users/logout')
+        if (res.status === 200) {
+            setUser(null);
+        }
+    }
 
     return (
         <>
@@ -22,9 +38,14 @@ function Nav() {
                 <div className={styles.logoWrapper}>
                     <img src="/images/pg-logo.png" className={styles.logo}/>
                 </div>
-                {loggedIn === false && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Login</button> }
-                {!loggedIn && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Sign Up</button> }
+                { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Login</button> }
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Sign Up</button> }
             </nav>
+            <ReactTooltip place='bottom' id='nav' type='light' effect='solid' globalEventOff='click' className={styles.tooltip} clickable={true}>
+                <p style={{color: '#0C3668'}}>Account</p>
+                <p style={{color: '#D4403E'}} onClick={logout}>Sign Out</p>
+            </ReactTooltip>
         </>
     )
 }

@@ -1,32 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-// const client = require('../config/contentful');
+const contentful = require('../../helpers/contentful');
+const { managementClient } = contentful;
 
 router.post("/create", async (req, res, next) => {
-    const { name, lastname, email, password, country, zip, accountType, alerts, tags, deals } = req.body;
+    const { name, lastname, email, password, image, country, zip, accountType, alerts, tags, goals, deals } = req.body;
     const user = await User.create({
         name,
         lastname,
         email,
         password,
+        image,
         country,
         zip,
         accountType,
         alerts,
         tags,
+        goals,
         deals
     }).catch(e => console.log(e));
+
+    if (accountType !== "personal") {
+        const environment = await managementClient();
+        const entry = await environment.createEntry('author', {
+            fields: {
+                authorId: {
+                    'en-US': user._id
+                },
+                authorName: {
+                    'en-US': `${name} ${lastname}`
+                }
+            }
+        });
+        entry.publish();
+    }
 
     req.login(user, function(err) {
         if (err) { return next(err); }
         res.json({
-            user: {password: '', ...user}
+            user: {...user._doc, password: null}
         });
     });
 });
 
-router.get("/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
     const { email, password } = req.body
     const user = await User.findOne({email});
     if (!user) {
@@ -34,17 +52,36 @@ router.get("/login", async (req, res, next) => {
             message: "User not found, Try Again"
         })
     }
+    console.log(user)
     const isValid = await user.verifyPassword(password);
     if (isValid) {
         req.login(user, function(err) {
             if (err) { return next(err); }
-            return res.redirect("/");
+            return res.send({
+                user: {...user._doc, password: null}
+            });
         }); 
     } else {
         return res.json({
             message: "Password not valid"
         })
     }
+});
+
+router.get("/", async (req, res) => {
+    res.send({user: {...req.user._doc, password: null}})
+});
+
+router.get("/logout", async (req, res) => {
+    req.logout();
+    req.session.destroy(function (err) {
+        if (!err) {
+            res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
+        } else {
+            // handle error case...
+        }
+
+    });
 });
 // example contentful request
 // router.get("/test", async (req, res) => {

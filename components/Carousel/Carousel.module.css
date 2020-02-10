@@ -38,3 +38,12 @@
     height: 15px;
     background: #B8CEDF;
 }
+
+@media only screen and (max-width: 600px) {
+    .headerBanner {
+        width: 70vw;
+    }
+    .header {
+        width: 80vw
+    }
+  }

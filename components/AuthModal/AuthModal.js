@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import Modal from 'react-modal';
-import Signup from './Signup/Signup'
+import Signup from './Signup/Signup';
+import Login from './Login/Login';
 import { ModalContext } from 'contexts/ModalProvider';
+import ImageUpload from './ImageUpload/ImageUpload';
 
 const customStyles = {
     content : {
@@ -39,6 +41,8 @@ function AuthModal() {
                 contentLabel="Example Modal"
             >
                 { page === 'signup' && <Signup setOpen={setOpen}/> }
+                { page === 'login' && <Login setOpen={setOpen}/>}
+                { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }
             </Modal>
         </>
     )

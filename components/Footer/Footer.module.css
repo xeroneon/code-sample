@@ -53,3 +53,9 @@
 .root button {
     margin-left: 20px;
 }
+
+@media only screen and (max-width: 600px) {
+    .root {
+        grid-template-columns: 1fr;
+    }
+  }
