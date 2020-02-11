@@ -38,8 +38,7 @@ function Signup() {
         <>
             <div className={styles.wrapper}>
                 <div className={styles.header}>
-                    <h1>Sign Up</h1>
-                    <br/>
+                    <h1>Sign up</h1>
                     <p>Register to become part of the Prevention Generation movement.</p>
                 </div>
                 <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />

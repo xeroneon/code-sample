@@ -11,15 +11,10 @@ router.get("/trending", async (req, res) => {
         include: 10,
     })
 
-    // console.log(articles.items[0].fields.author)
-
     const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
-        console.log(article)
         const user = await User.findById(article.fields.author.fields.authorId);
         return { ... article, author: {...user._doc }}
     }))
-
-    console.log("AUTHORS", articlesWithAuthor)
 
     res.send(articlesWithAuthor);
 //         .then((response) => res.send(response.items))

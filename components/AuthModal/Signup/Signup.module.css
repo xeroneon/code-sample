@@ -16,12 +16,15 @@
 }
 
 .header h1 {
-    /* font-size: 40px; */
+    font-size: 30px;
+    margin-bottom: 10px;
 }
 
 .header p {
     color: #888;
-    line-height: 1.5rem;
+    line-height: 1.2rem;
+    font-size: .8em;
+    font-family: 'CircularStd-Book';
 }
 
 .buttons {

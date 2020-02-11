@@ -24,8 +24,8 @@ const customStyles = {
     }),
     placeholder: () => ({
         color: '#225B91',
-        fontSize: '24px',
-        fontFamily: 'CircularStd-Black',
+        fontSize: '20px',
+        fontFamily: 'CircularStd-Book',
         marginLeft: '10px'
     }),
     option: () => ({
@@ -34,7 +34,7 @@ const customStyles = {
         width: "100%",
         border: 'none',
         height: '60px',
-        fontFamily: 'CircularStd-Black',
+        fontFamily: 'CircularStd-Book',
         fontSize: '20px',
         // textAlign: 'right',
         color: '#959595',

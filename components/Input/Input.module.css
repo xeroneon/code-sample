@@ -6,11 +6,11 @@
 
 .wrapper > label {
     position: absolute;
-    font-size: 24px;
+    font-size: 20px;
     top: 17px;
     left: 20px;
     color: #225B91;
-    font-family: 'CircularStd-Black';
+    font-family: 'CircularStd-Book';
     pointer-events: none;
 }
 
