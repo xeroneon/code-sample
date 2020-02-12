@@ -1,5 +1,8 @@
+/* Cursor style is in the globall css under .flickity-slider */
+
 .root {
     width: 100%;
+    cursor: default;
     /* height: 300px; */
 }
 

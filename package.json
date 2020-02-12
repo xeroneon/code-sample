@@ -17,6 +17,7 @@
     "lint-staged": ">=8"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^13.4.0",
     "@zeit/next-sass": "^1.0.1",
     "aws-sdk": "^2.614.0",
     "axios": "^0.19.2",
@@ -29,6 +30,7 @@
     "express-session": "^1.17.0",
     "flickity": "^2.2.1",
     "js-cookie": "^2.2.1",
+    "moment": "^2.24.0",
     "mongoose": "^5.8.0",
     "mongoose-bcrypt": "^1.6.0",
     "mongoose-fuzzy-searching": "^1.1.8",

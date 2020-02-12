@@ -4,6 +4,10 @@
     padding: 20px;
 }
 
+.root:hover {
+    cursor: pointer;
+}
+
 .thumbnailImage {
     width: 100%;
     height: 100%;

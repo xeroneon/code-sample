@@ -21,7 +21,7 @@ function Index(props) {
 
 Index.getInitialProps = async () => {
     // console.log(ctx.req)
-    const trending = await fetch('get',`${process.env.BASEURL_DEV}/api/articles/trending`);
+    const trending = await fetch('get',`/api/articles/trending`);
     return { trending: trending.data };
 }
 

@@ -28,3 +28,7 @@ small { font-size: 0.833em; }
   margin: 10px;
   box-sizing: border-box;
 } */
+
+.flickity-slider {
+  cursor: default;
+}

@@ -9,6 +9,10 @@ const TagSchema = new Schema({
         required: true,
         trim: true,
     },
+    sponsor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
     
 });
 

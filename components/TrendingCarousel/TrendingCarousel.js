@@ -9,7 +9,16 @@ function TrendingCarousel(props) {
         <>
             <Carousel header={["Trending Health", <span key="sfdgnhdfgn"> posts </span> ]}>
                 {props.items.map(article => {
-                    return <ArticleCard key={article.sys.id} id={article.sys.id} authorImage={article.author.image} title={article.fields.title} featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}/>
+                    return <ArticleCard 
+                        key={article.sys.id}
+                        id={article.sys.id}
+                        authorImage={article.author.image}
+                        title={article.fields.title}
+                        featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}
+                        slug={article.fields.slug}
+                        primaryTag={article.fields.primaryTag[0]}
+                        tags={article.fields.tags}
+                    />
                 })}
             </Carousel>
         </>

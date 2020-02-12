@@ -30,6 +30,7 @@
         "linebreak-style": [
             "error",
             "unix"
-        ]
+        ],
+        "react/display-name": "off"
     }
 }
