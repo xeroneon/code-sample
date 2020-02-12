@@ -18,7 +18,7 @@ h4 { font-size: 1.2em; }
 small { font-size: 0.833em; }
 .box { padding: 1.25em; }
 @media screen and (min-width: 1400px) {
-  html { font-size: 125%; } /*20px*/
+ 
 }
 
 /* .carousel-cell {
