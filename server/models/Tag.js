@@ -12,6 +12,9 @@ const TagSchema = new Schema({
     sponsor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    description: {
+        type: String
     }
     
 });
