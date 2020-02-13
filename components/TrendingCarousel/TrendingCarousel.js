@@ -4,11 +4,12 @@ import Carousel from 'components/Carousel/Carousel';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 
 function TrendingCarousel(props) {
-    console.log(props);
+    // console.log(props);
     return (
         <>
             <Carousel header={["Trending Health", <span key="sfdgnhdfgn"> posts </span> ]}>
                 {props.items.map(article => {
+                    const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
                         key={article.sys.id}
                         id={article.sys.id}
@@ -18,6 +19,8 @@ function TrendingCarousel(props) {
                         slug={article.fields.slug}
                         primaryTag={article.fields.primaryTag[0]}
                         tags={article.fields.tags}
+                        authorName={authorName}
+                        authorCity={article.author.city}
                     />
                 })}
             </Carousel>

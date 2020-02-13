@@ -5,21 +5,8 @@ const contentful = require('../../helpers/contentful');
 const { managementClient } = contentful;
 
 router.post("/create", async (req, res, next) => {
-    const { name, lastname, email, password, image, country, zip, accountType, alerts, tags, goals, deals } = req.body;
-    const user = await User.create({
-        name,
-        lastname,
-        email,
-        password,
-        image,
-        country,
-        zip,
-        accountType,
-        alerts,
-        tags,
-        goals,
-        deals
-    }).catch(e => console.log(e));
+    const { name, lastname, accountType } = req.body;
+    const user = await User.create(req.body).catch(e => res.send(e));
 
     if (accountType !== "personal") {
         const environment = await managementClient();

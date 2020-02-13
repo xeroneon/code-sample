@@ -10,13 +10,13 @@ router.post("/create", async (req, res) => {
     if (tag.length === 0) {
         return Tag.create({
             name: name['en-US'],
-            description: description['en-US']
+            description: description['en-US'] || ""
         })
             .then(() => {res.status(200); res.end();})
             .catch(() => {res.status(400); res.end();})
     }
     else {
-        return Tag.updateOne({name: name['en-US']}, {name: name['en-US'], description: description['en-US']})
+        return Tag.updateOne({name: name['en-US']}, {name: name['en-US'], description: description['en-US'] || ''})
             .then(() => {res.status(200); res.end();})
             .catch(() => {res.status(400); res.end();})
     }

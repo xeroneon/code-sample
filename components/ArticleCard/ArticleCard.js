@@ -12,7 +12,9 @@ function ArticleCard(props) {
                     <div className={styles.thumbnail}>
                         <img src={props.featuredImage} className={styles.thumbnailImage}/>
                     </div>
-                    <img src={props.authorImage} className={styles.authorImage}/>
+                    <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
+                        <img src={props.authorImage} className={styles.authorImage}/>
+                    </Link>
                     <h4>{props.title}</h4>
                     <span>{props.tags}</span>
                 </div>
@@ -29,7 +31,9 @@ ArticleCard.propTypes = {
     authorId: PropTypes.string,
     slug: PropTypes.string,
     primaryTag: PropTypes.string,
-    tags: PropTypes.array
+    tags: PropTypes.array,
+    authorName: PropTypes.string,
+    authorCity: PropTypes.string
 }
 
 export default ArticleCard;

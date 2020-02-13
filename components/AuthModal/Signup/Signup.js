@@ -46,9 +46,12 @@ function Signup() {
                 <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
                 <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
                 <br/>
+                <Select  name="accountType" placeholder="Account Type" options={[{value: "provider", label: "Provider"}, {value: "personal", label: "Personal"}]} onChange={handleSelectChange} />
                 <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} />
                 <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
-                <Select  name="accountType" placeholder="Account Type" options={[{value: "provider", label: "Provider"}, {value: "personal", label: "Personal"}]} onChange={handleSelectChange} />
+                { form.accountType === 'provider' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
+                { form.accountType === 'provider' && <Input type="text" name="state" value={form.state || ''} placeholder="State" onChange={handleChange} />}
+                { form.accountType === 'provider' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
                 
                 <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
                 <Select name="deals" placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} />

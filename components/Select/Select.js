@@ -4,7 +4,7 @@ import { default as ReactSelect } from 'react-select';
 
 const customStyles = {
     valueContainer: (provided) => {
-        return {...provided, fontFamily: 'CircularStd-Black'}
+        return {...provided, fontFamily: 'CircularStd-Book'}
     },
     control: () => ({
         // none of react-select's styles are passed to <Control />

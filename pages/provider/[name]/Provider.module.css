@@ -1,0 +1,32 @@
+.hero {
+    height: 400px;
+    background: #101E41;
+}
+
+.providerCard {
+    height: 600px;
+    width: 600px;
+    display: grid;
+    grid-auto-rows: auto;
+    margin: auto;
+    margin-top: -30px;
+    background: white;
+    -webkit-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+    -moz-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
+}
+
+.info {
+    display: grid;
+    padding-top: 20px;
+    box-sizing: border-box;
+    grid-template-columns: 1fr 1fr;
+}
+.info h1 {
+    font-family: 'CircularStd-Black';
+}
+.info img {
+    /* border: 1px black solid; */
+    width: 80%;
+    justify-self: center;
+}

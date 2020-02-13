@@ -65,6 +65,7 @@ nextApp.prepare().then(() => {
     app.use("/api/tags", require("./routes/tags"));
     app.use("/api/articles", require("./routes/articles"));
     app.use("/api/uploads", require("./routes/uploads"));
+    app.use("/api/providers", require("./routes/providers"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });

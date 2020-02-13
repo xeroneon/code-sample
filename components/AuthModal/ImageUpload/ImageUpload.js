@@ -37,17 +37,8 @@ function ImageUpload(props) {
         formData.append('image', file)
         const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
         const body = {
-            name: form.name,
-            lastname: form.lastname,
-            email: form.email,
-            password: form.password,
+            ...form,
             image: image.data.imagePath,
-            country: form.country,
-            zip: form.zip,
-            accountType: form.accountType,
-            alerts: form.alerts,
-            tags: [],
-            deals: form.deals
         }
         axios.post("/api/users/create", body).then(res => {
             props.setOpen(false);
