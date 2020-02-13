@@ -11,6 +11,7 @@ function Tag(props) {
 
 Tag.propTypes = {
     name: PropTypes.string.isRequired,
+    sponsored: PropTypes.bool
 
 }
 

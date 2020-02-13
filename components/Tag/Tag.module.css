@@ -4,8 +4,9 @@
 	background-color: #E5ECF1;
 	padding: 10px 12px;
 	color: #143968;
-    font: 10pt CircularStd-Bold;
+    font: .7em CircularStd-Bold;
     user-select: none;
+    margin-right: 5px;
 }
 .root:hover {
     background-color: #143968;

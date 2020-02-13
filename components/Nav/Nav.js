@@ -7,6 +7,7 @@ import ReactTooltip from 'react-tooltip';
 
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import Link from 'next/link';
 
 function Nav() {
 
@@ -37,7 +38,9 @@ function Nav() {
         <>
             <nav className={styles.nav}>
                 <div className={styles.logoWrapper}>
-                    <img src="/images/pg-logo.png" className={styles.logo}/>
+                    <Link href="/">
+                        <img src="/images/pg-logo.png" className={styles.logo}/>
+                    </Link>
                 </div>
                 { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
                 {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Login</button> }

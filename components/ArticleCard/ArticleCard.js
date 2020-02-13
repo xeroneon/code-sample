@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ArticleCard.module.css';
-import Link from 'next/link'
+import Link from 'next/link';
+import Tag from 'components/Tag/Tag'
 
 function ArticleCard(props) {
     const tag = props.primaryTag.toString().replace(/\s/g, '-')
@@ -16,7 +17,7 @@ function ArticleCard(props) {
                         <img src={props.authorImage} className={styles.authorImage}/>
                     </Link>
                     <h4>{props.title}</h4>
-                    <span>{props.tags}</span>
+                    <div className={styles.tags}>{props.tags.slice(0,3).map(tag => <Tag key={tag} name={tag}/>)}</div>
                 </div>
             </Link>
         </>

@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./index.module.css";
 import fetch from '../helpers/fetch';
-import PropTypes from "prop-types"
-import TrendingCarousel from 'components/TrendingCarousel/TrendingCarousel'
-import Tag from 'components/Tag/Tag'
+import PropTypes from "prop-types";
+import TrendingCarousel from 'components/TrendingCarousel/TrendingCarousel';
 
 function Index(props) {
     return (
@@ -14,7 +13,6 @@ function Index(props) {
                 <h5>Preventative care meets holistic practice. The true future of healthcare</h5>
             </div>
             <TrendingCarousel items={props.trending} />
-            <Tag name='default'/>
         </>
     )
 }

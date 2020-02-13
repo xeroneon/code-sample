@@ -12,6 +12,10 @@
   margin-left: 20px;
 }
 
+.logo:hover {
+    cursor: pointer;
+}
+
 .logoWrapper {
     flex-grow: .95;
     height: 100%;
