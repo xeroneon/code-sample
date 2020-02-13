@@ -9,6 +9,11 @@
     font-weight: 400;
     src: url('/fonts/CircularStd-Book.otf');
 }
+@font-face {
+  font-family: 'CircularStd-Bold';
+  font-weight: 400;
+  src: url('/fonts/CircularStd-Bold.otf');
+}
 
 html { font-size: 100%; } /*16px*/
 h1 { font-size: 2.074em; }

@@ -1,3 +1,18 @@
 .root {
-    background-color:#1122ff;
+	border: 1pt solid #143968;
+	border-radius: 3px;
+	background-color: #E5ECF1;
+	padding: 10px 12px;
+	color: #143968;
+    font: 10pt CircularStd-Bold;
+    user-select: none;
+}
+.root:hover {
+    background-color: #143968;
+    color:white;
+}
+.root:active {
+    background-color: #092048;
+    border:1pt solid #092048;
+    color:#fff;
 }
