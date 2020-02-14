@@ -31,7 +31,7 @@ function Signup() {
     }
 
     function handleSubmit() {
-        setPage('image-upload')
+        setPage('tag-picker')
     }
 
     return (

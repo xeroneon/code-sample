@@ -6,11 +6,17 @@
 	color: #143968;
     font: .7em CircularStd-Bold;
     user-select: none;
-    margin-right: 5px;
+    margin: 5px;
+    display: inline-block;
 }
 .root:hover {
     background-color: #143968;
     color:white;
+    cursor: pointer;
+}
+.active {
+    background-color: #143968;
+    color:white; 
 }
 .root:active {
     background-color: #092048;

@@ -37,6 +37,15 @@ router.get("/", async (req, res) => {
     });
 });
 
+router.get("/all", async (req, res) => {
+
+    const tags = await Tag.find();
+
+    res.send({
+        tags
+    })
+});
+
 
 
 module.exports = router;
