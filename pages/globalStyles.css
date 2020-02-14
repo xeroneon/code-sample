@@ -1,39 +1,74 @@
 @font-face {
-    font-family: 'CircularStd-Black';
-    font-weight: 400;
-    src: url('/fonts/CircularStd-Black.otf');
-}
-
+	font-family: CircularStd;
+	font-weight: 100;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Book.otf) ;
+} 
 @font-face {
-    font-family: 'CircularStd-Book';
-    font-weight: 400;
-    src: url('/fonts/CircularStd-Book.otf');
+	font-family: CircularStd;
+	font-weight: 400;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Medium.otf) ;
 }
 @font-face {
-  font-family: 'CircularStd-Bold';
-  font-weight: 400;
-  src: url('/fonts/CircularStd-Bold.otf');
+	font-family: CircularStd;
+	font-weight: 700;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Bold.otf) ;
 }
-
-html { font-size: 100%; } /*16px*/
-h1 { font-size: 2.074em; }
-h2 { font-size: 1.728em; }
-h3 { font-size: 1.44em; }
-h4 { font-size: 1.2em; }
-small { font-size: 0.833em; }
-.box { padding: 1.25em; }
+@font-face {
+	font-family: CircularStd;
+	font-weight: 900;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Black.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 100;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BookItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 400;
+	font-style: italic;
+	src: url(/fonts/CircularStd-MediumItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 700;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BoldItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 900;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BlackItalic.otf) ;
+}
+html {
+	font-size: 100%;
+}
+h1 {
+	font-size: 2.074em;
+}
+h2 {
+	font-size: 1.728em;
+}
+h3 {
+	font-size: 1.44em;
+}
+h4 {
+	font-size: 1.2em;
+}
+small {
+	font-size: 0.833em;
+}
+.box {
+	padding: 1.25em;
+}
 @media screen and (min-width: 1400px) {
- 
 }
-
-/* .carousel-cell {
-  height: 200px;
-  width: 50%;
-  background: black;
-  margin: 10px;
-  box-sizing: border-box;
-} */
-
 .flickity-slider {
-  cursor: default;
+	cursor: default;
 }

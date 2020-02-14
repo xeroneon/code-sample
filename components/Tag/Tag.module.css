@@ -1,10 +1,10 @@
 .root {
-	border: 1pt solid #143968;
+
 	border-radius: 3px;
 	background-color: #E5ECF1;
-	padding: 10px 12px;
-	color: #143968;
-    font: .7em CircularStd-Bold;
+	padding: 8px 10px;
+    color: #143968;
+    font: bold .8em CircularStd;
     user-select: none;
     margin: 5px;
     display: inline-block;
