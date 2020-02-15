@@ -1,11 +1,10 @@
 .hero {
     height: 50vh;
     width: 100%;
-    background-image: url("/images/hero.png");
+    background-image: url("/images/hero.jpg");
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover;
-    font-family: 'CircularStd-Book';
     color: #FFFFFF;
     display: grid;
     place-content: center;
@@ -20,11 +19,13 @@
 .hero > h1 {
     margin: 20px;
     font-size: 3em;
-    font-family: 'CircularStd-Black';
+    font-weight: bold;
 }
 .hero > h3 {
     font-size: 2em;
+    font-weight: lighter;
 }
 .hero > h5 {
     font-size: 1.1em;
+    font-weight: lighter;
 }

@@ -48,6 +48,8 @@
 }
 html {
 	font-size: 100%;
+	font-family: CircularStd;
+	font-weight: lighter;
 }
 h1 {
 	font-size: 2.074em;

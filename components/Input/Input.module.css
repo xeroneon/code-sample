@@ -10,7 +10,7 @@
     top: 17px;
     left: 20px;
     color: #225B91;
-    font-family: 'CircularStd-Book';
+
     pointer-events: none;
 }
 
@@ -19,7 +19,7 @@
     background: #F4F4F4;
     border: none;
     height: 45px;
-    font-family: 'CircularStd-Book';
+
     font-size: 20px;
     text-align: right;
     color: #959595;

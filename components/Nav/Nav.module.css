@@ -40,7 +40,6 @@
 .tooltip {
     background:#FFF !important;
     opacity: 1 !important;
-    font-family: 'CircularStd-Book';
     -webkit-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
     -moz-box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
     box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
@@ -58,7 +57,8 @@
 .button {
     background: none;
     border: none;
-    font-weight: bold;
+    font-family: CircularStd;
+    font-weight: 900;
     font-size: 22px;
     color: #225B91;
     margin: 0 30px 0 30px;

@@ -1,7 +1,6 @@
 .wrapper {
     width: 100%;
     height: auto;
-    font-family: 'CircularStd-Black';
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box; 
@@ -24,7 +23,6 @@
     color: #888;
     line-height: 1.2rem;
     font-size: .8em;
-    font-family: 'CircularStd-Book';
 }
 
 .buttons {
@@ -42,5 +40,4 @@
     background: none;
     border: none;
     color: #959595;
-    font-family: 'CircularStd-Black';
 }
