@@ -61,5 +61,30 @@ router.get("/author", async (req, res) => {
 
 })
 
+router.get("/user", async (req, res) => {
+
+    try {
+
+        const entries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.tags[in]': req.user.tags.toString()
+        })
+        const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+            const user = await User.findById(article.fields.author.fields.authorId);
+            return { ... article, author: {...user._doc }}
+        }))
+
+        console.log("ENTRIES", entries);
+        res.send({
+            articles: articlesWithAuthor
+        });
+    } catch(e) {
+        console.error(e)
+    }
+
+})
+
 
 module.exports = router;

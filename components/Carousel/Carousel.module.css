@@ -16,7 +16,7 @@
     width: 350px;
     background: blue;
     margin: 10px;
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
 }
 
 .header {
