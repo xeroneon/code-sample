@@ -11,6 +11,8 @@
     "build": "NODE_PATH=. npx next build"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-react": "^7.17.0",
     "husky": ">=1",
@@ -25,6 +27,7 @@
     "connect-mongo": "^3.2.0",
     "contentful": "^7.11.3",
     "contentful-management": "^5.12.1",
+    "data-uri-to-file": "^0.1.8",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",

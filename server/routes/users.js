@@ -70,6 +70,22 @@ router.get("/logout", async (req, res) => {
 
     });
 });
+
+router.put('/update', async (req, res) => {
+    try {
+
+        await User.updateOne({_id: req.body._id}, {...req.body.updates});
+        const user = await User.findById(req.body._id).select('-password');
+        return res.send({
+            user: user._doc
+        })
+    } catch(e) {
+        console.log(e)
+        return res.status(400).send({
+            message: "Error updating user"
+        })
+    }
+})
 // example contentful request
 // router.get("/test", async (req, res) => {
 //     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");

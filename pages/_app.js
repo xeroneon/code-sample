@@ -5,6 +5,7 @@ import Footer from 'components/Footer/Footer';
 import Modal from 'react-modal';
 import AuthModal from 'components/AuthModal/AuthModal'
 import 'public/reset.css';
+import 'cropperjs/dist/cropper.css';
 import './globalStyles.css';
 
 import 'flickity/css/flickity.css';
