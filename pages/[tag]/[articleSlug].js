@@ -42,8 +42,9 @@ function Article(props) {
                 </div>
                 <div className={styles.authorModule}>
                     <img src={author.image} />
-                    <span>Posted by {`${author.name} ${author.lastname}`}</span>
-                    <span>on {moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div>
+                    <div>
+                        <span>Posted by {`${author.name} ${author.lastname}`}</span>
+                        <span>on {moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
                 <div className={styles.featuredImage}>
                     <img src={article.fields.featuredImage.fields.file.url} />
                     <summary>{article.fields.featuredImageCaption}</summary>
