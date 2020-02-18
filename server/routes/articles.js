@@ -17,12 +17,9 @@ router.get("/trending", async (req, res) => {
     }))
 
     res.send(articlesWithAuthor);
-//         .then((response) => res.send(response.items))
-//         .catch(console.error)
 });
 
 router.get("/", async (req, res) => {
-    console.log(req.query);
 
     const entries = await client.getEntries({
         content_type: 'article',
@@ -48,13 +45,12 @@ router.get("/author", async (req, res) => {
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            // "fields.authorId": id,
             'fields.author.sys.contentType.sys.id': 'author',
             'fields.author.fields.authorId[match]': id
         })
-
-        console.log("ENTRIES", entries);
-        res.send(entries.items);
+        res.send({
+            articles: entries.items
+        });
     } catch(e) {
         console.error(e)
     }

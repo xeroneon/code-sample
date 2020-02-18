@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Tag = require("../models/Tag");
+const User = require("../models/User");
 
 router.post("/create", async (req, res) => {
     const { name, description } = req.body.fields;
@@ -43,6 +44,15 @@ router.get("/all", async (req, res) => {
 
     res.send({
         tags
+    })
+});
+
+router.get("/sponsor", async (req, res) => {
+
+    const user = await User.find({sponsoredTag: req.query.tag}).select('-password')
+    console.log("USER", user)
+    res.send({
+        user: user[0]
     })
 });
 

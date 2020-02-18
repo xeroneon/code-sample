@@ -27,6 +27,7 @@ router.get("/", async (req, res) => {
     // separates first and last name with - then separates first and last names with _ and capitalizes them to create a full name out of a name slug
     // example john_ryan-jose_vasquez turns into John Ryan and Jose Vasquez for the first and last name
     const fullName = providerName.split('-').map(name => name.split('_').map(name =>  name.charAt(0).toUpperCase() + name.slice(1)).join(" "))
+    console.log("FULLNAME", fullName)
     try{
         const provider = await User.find({name: fullName[0], lastname: fullName[1], city, accountType: 'provider' }).select('-password')
 

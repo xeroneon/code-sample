@@ -4,10 +4,10 @@ import fetch from 'helpers/fetch';
 import styles from './Provider.module.css';
 import Carousel from 'components/Carousel/Carousel';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
+import Tag from 'components/Tag/Tag';
+import ActionButton from 'components/ActionButton/ActionButton'
 
 function Provider(props) {
-    console.log(props.provider)
-    console.log(props.articles)
     return (
         <>
             <div className={styles.hero}></div>
@@ -16,14 +16,21 @@ function Provider(props) {
                     <img src={props.provider.image} />
                     <span>
                         <h1>{props.provider.companyName}</h1>
+                        <p>{props.provider.bio}</p>
+                        <div>
+                            <ActionButton>Follow</ActionButton>
+                        </div>
                     </span>
 
                 </div>
                 <div className={styles.map}>
+                    <a href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`} target="_blank" rel="noopener noreferrer">
+                        <img src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`} />
 
+                    </a>
                 </div>
                 <div className={styles.tags}>
-
+                    {props.provider.tags.map(tag => <Tag key ={tag} name={tag} />)}
                 </div>
             </div>
             <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span> ]}>
@@ -56,7 +63,7 @@ Provider.getInitialProps = async (ctx) => {
     // return { article: res.data.article, author: res.data.author };
     return {
         provider: provider.data.provider,
-        articles: articles.data
+        articles: articles.data.articles
     }
 }
 

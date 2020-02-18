@@ -62,7 +62,8 @@ const UserSchema = new Schema({
         type: String
     },
     city: String,
-    state: String
+    state: String,
+    address: String
     
 });
 

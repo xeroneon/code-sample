@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './Tag.module.css'
+import styles from './Tag.module.css';
 function Tag(props) {
     return (
         <>
-            <span className={`${props.active ? styles.active : styles.root} ${styles.root}`} onClick={props.onClick}>{props.name}</span>
+            <span
+                className={`${props.active ? styles.active : styles.root} ${props.sponsored ? styles.sponsored : styles.root} ${styles.root}`}
+                onClick={props.onClick}
+            >
+                <span height="100%" style={{display: 'grid', placeContent: 'center', float: 'left'}}>{props.sponsored && <i className={`${styles.star} material-icons`}>star&nbsp;</i>}</span>
+                {props.name}
+            </span>
         </>
     )
 }

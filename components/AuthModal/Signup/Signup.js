@@ -51,6 +51,7 @@ function Signup() {
                 <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
                 { form.accountType === 'provider' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
                 { form.accountType === 'provider' && <Input type="text" name="state" value={form.state || ''} placeholder="State" onChange={handleChange} />}
+                { form.accountType === 'provider' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
                 { form.accountType === 'provider' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
                 
                 <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>

@@ -7,7 +7,6 @@
     font: bold .8em;
     user-select: none;
     margin: 5px 10px 5px 0;
-
     display: inline-block;
 }
 .root:hover {
@@ -23,4 +22,15 @@
     background-color: #092048;
     border:1pt solid #092048;
     color:#fff;
+}
+
+.sponsored {
+    background-color: #092048;
+    color: #FFF;
+}
+
+.star {
+    color: #FFF;
+    font-size: 1em;
+    height: 100%;
 }

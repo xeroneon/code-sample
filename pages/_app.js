@@ -3,7 +3,8 @@ import App from 'next/app';
 import Nav from 'components/Nav/Nav';
 import Footer from 'components/Footer/Footer';
 import Modal from 'react-modal';
-import AuthModal from 'components/AuthModal/AuthModal'
+import AuthModal from 'components/AuthModal/AuthModal';
+import Head from 'next/head';
 import 'public/reset.css';
 import 'cropperjs/dist/cropper.css';
 import './globalStyles.css';
@@ -34,6 +35,9 @@ class MyApp extends App {
         const { Component, pageProps } = this.props;
         return (
             <>
+                <Head>
+                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+                </Head>
                 <UserProvider>
                     <ModalProvider>
                         <Nav/>
