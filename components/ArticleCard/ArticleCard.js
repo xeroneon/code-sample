@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ArticleCard.module.css';
 import Link from 'next/link';
 import Tag from 'components/Tag/Tag';
-import fetch from 'helpers/fetch';
+// import fetch from 'helpers/fetch';
 
 function ArticleCard(props) {
-    const tagLink = props.primaryTag.toString().replace(/\s/g, '-')
-    const [ sponsor, setSponsor ] = useState()
+    const tagLink = props.primaryTag.toString().replace(/\s/g, '-');
+    const { sponsor } = props;
+    // const [ sponsor, setSponsor ] = useState()
 
-    useEffect(() => {
-        fetch('get', `/api/tags/sponsor?tag=${props.primaryTag}`).then(res => {
-            if(res.data.user) {
-                setSponsor(res.data.user)
-            }
-        })
-    }, [])
+    // useEffect(() => {
+    //     fetch('get', `/api/tags/sponsor?tag=${props.primaryTag}`).then(res => {
+    //         if(res.data.user) {
+    //             setSponsor(res.data.user)
+    //         }
+    //     })
+    // }, [])
     return (
         <>
             <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]">
@@ -56,7 +57,8 @@ ArticleCard.propTypes = {
     primaryTag: PropTypes.string,
     tags: PropTypes.array,
     authorName: PropTypes.string,
-    authorCity: PropTypes.string
+    authorCity: PropTypes.string,
+    sponsor: PropTypes.object
 }
 
 export default ArticleCard;

@@ -13,7 +13,8 @@ router.get("/trending", async (req, res) => {
 
     const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
         const user = await User.findById(article.fields.author.fields.authorId);
-        return { ... article, author: {...user._doc }}
+        const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
+        return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
     }))
 
     res.send(articlesWithAuthor);

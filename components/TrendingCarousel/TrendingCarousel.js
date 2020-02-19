@@ -21,6 +21,7 @@ function TrendingCarousel(props) {
                         tags={article.fields.tags}
                         authorName={authorName}
                         authorCity={article.author.city}
+                        sponsor={article.sponsor}
                     />
                 })}
             </Carousel>
