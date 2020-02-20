@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
+// import fetch from 'isomorphic-fetch';
 import styles from './Article.module.css';
 import moment from 'moment';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';

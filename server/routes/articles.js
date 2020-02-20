@@ -5,19 +5,26 @@ const User = require("../models/User");
 const { client } = contentful;
 
 router.get("/trending", async (req, res) => {
-    const articles = await client.getEntries({
-        content_type: 'article',
-        'sys.revision[gte]': 1,
-        include: 10,
-    })
+    try {
+        const articles = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+        })
+        console.log(articles.items)
+    
+        const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
+            const user = await User.findById(article.fields.author.fields.authorId);
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
+            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+        }))
+    
+        res.send(articlesWithAuthor);
 
-    const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
-        const user = await User.findById(article.fields.author.fields.authorId);
-        const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
-        return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
-    }))
-
-    res.send(articlesWithAuthor);
+    } catch (e) {
+        console.error(e);
+        res.status(400).end();
+    }
 });
 
 router.get("/", async (req, res) => {

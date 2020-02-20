@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "NODE_ENV=production node server/server.js",
     "dev": "NODE_DEV=dev nodemon server/server.js",
     "build": "NODE_PATH=. npx next build"
   },
