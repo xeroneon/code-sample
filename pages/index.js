@@ -6,6 +6,7 @@ import TrendingCarousel from 'components/TrendingCarousel/TrendingCarousel';
 import Carousel from 'components/Carousel/Carousel';
 import { UserContext } from 'contexts/UserProvider';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
+import PartnerCard from 'components/PartnerCard/PartnerCard'
 
 function Index(props) {
 
@@ -25,7 +26,7 @@ function Index(props) {
                 <h1>Prevention Generation</h1>
                 <h5>Preventative care meets holistic practice. The true future of healthcare</h5>
             </div>
-            { userArticles.length > 0 && <Carousel header={[`${user.name}'s Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
+            { userArticles.length > 0 && user && <Carousel header={[`${user.name}'s Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
                 {userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
@@ -39,9 +40,22 @@ function Index(props) {
                         tags={article.fields.tags}
                         authorName={authorName}
                         authorCity={article.author.city}
+                        sponsor={article.sponsor}
                     />
                 })}
             </Carousel> }
+            <Carousel header={[`Featured Health `, <span key="sfdgnhdf"> Partners </span> ]}>
+                {props.providers.map(partner => {
+                    return <PartnerCard 
+                        key={partner._id}
+                        image={partner.image}
+                        name={partner.name}
+                        lastname={partner.lastname}
+                        tags={partner.tags}
+                        city={partner.city}
+                    />
+                })}
+            </Carousel>
             <TrendingCarousel items={props.trending} />
         </>
     )
@@ -51,11 +65,14 @@ function Index(props) {
 Index.getInitialProps = async () => {
     // console.log(ctx.req)
     const trending = await fetch('get',`/api/articles/trending`);
-    return { trending: trending.data };
+    const providers = await fetch('get',`/api/providers/all`);
+    console.log(providers.data)
+    return { trending: trending.data, providers: providers.data.providers };
 }
 
 Index.propTypes = {
-    trending: PropTypes.array
+    trending: PropTypes.array,
+    providers: PropTypes.array
 }
 
 export default Index

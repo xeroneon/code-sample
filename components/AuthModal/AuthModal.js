@@ -41,6 +41,7 @@ function AuthModal() {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
+                <i onClick={() => setOpen(false)} className="material-icons" style={{padding: "20px", paddingBottom: '0', cursor: 'pointer'}}>close</i>
                 { page === 'signup' && <Signup setOpen={setOpen}/> }
                 { page === 'login' && <Login setOpen={setOpen}/>}
                 { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }

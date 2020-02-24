@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
-// import fetch from 'isomorphic-fetch';
+import Tag from 'components/Tag/Tag'
 import styles from './Article.module.css';
 import moment from 'moment';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
@@ -51,8 +51,8 @@ function Article(props) {
                     <summary>{article.fields.featuredImageCaption}</summary>
                 </div>
                 <div className={styles.articleBody}>{documentToReactComponents(article.fields.body, options)}</div>
-                {/*<div>Beauty Tags {article.fields.tags}</div>*/}
             </div>
+            {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
         </>
     )
 }

@@ -74,3 +74,6 @@ small {
 .flickity-slider {
 	cursor: default;
 }
+.flickity-button:disabled {
+	display: none;
+}

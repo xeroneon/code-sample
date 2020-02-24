@@ -15,8 +15,10 @@ router.get("/trending", async (req, res) => {
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
-            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+            console.log(article.fields.primaryTag)
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            console.log(sponsor)
+            return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
         }))
     
         res.send(articlesWithAuthor);
@@ -77,7 +79,34 @@ router.get("/user", async (req, res) => {
         })
         const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            return { ... article, author: {...user._doc }}
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+        }))
+
+        console.log("ENTRIES", entries);
+        res.send({
+            articles: articlesWithAuthor
+        });
+    } catch(e) {
+        console.error(e)
+    }
+
+})
+
+router.get("/tag", async (req, res) => {
+
+    try {
+
+        const entries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.tags[all]': req.query.tag
+        })
+        const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+            const user = await User.findById(article.fields.author.fields.authorId);
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 
         console.log("ENTRIES", entries);

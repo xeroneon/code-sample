@@ -63,7 +63,9 @@ const UserSchema = new Schema({
     },
     city: String,
     state: String,
-    address: String
+    address: String,
+    bio: String,
+    tier: String
     
 });
 

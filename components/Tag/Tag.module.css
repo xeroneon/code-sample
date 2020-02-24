@@ -8,6 +8,7 @@
     user-select: none;
     margin: 5px 10px 5px 0;
     display: inline-block;
+    z-index: 100;
 }
 .root:hover {
     background-color: #143968;
@@ -20,7 +21,6 @@
 }
 .root:active {
     background-color: #092048;
-    border:1pt solid #092048;
     color:#fff;
 }
 

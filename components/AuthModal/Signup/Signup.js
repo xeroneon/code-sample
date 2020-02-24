@@ -41,25 +41,28 @@ function Signup() {
                     <h1>Sign up</h1>
                     <p>Register to become part of the Prevention Generation movement.</p>
                 </div>
-                <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />
-                <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name" onChange={handleChange} />
-                <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
-                <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
-                <br/>
-                <Select  name="accountType" placeholder="Account Type" options={[{value: "provider", label: "Provider"}, {value: "personal", label: "Personal"}]} onChange={handleSelectChange} />
-                <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} />
-                <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
-                { form.accountType === 'provider' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
-                { form.accountType === 'provider' && <Input type="text" name="state" value={form.state || ''} placeholder="State" onChange={handleChange} />}
-                { form.accountType === 'provider' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
-                { form.accountType === 'provider' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
+                <form>
+                    <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />
+                    <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name" onChange={handleChange} />
+                    <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
+                    <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
+                    <br/>
+                    <Select  name="accountType" placeholder="Account Type" options={[{value: "provider", label: "Provider"}, {value: "supplier", label: "Supplier"}, {value: "personal", label: "Personal"}]} onChange={handleSelectChange} />
+                    <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} />
+                    <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="state" value={form.state || ''} placeholder="State" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code" onChange={handleChange} />}
                 
-                <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
-                <Select name="deals" placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} />
-                <div className={styles.buttons}>
-                    <ActionButton onClick={handleSubmit}>Create Account</ActionButton>
-                    <button className={styles.guestButton}>Continue as Guest</button>
-                </div>
+                    <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
+                    <Select name="deals" placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} />
+                    <div className={styles.buttons}>
+                        <ActionButton onClick={handleSubmit} type="submit">Create Account</ActionButton>
+                        <button className={styles.guestButton}>Continue as Guest</button>
+                    </div>
+                </form>
             </div>
         </>
     )

@@ -8,15 +8,7 @@ import Tag from 'components/Tag/Tag';
 function ArticleCard(props) {
     const tagLink = props.primaryTag.toString().replace(/\s/g, '-');
     const { sponsor } = props;
-    // const [ sponsor, setSponsor ] = useState()
-
-    // useEffect(() => {
-    //     fetch('get', `/api/tags/sponsor?tag=${props.primaryTag}`).then(res => {
-    //         if(res.data.user) {
-    //             setSponsor(res.data.user)
-    //         }
-    //     })
-    // }, [])
+    console.log("SPONSOR", sponsor);
     return (
         <>
             <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]">
@@ -29,12 +21,12 @@ function ArticleCard(props) {
                     </Link>
                     <h4 className={styles.title}>{props.title}</h4>
                     <div className={styles.tags}>
-                        {sponsor && <Tag sponsored key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
-                        {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag key={tag} name={tag}/>)}
+                        {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
+                        {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
                     </div>
                     {sponsor &&
                     <span className={styles.sponsor}>
-                        This post is sponsored by
+                        This post is sponsored by&nbsp;
                         <Link as={`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`} href={`/${sponsor.accountType}/[name]/[city]`}>
                             <b>
                                 {sponsor.companyName}

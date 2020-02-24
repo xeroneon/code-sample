@@ -36,7 +36,21 @@ router.get("/", async (req, res) => {
             provider: provider[0]
         })
     } catch(e) {
-        res.status(400).send({message: "Couldnt find supplier"})
+        res.status(400).send({message: "Couldnt find provider"})
+    }
+})
+
+router.get("/all", async (req, res) => {
+
+    try{
+        const providers = await User.find({accountType: 'provider'}).select('-password')
+
+        console.log(providers)
+        res.send({
+            providers
+        })
+    } catch(e) {
+        res.status(400).send({message: "Couldnt find providers"})
     }
 })
 

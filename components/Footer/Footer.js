@@ -12,7 +12,7 @@ function Footer() {
                 <div className={styles.email}>
                     <p>Get emails with all of the latest holistic medicine, preventative care news and media coverage</p>
                     <input type="email" placeholder="Email Address" />
-                    <ActionButton>Join Our Newsletter</ActionButton>
+                    <ActionButton type="submit">Join Our Newsletter</ActionButton>
                 </div>
                 <div className={styles.about}>
                     <span className={styles.link}>About Us</span>

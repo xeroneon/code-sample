@@ -4,15 +4,21 @@ import { default as ReactSelect } from 'react-select';
 
 const customStyles = {
     valueContainer: (provided) => {
-        return {...provided, fontFamily: 'CircularStd-Book'}
+        return {
+            ...provided,
+            color: '#959595',
+        }
     },
-    control: () => ({
+    singleValue: () => ({
+        color: '#959595',
+    }),
+    control: (provided) => ({
         // none of react-select's styles are passed to <Control />
+        ...provided,
         background: '#F4F4F4',
         width: "100%",
         border: 'none',
         height: '45px',
-        fontFamily: 'CircularStd-Book',
         fontSize: '20px',
         // textAlign: 'right',
         color: '#959595',
@@ -25,23 +31,22 @@ const customStyles = {
     placeholder: () => ({
         color: '#225B91',
         fontSize: '20px',
-        fontFamily: 'CircularStd-Book',
         marginLeft: '10px'
     }),
-    option: () => ({
+    option: (provided, state) => ({
         // none of react-select's styles are passed to <Control />
-        background: '#F4F4F4',
+        ...provided,
+        background: state.isFocused ? '#225B91' :'#F4F4F4',
         width: "100%",
         border: 'none',
-        height: '60px',
-        fontFamily: 'CircularStd-Book',
+        height: '45px',
         fontSize: '20px',
         // textAlign: 'right',
-        color: '#959595',
+        color: state.isFocused ? '#FFF' : '#959595',
         paddingRight: '20px',
         boxSizing: 'border-box',
         margin: '5px 0 0 0',
-        padding: '20px 20px',
+        padding: '15px 20px',
         borderRadius: '0'
     }),
     dropdownIndicator: () => ({
@@ -49,7 +54,8 @@ const customStyles = {
     }),
     menu: () => ({
         borderRadius: '0'
-    })
+    }),
+    
 }
 
 function Select(props) {
