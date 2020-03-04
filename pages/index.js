@@ -44,6 +44,7 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
+            <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured Health `, <span key="sfdgnhdf"> Partners </span> ]}>
                 {props.providers.map(partner => {
                     return <PartnerCard 
@@ -56,7 +57,6 @@ function Index(props) {
                     />
                 })}
             </Carousel>
-            <TrendingCarousel items={props.trending} />
         </>
     )
 }

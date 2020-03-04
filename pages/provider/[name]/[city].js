@@ -5,7 +5,8 @@ import styles from './Provider.module.css';
 import Carousel from 'components/Carousel/Carousel';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Tag from 'components/Tag/Tag';
-import ActionButton from 'components/ActionButton/ActionButton'
+import ActionButton from 'components/ActionButton/ActionButton';
+import GreyButton from 'components/GreyButton/GreyButton'
 
 function Provider(props) {
     return (
@@ -19,6 +20,7 @@ function Provider(props) {
                         <p>{props.provider.bio}</p>
                         <div>
                             <ActionButton>Follow</ActionButton>
+                            <GreyButton icon="phone"/>
                         </div>
                     </span>
 

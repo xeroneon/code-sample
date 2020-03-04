@@ -36,7 +36,7 @@ class MyApp extends App {
         return (
             <>
                 <Head>
-                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                 </Head>
                 <UserProvider>
                     <ModalProvider>

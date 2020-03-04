@@ -1,0 +1,15 @@
+.root {
+    width: 50px;
+    height: 50px;
+    background: grey;
+    border-radius: 50px;
+    color: white;
+    font-size: 50px; /* changes size of icon */
+    display: grid;
+    place-content: center;
+}
+
+/* 
+THIS IS WHERE TO FIND THE ICONS
+https://material.io/resources/icons/?style=outline
+*/
