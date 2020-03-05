@@ -19,7 +19,11 @@ const TagSchema = new Schema({
     
 });
 
-TagSchema.plugin(mongoose_fuzzy_searching, {fields: ['name']});
+TagSchema.plugin(mongoose_fuzzy_searching, {fields: [{
+    name: 'name',
+    minSize: 1,
+    weight: 5
+}]});
 
 
 

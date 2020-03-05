@@ -50,9 +50,18 @@ router.get("/all", async (req, res) => {
 router.get("/sponsor", async (req, res) => {
 
     const user = await User.find({sponsoredTag: req.query.tag}).select('-password')
-    console.log("USER", user)
+    // console.log("USER", user)
     res.send({
         user: user[0]
+    })
+});
+
+router.get("/search", async (req, res) => {
+    const { query } = req.query
+    const results = await Tag.fuzzySearch({query, minSize: 1});
+    // console.log("TAGS", results)
+    res.send({
+        results
     })
 });
 
