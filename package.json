@@ -34,6 +34,7 @@
     "express-session": "^1.17.0",
     "flickity": "^2.2.1",
     "js-cookie": "^2.2.1",
+    "md5": "^2.2.1",
     "moment": "^2.24.0",
     "mongoose": "^5.8.0",
     "mongoose-bcrypt": "^1.6.0",
@@ -54,7 +55,8 @@
     "react-select": "^3.0.8",
     "react-spinners": "^0.8.0",
     "react-tooltip": "^4.0.3",
-    "uuid62": "^1.0.1"
+    "uuid62": "^1.0.1",
+    "yup": "^0.28.1"
   },
   "husky": {
     "hooks": {

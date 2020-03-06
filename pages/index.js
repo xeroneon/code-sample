@@ -66,7 +66,7 @@ Index.getInitialProps = async () => {
     // console.log(ctx.req)
     const trending = await fetch('get',`/api/articles/trending`);
     const providers = await fetch('get',`/api/providers/all`);
-    console.log(providers.data)
+    // console.log(providers.data)
     return { trending: trending.data, providers: providers.data.providers };
 }
 

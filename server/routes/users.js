@@ -9,6 +9,7 @@ router.post("/create", async (req, res, next) => {
     const user = await User.create(req.body).catch(e => res.send(e));
 
     if (accountType !== "personal") {
+        console.time('manage')
         const environment = await managementClient();
         const entry = await environment.createEntry('author', {
             fields: {
@@ -20,6 +21,7 @@ router.post("/create", async (req, res, next) => {
                 }
             }
         });
+        console.timeEnd('manage')
         entry.publish();
     }
 

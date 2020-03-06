@@ -8,6 +8,7 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import CircleLoader from "react-spinners/CircleLoader";
 import Cropper from 'react-cropper';
+import md5 from 'md5';
 
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -38,14 +39,18 @@ function ImageUpload(props) {
     async function submit(e) {
         e.preventDefault();
         setLoading(true);
-        const dataUri = cropperRef.current.getCroppedCanvas().toDataURL()
-        const blob = dataURLtoBlob(dataUri)
         const formData = new FormData();
-        formData.append('image', blob)
-        const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
+        let image = `https://www.gravatar.com/avatar/${md5(form.email.toLowerCase())}?d=identicon`;
+        if(cropperRef && cropperRef.current) {
+            const dataUri = cropperRef.current.getCroppedCanvas().toDataURL()
+            const blob = dataURLtoBlob(dataUri)
+            formData.append('image', blob)
+            const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
+            image = res.data.imagePath
+        }
         const body = {
             ...form,
-            image: image.data.imagePath,
+            image,
         }
         axios.post("/api/users/create", body).then(res => {
             props.setOpen(false);

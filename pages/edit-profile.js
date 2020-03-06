@@ -146,13 +146,11 @@ function EditProfile() {
 
                 h4 {
                     color: #092048;
-                    font-family: CircularStd-Black;
                     margin-bottom: 10px;
                 }
 
                 .profileCard p {
                     max-width: 300px;
-                    font-family: CircularStd-Book;
                     align-self: center;
                     text-align: center;
                     color: #8E999E;

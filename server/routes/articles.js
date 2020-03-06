@@ -6,18 +6,20 @@ const { client } = contentful;
 
 router.get("/trending", async (req, res) => {
     try {
+        console.time('articles')
         const articles = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
         })
-        console.log(articles.items)
+        console.timeEnd('articles')
+        // console.log(articles.items)
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
             console.log(article.fields.primaryTag)
             const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
-            console.log(sponsor)
+            // console.log(sponsor)
             return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
         }))
     
@@ -83,7 +85,7 @@ router.get("/user", async (req, res) => {
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 
-        console.log("ENTRIES", entries);
+        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor
         });
@@ -109,7 +111,7 @@ router.get("/tag", async (req, res) => {
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 
-        console.log("ENTRIES", entries);
+        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor
         });

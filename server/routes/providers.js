@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
     try{
         const provider = await User.find({name: fullName[0], lastname: fullName[1], city, accountType: 'provider' }).select('-password')
 
-        console.log(provider)
+        // console.log(provider)
         res.send({
             provider: provider[0]
         })
@@ -45,7 +45,7 @@ router.get("/all", async (req, res) => {
     try{
         const providers = await User.find({accountType: 'provider'}).select('-password')
 
-        console.log(providers)
+        // console.log(providers)
         res.send({
             providers
         })

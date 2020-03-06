@@ -44,3 +44,13 @@
 .guestButton:focus {
     color: black;
 }
+
+.errors {
+    color: #D34240;
+    padding-left: 20px;
+}
+
+.errors li {
+    padding: 5px;
+
+}
