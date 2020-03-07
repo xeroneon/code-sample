@@ -1,7 +1,7 @@
 .root {
     width: 50px;
     height: 50px;
-    background: grey;
+    background:#8E999E;
     border-radius: 50px;
     color: white;
     font-size: 50px; /* changes size of icon */
