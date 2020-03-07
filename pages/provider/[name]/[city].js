@@ -6,31 +6,35 @@ import Carousel from 'components/Carousel/Carousel';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Tag from 'components/Tag/Tag';
 import ActionButton from 'components/ActionButton/ActionButton';
-// import GreyButton from 'components/GreyButton/GreyButton';
+import GreyButton from 'components/GreyButton/GreyButton';
 
 function Provider(props) {
     return (
         <>
-            <div className={styles.core}>
-                <div className={styles.hero}></div>
-                <div className={styles.providerCard}>
-                    <div className={styles.info}>
-                        <img src={props.provider.image} className={styles.image} />
-                        <div className={styles.companyName} ><h1>{props.provider.companyName}</h1></div>
-                        <div className={styles.bio} >{props.provider.bio}</div>
-                        <div className={styles.actionButtons}><ActionButton>Follow</ActionButton></div>
-                    </div>
-                    <div className={styles.map}>
-                        <a href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`} target="_blank" rel="noopener noreferrer">
-                            <img src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`} />
+            
+            <div className={styles.hero}></div>
+            <div className={styles.providerCard}>
+                <div className={styles.info}>
+                    <img src={props.provider.image} className={styles.image} />
+                    <div className={styles.companyName} >{props.provider.companyName}</div>
+                    <div className={styles.bio} >{props.provider.bio}</div>
+                    <div className={styles.actionButton}><ActionButton>Follow</ActionButton></div>
+                    <div className={styles.greyButtons}>
+                        <GreyButton icon="language"/>
+                        <GreyButton icon="mail"/>
+                        <GreyButton icon="call"/></div>
+                </div>
+                <div className={styles.map}>
+                    <a href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`} target="_blank" rel="noopener noreferrer">
+                        <img src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`} />
 
-                        </a>
-                    </div>
-                    <div className={styles.tags}>
-                        {props.provider.tags.map(tag => <Tag key ={tag} name={tag} />)}
-                    </div>
+                    </a>
+                </div>
+                <div className={styles.tags}>
+                    {props.provider.tags.map(tag => <Tag key ={tag} name={tag} />)}
                 </div>
             </div>
+
             <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span> ]}>
                 {props.articles.map(article => {
                     const authorName = [props.provider.name, props.provider.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
