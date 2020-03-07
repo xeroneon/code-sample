@@ -6,12 +6,14 @@ import Cookies from 'js-cookie';
 import { useDropzone } from 'react-dropzone';
 import UploadIcon from 'components/Icons/UploadIcon';
 import Input from 'components/Input/Input';
+import Select from 'components/Select/Select';
 import { UserContext } from 'contexts/UserProvider';
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import Cropper from 'react-cropper';
 import axios from 'axios';
 import CircleLoader from "react-spinners/CircleLoader";
+import * as yup from 'yup';
 
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -22,11 +24,47 @@ function dataURLtoBlob(dataurl) {
     return new Blob([u8arr], {type:mime});
 }
 
+const countryList = ["United States", "Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+const statesList = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ];
+const formSchema = yup.object({
+    name: yup.string()
+        .required('First Name is a required field'),
+    lastname: yup.string()
+        .required('Last Name is a required field'),
+    email: yup.string()
+        .email('Email must be a valid email')
+        .required('Email is a required field'),
+    password: yup.string(),
+    country: yup.string()
+        .required('Country is a required field'),
+    zip: yup.string()
+        .required('Zip Code is a required field')
+        .test('zip', 'Must be a valid zip', function(value) {
+            const regex = /^\d{5}$|^\d{5}-\d{4}$/;
+            return regex.test(value) ? true : false
+        }),
+    alerts: yup.string()
+        .required('Alerts is a required field'),
+    deals: yup.string()
+        .required('Special Health Deals is a required field')
+})
+
+const partnerSchema = yup.object({
+    city: yup.string()
+        .required('City is a required field'),
+    state: yup.string()
+        .required('State is a required field'),
+    address: yup.string()
+        .required('Address is a required field'),
+    companyName: yup.string()
+        .required('Company Name is a required field')
+})
 
 function EditProfile() {
 
     const { user, setUser } = useContext(UserContext);
     const [ loading, setLoading ] = useState(false);
+    const [ errors, setErrors ] = useState([]);
     const [ src, setSrc ] = useState();
     const [ form, setForm ] = useState({
         name: user?.name || '',
@@ -34,7 +72,15 @@ function EditProfile() {
         email: user?.email || '',
         bio: user?.bio || '',
         tags: user?.tags || [],
-        image: user?.image || ''
+        image: user?.image || '',
+        address: user?.address || '',
+        zip: user?.zip || '',
+        city: user?.city || '',
+        state: user?.state || '',
+        companyName: user?.companyName || '',
+        deals: user?.deals || '',
+        password: user?.password || '',
+        alerts: user?.alerts || ''
     })
     const cropperRef = useRef(null);
 
@@ -52,7 +98,15 @@ function EditProfile() {
             email: user?.email || '',
             bio: user?.bio || '',
             tags: user?.tags || [],
-            image: user?.image || ''
+            image: user?.image || '',
+            address: user?.address || '',
+            password: user?.password || '',
+            zip: user?.zip || '',
+            city: user?.city || '',
+            state: user?.state || '',
+            companyName: user?.companyName || '',
+            deals: user?.deals || '',
+            alerts: user?.alerts || ''
         })
     }, [user])
 
@@ -85,11 +139,29 @@ function EditProfile() {
         }))
     }
 
+    function handleSelectChange(selectedOption, e) {
+        setForm(state => ({
+            ...state,
+            [e.name]: selectedOption.value
+        }))
+    }
+
     async function updateUser() {
         setLoading(true);
-        const updatedUser = await axios.put('api/users/update', {_id: user._id, updates: form});
-        setUser(updatedUser.data.user)
-        setLoading(false);
+        try {
+
+            await formSchema.validate(form, {abortEarly: false})
+            if (user?.accountType !== 'personal') {
+                await partnerSchema.validate(form, {abortEarly: false})
+            }
+            const updatedUser = await axios.put('api/users/update', {_id: user._id, updates: form});
+            setUser(updatedUser.data.user)
+            setLoading(false);
+        } catch (error) {
+            console.log('e', error)
+            setErrors(error.errors)
+            setLoading(false);
+        }
     }
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, multiple: false})
@@ -118,10 +190,29 @@ function EditProfile() {
                     size={20}
                     color={"#FFF"}/> : 'Upload'}</ActionButton> }
                 <br></br>
-                <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />
-                <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name" onChange={handleChange} />
-                <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
-                <Input type="text" name="bio" value={form.bio || ''} placeholder="Bio" onChange={handleChange} />
+                <ul className='errors'>
+                    {errors.map(error => <li key={error}>* {error}</li>)}
+                </ul>
+                <form>
+                    <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />
+                    <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name" onChange={handleChange} />
+                    <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
+                    <Input type="text" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
+                    <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
+                    <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} />
+                    {/* values only for health partners */}
+                    {user?.accountType !== 'personal' && 
+                        <>
+                            <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />
+                            <Input type="text" name="bio" value={form.bio || ''} placeholder="Bio" onChange={handleChange} />
+                            <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />
+                            <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />
+                            <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />
+                        </>
+                    }
+                    <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
+                    <Select name="deals" placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} />
+                </form>
                 <div className="tags">
                     <h4>Health Tags</h4>
                     {form.tags.map(tag => <Tag key={tag} name={tag} />)}
@@ -144,9 +235,23 @@ function EditProfile() {
                     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
                 }
 
+                .errors {
+                    color: #D34240;
+                    padding-left: 20px;
+                }
+                
+                .errors li {
+                    padding: 5px;
+                
+                }
+
                 h4 {
                     color: #092048;
                     margin-bottom: 10px;
+                }
+
+                form {
+                    width: 100%;
                 }
 
                 .profileCard p {
