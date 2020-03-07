@@ -1,3 +1,4 @@
+
 import React from "react";
 import PropTypes from "prop-types";
 import fetch from "helpers/fetch";
@@ -7,6 +8,7 @@ import ArticleCard from "components/ArticleCard/ArticleCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import GreyButton from "components/GreyButton/GreyButton";
+
 
 function Provider(props) {
     return (
@@ -65,6 +67,7 @@ function Provider(props) {
                     );
                 })}
             </Carousel>
+
         </>
     );
 }

@@ -1,3 +1,6 @@
+.core {
+
+}
 .hero {
 	background: #101E41;
 	width: 100%;
@@ -40,6 +43,7 @@
 }
 .greyButtons * {
 	float: left;
+
 }
 .tags {
 	padding: 30px;
