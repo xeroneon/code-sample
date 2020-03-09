@@ -24,10 +24,8 @@ function Provider(props) {
                     <img src={props.provider.image} className={styles.image} />
                     <div className={styles.companyName}>{props.provider.companyName}</div>
                     <div className={styles.bio}>{props.provider.bio}</div>
-                    <div className={styles.actionButton}>
+                    <div className={styles.actionButtons}>
                         <ActionButton>Follow</ActionButton>
-                    </div>
-                    <div className={styles.greyButtons}>
                         <GreyButton icon="language" />
                         <GreyButton icon="mail" />
                         <GreyButton icon="call" />
