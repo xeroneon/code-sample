@@ -26,6 +26,10 @@ const UserSchema = new Schema({
         required: true,
         bcrypt: true,
     },
+    image: {
+        type: String,
+        required: true
+    },
     country: {
         type: String,
         required: true
@@ -46,10 +50,22 @@ const UserSchema = new Schema({
         type: Array,
         required: true
     },
+    goals: {
+        type: Array,
+    },
+    following: [{type: Schema.Types.ObjectId, ref: 'Following'}],
     deals: {
         type: Boolean,
         required: true
-    }
+    },
+    companyName: {
+        type: String
+    },
+    city: String,
+    state: String,
+    address: String,
+    bio: String,
+    tier: String
     
 });
 

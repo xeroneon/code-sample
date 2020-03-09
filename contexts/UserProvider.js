@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export const UserContext = createContext()
 
 export function UserProvider(props) {
-    const [ user, setUser ] = useState({});
+    const [ user, setUser ] = useState(null);
 
     return(
         <UserContext.Provider

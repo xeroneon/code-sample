@@ -1,0 +1,36 @@
+.root {
+
+	border-radius: 3px;
+	background-color: #E5ECF1;
+	padding: 8px 10px;
+    color: #143968;
+    font: bold .8em;
+    user-select: none;
+    margin: 5px 10px 5px 0;
+    display: inline-block;
+    z-index: 100;
+}
+.root:hover {
+    background-color: #143968;
+    color:white;
+    cursor: pointer;
+}
+.active {
+    background-color: #143968;
+    color:white; 
+}
+.root:active {
+    background-color: #092048;
+    color:#fff;
+}
+
+.sponsored {
+    background-color: #092048;
+    color: #FFF;
+}
+
+.star {
+    color: #FFF;
+    font-size: 1em;
+    height: 100%;
+}

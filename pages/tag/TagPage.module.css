@@ -1,0 +1,44 @@
+.root {
+    margin-top: 30px;
+}
+
+.articleWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+
+
+.header {
+    width: 550px;
+    padding: 20px 40px;
+    padding-left: 0;
+    background: #0C3668;
+    color: #FFFFFF;
+    text-align: right;
+    text-transform: uppercase;
+    font-size: .7em;
+}
+
+.header span {
+    color: #B8CEDF;
+    font-weight: bold;
+}
+
+.headerBanner {
+    content: '';
+    width: 500px;
+    height: 15px;
+    background: #B8CEDF;
+}
+
+@media only screen and (max-width: 600px) {
+    .headerBanner {
+        width: 70vw;
+    }
+    .header {
+        width: 80vw
+    }
+  }

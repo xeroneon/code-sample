@@ -1,0 +1,79 @@
+@font-face {
+	font-family: CircularStd;
+	font-weight: 100;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Book.otf) ;
+} 
+@font-face {
+	font-family: CircularStd;
+	font-weight: 400;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Medium.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 700;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Bold.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 900;
+	font-style: normal;
+	src: url(/fonts/CircularStd-Black.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 100;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BookItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 400;
+	font-style: italic;
+	src: url(/fonts/CircularStd-MediumItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 700;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BoldItalic.otf) ;
+}
+@font-face {
+	font-family: CircularStd;
+	font-weight: 900;
+	font-style: italic;
+	src: url(/fonts/CircularStd-BlackItalic.otf) ;
+}
+html {
+	font-size: 100%;
+	font-family: CircularStd;
+	font-weight: lighter;
+}
+h1 {
+	font-size: 2.074em;
+}
+h2 {
+	font-size: 1.728em;
+}
+h3 {
+	font-size: 1.44em;
+}
+h4 {
+	font-size: 1.2em;
+}
+small {
+	font-size: 0.833em;
+}
+.box {
+	padding: 1.25em;
+}
+@media screen and (min-width: 1400px) {
+}
+.flickity-slider {
+	cursor: default;
+}
+.flickity-button:disabled {
+	display: none;
+}

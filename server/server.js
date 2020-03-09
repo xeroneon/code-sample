@@ -3,7 +3,7 @@ require('dotenv').config();
 const next = require("next");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 3000;
-const dev = process.env.NODE_DEV !== "production"; //true false
+const dev = process.env.NODE_ENV !== "production"; //true false
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler(); //part of next config
 const mongoose = require("mongoose");
@@ -21,7 +21,7 @@ nextApp.prepare().then(() => {
         secret: 'keyboard cat',
         resave: false,
         saveUninitialized: false,
-        cookie: {},
+        cookie: {httpOnly: false},
         store: new MongoStore({ mongooseConnection: mongoose.connection })
     }
        
@@ -48,7 +48,7 @@ nextApp.prepare().then(() => {
     ));
 
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user._id);
     });
       
     passport.deserializeUser(function(id, done) {
@@ -61,7 +61,11 @@ nextApp.prepare().then(() => {
     app.use(passport.session());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use("/api/users", require("./routes/users")); 
+    app.use("/api/users", require("./routes/users"));
+    app.use("/api/tags", require("./routes/tags"));
+    app.use("/api/articles", require("./routes/articles"));
+    app.use("/api/uploads", require("./routes/uploads"));
+    app.use("/api/providers", require("./routes/providers"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });
