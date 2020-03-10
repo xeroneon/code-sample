@@ -44,7 +44,7 @@ function TagPicker() {
                 <div className={styles.tagWrapper}>
                     {tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
-                <ActionButton onClick={() => setPage('image-upload')}>Continue</ActionButton>
+                <ActionButton onClick={() => setPage(form.accountType !== 'personal' ? 'select-tier' : 'image-upload')}>Continue</ActionButton>
             </div>
         </>
     )

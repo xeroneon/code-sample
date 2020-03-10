@@ -6,7 +6,6 @@ import { ModalContext } from 'contexts/ModalProvider';
 import { UserContext } from 'contexts/UserProvider';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import CircleLoader from "react-spinners/CircleLoader";
 import Cropper from 'react-cropper';
 import md5 from 'md5';
 
@@ -81,9 +80,7 @@ function ImageUpload(props) {
                 }
             </div>
 
-            <ActionButton onClick={submit}>{ loading ? <CircleLoader 
-                size={20}
-                color={"#FFF"}/> : 'Finish'}</ActionButton>
+            <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
 
         </div>
     )

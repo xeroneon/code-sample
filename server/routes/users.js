@@ -3,13 +3,21 @@ const router = express.Router();
 const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
 const { managementClient } = contentful;
+const axios = require('axios');
 
 router.post("/create", async (req, res, next) => {
     const { name, lastname, accountType } = req.body;
-    const user = await User.create(req.body).catch(e => res.send(e));
+    let lat;
+    let lng;
+    if (req.body.address && req.body.city && req.body.state) {
+        const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address},${req.body.city},${req.body.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        console.log('LATLON', res)
+        lat = res.data.results[0].geometry.location.lat;
+        lng = res.data.results[0].geometry.location.lng;
+    }
+    const user = await User.create({...req.body, lat, lng}).catch(e => res.send(e));
 
     if (accountType !== "personal") {
-        console.time('manage')
         const environment = await managementClient();
         const entry = await environment.createEntry('author', {
             fields: {
@@ -18,10 +26,12 @@ router.post("/create", async (req, res, next) => {
                 },
                 authorName: {
                     'en-US': `${name} ${lastname}`
+                },
+                companyName: {
+                    'en-US': user.companyName
                 }
             }
         });
-        console.timeEnd('manage')
         entry.publish();
     }
 

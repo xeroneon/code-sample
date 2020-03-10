@@ -20,6 +20,7 @@
 	grid-row-gap: 30px;
 	grid-column-gap: 40px;
 	padding: 50px;
+	word-wrap: break-word;
 }
 .image {
 	grid-area: 1 / 1 / 4 / 2;

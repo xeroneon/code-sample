@@ -5,6 +5,7 @@ import Login from './Login/Login';
 import { ModalContext } from 'contexts/ModalProvider';
 import ImageUpload from './ImageUpload/ImageUpload';
 import TagPicker from './TagPicker/TagPicker';
+import SelectTier from './SelectTier/SelectTier';
 
 const customStyles = {
     content : {
@@ -46,6 +47,7 @@ function AuthModal() {
                 { page === 'login' && <Login setOpen={setOpen}/>}
                 { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }
                 { page === 'tag-picker' && <TagPicker setOpen={setOpen}/> }
+                { page === 'select-tier' && <SelectTier setOpen={setOpen}/> }
             </Modal>
         </>
     )

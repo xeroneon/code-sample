@@ -47,7 +47,7 @@
 	font-size: .8em;
 	font-weight: 100;
 }
-.root input {
+.emailInput {
 	box-sizing: border-box;
 	margin: 8px 0 8px 0;
 	border: 1px solid #A8ACAD;
@@ -56,10 +56,10 @@
 	color: #A8ACAD;
 	font-size: 1em;
 }
-.email button {
+.ActionButton {
 	float: right;
 }
-.root input::placeholder {
+.emailInput::placeholder {
 	color: #A8ACAD;
 	font-size: 1rem;
 }

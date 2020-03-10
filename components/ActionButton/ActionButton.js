@@ -5,7 +5,7 @@ import styles from './ActionButton.module.css'
 function ActionButton(props) {
     return (
         <>
-            <input type={props.type || 'button'} onClick={props.onClick} className={styles.root} value={props.children} />
+            <input type={props.type || 'button'} onClick={props.onClick} className={`${styles.root} ${props.className}`} value={props.children} />
         </>
     )
 }
@@ -13,7 +13,8 @@ function ActionButton(props) {
 ActionButton.propTypes = {
     children: PropTypes.any,
     onClick: PropTypes.func,
-    type: PropTypes.string
+    type: PropTypes.string,
+    className: PropTypes.string
 }
 
 export default ActionButton;
