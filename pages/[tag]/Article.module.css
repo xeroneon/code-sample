@@ -51,29 +51,35 @@
 	background-color: #E5ECF1;
 }
 .core {
-	display: grid;
+	/* display: grid;
 	grid-template-rows: repeat(4, auto);
 	grid-template-columns: 1fr 3.6fr 1fr;
 	grid-row-gap: 50px;
-	grid-column-gap: 0px;
+	grid-column-gap: 0px; */
 	margin: 120px auto;
-	max-width: 1440px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 60vw;
+	max-width: 960px;
 	color: #686868;
 }
 .title {
-	grid-area: 1 / 2 / 2 / 3;
+	/* grid-area: 1 / 2 / 2 / 3; */
 	line-height: 1.2;
 	color: #30373B;
 	font-size: 2.6rem;
 	font-weight: 100;
 }
 .authorModule {
-	grid-area: 2 / 2 / 3 / 3;
+	/* grid-area: 2 / 2 / 3 / 3; */
+	margin: 30px 0;
 	line-height: 1.2;
 	color: #30373B;
 	font-size: .9em;
 	display:flex;
 	align-items: center;
+	align-self: flex-start;
 }
 .authorModule span {
 	display: block;
@@ -92,6 +98,7 @@
 }
 .featuredImage {
 	grid-area: 3 / 1 / 4 / 4;
+	width: 100%;
 }
 .featuredImage>img {
 	width: 100%;
@@ -102,14 +109,22 @@
 	padding:0 15px;
 }
 .articleBody {
-	grid-area: 4 / 2 / 5 / 3;
+	/* grid-area: 4 / 2 / 5 / 3; */
+	margin-top: 20px;
 	line-height: 1.9;
-	font-size: 1.23em;
+	font-size: 1em;
 	font-weight: 100;
+	width: 100%;
 }
 .articleBody>img {
 	margin: 60px 0;
 	width: 100%;
+	box-sizing: border-box;
+}
+
+.articleBody>p>a {
+	width: 100%;
+	max-width: 100%;
 }
 
 .articleBody>table {
@@ -125,16 +140,43 @@
 	border: 1px solid #ddd;
 	padding: 8px;
 }
+.tags {
+	width: 100%;
+	margin-top: 50px;
+}
 @media only screen and (max-width:600px){
 	.core {
-		display: grid;
+		width: 100%;
+		box-sizing: border-box;
+		margin-top: 50px;
+		/* display: grid;
 		grid-template-rows: repeat(4, auto);
-		grid-template-columns: 1fr 10fr 1fr;
+		grid-template-columns: 1fr 10fr 1fr; */
 	}
 	.articleBody {
-		font-size:1.062em;
+		/* font-size:1.062em; */
 	}
 	.featuredImage>summary{
-		font-size: .8em;
+		/* font-size: .8em; */
+	}
+	.title {
+		padding: 0 10px;
+		font-size: 1.5em;
+		box-sizing: border-box;
+
+	}
+	.authorModule {
+		padding: 0 10px;
+		box-sizing: border-box;
+
+	}
+	.articleBody {
+		padding: 0 10px;
+		box-sizing: border-box;
+	}
+	.tags {
+		padding: 0 10px;
+		box-sizing: border-box;
+
 	}
 }
