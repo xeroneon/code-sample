@@ -11,6 +11,8 @@ const passport = require('passport'), LocalStrategy = require('passport-local').
 const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const User = require('./models/User')
+const cors = require('cors');
+
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -56,6 +58,8 @@ nextApp.prepare().then(() => {
             done(err, user);
         });
     });
+
+    app.use(cors());
       
     app.use(passport.initialize());
     app.use(passport.session());
