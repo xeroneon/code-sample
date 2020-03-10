@@ -54,6 +54,9 @@ function Index(props) {
                         lastname={partner.lastname}
                         tags={partner.tags}
                         city={partner.city}
+                        lat={partner.lat}
+                        lng={partner.lng}
+                        type={partner.accountType}
                     />
                 })}
             </Carousel>
@@ -66,8 +69,10 @@ Index.getInitialProps = async () => {
     // console.log(ctx.req)
     const trending = await fetch('get',`/api/articles/trending`);
     const providers = await fetch('get',`/api/providers/all`);
+    const suppliers = await fetch('get',`/api/suppliers/all`);
+
     // console.log(providers.data)
-    return { trending: trending.data, providers: providers.data.providers };
+    return { trending: trending.data, providers: providers.data.providers, suppliers: suppliers.data.suppliers };
 }
 
 Index.propTypes = {

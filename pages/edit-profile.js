@@ -12,7 +12,6 @@ import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import Cropper from 'react-cropper';
 import axios from 'axios';
-import CircleLoader from "react-spinners/CircleLoader";
 import * as yup from 'yup';
 
 function dataURLtoBlob(dataurl) {
@@ -186,9 +185,7 @@ function EditProfile() {
                     responsive={true}
                     viewMode={1}
                     style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
-                { src && <ActionButton onClick={crop}>{ loading ? <CircleLoader 
-                    size={20}
-                    color={"#FFF"}/> : 'Upload'}</ActionButton> }
+                { src && <ActionButton onClick={crop}>{ loading ? 'Loading...' : 'Upload'}</ActionButton> }
                 <br></br>
                 <ul className='errors'>
                     {errors.map(error => <li key={error}>* {error}</li>)}
@@ -217,9 +214,7 @@ function EditProfile() {
                     <h4>Health Tags</h4>
                     {form.tags.map(tag => <Tag key={tag} name={tag} />)}
                 </div>
-                <ActionButton onClick={updateUser}>{ loading ? <CircleLoader 
-                    size={20}
-                    color={"#FFF"}/> : 'Save'}</ActionButton>
+                <ActionButton onClick={updateUser}>{ loading ? 'Loading...' : 'Save'}</ActionButton>
             </div>
 
             <style jsx>{`

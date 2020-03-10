@@ -1,0 +1,72 @@
+.wrapper {
+    width: 100%;
+    height: auto;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    padding: 30px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box; 
+}
+
+.header h1 {
+    margin-bottom: 10px;
+}
+.selected {
+    border-color: #225B91 !important;
+}
+.tierCard {
+    width: 80%;
+    border: 1px solid #ddd;
+    color: #333;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.tierCard:hover {
+    cursor: pointer;
+}
+
+.tierCard li {
+    margin: 10px 0;
+}
+
+.tierCard h1 {
+    color: #225B91;
+}
+
+.tierCard h4 {
+    margin-bottom: 10px;
+}
+
+.price {
+    padding: 10px;
+    align-self: center;
+    justify-self: flex-end;
+    display: inline-block;
+    font-size: .8em;
+    background: #B7CDDE;
+    color: #225B91;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.check {
+    color: white;
+    width: 15px;
+    height: 15px;
+    background: #225B91;
+    font-size: 13px;
+    text-align: center;
+    line-height: 15px;
+    border-radius: 50px;
+}

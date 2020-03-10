@@ -5,14 +5,19 @@ import fetch from "helpers/fetch";
 import styles from "./Provider.module.css";
 import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
+import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import GreyButton from "components/GreyButton/GreyButton";
+import Head from 'next/head';
 
 
 function Provider(props) {
     return (
         <>
+            <Head>
+                <title>{props.provider.companyName}</title>
+            </Head>
             <div className={styles.hero}></div>
             <div className={styles.providerCard}>
                 <div className={styles.info}>
@@ -45,6 +50,27 @@ function Provider(props) {
                     ))}
                 </div>
             </div>
+
+            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Specialties </span>]}>
+                {props.specialties.map(specialty => {
+                    const authorName = [props.provider.name, props.provider.lastname]
+                        .map(name => name.toLowerCase().replace(/\s/g, "_"))
+                        .join("-");
+                    return (
+                        <SpecialtyCard
+                            key={specialty.sys.id}
+                            id={specialty.sys.id}
+                            authorImage={props.provider.image}
+                            title={specialty.fields.specialtyName}
+                            featuredImage={`http:${specialty.fields.featuredImage.fields.file.url}`}
+                            tags={specialty.fields.tags}
+                            authorName={authorName}
+                            authorCity={props.provider.city}
+                            link={specialty.fields.specialtyUrl}
+                        />
+                    );
+                })}
+            </Carousel>
 
             <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span>]}>
                 {props.articles.map(article => {
@@ -83,17 +109,19 @@ Provider.getInitialProps = async ctx => {
         `/api/articles/author?id=${provider.data.provider._id}`
     );
 
-    console.log(provider.data.provider);
+    console.log(provider.data.specialties);
     // return { article: res.data.article, author: res.data.author };
     return {
         provider: provider.data.provider,
-        articles: articles.data.articles
+        articles: articles.data.articles,
+        specialties: provider.data.specialties
     };
 };
 
 Provider.propTypes = {
     provider: PropTypes.object,
-    articles: PropTypes.array
+    articles: PropTypes.array,
+    specialties: PropTypes.array
 };
 
 export default Provider;

@@ -7,7 +7,6 @@ import moment from 'moment';
 import ReactMarkdown from 'react-markdown/with-html';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import Head from 'next/head';
 
 const options = {
     renderMark: {
@@ -35,60 +34,47 @@ const options = {
 };
 
 
-function Article(props) {
-    const { article, author } = props
+function Product(props) {
+    const { product, author } = props
 
     return (
         <>
-            <Head>
-                <title>{article.fields.title}</title>
-                <meta property="og:title" content={article.fields.title} />
-                <meta property="og:url" content={`${process.env.BASEURL_DEV}/${article.fields.primaryTag[0]}/${article.fields.slug}`} />
-                <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
-                <meta property="og:image:secure_url" content={`https:${article.fields.featuredImage.fields.file.url}`} />
-                <meta property="og:description" content={article.fields.metaDescription} />
-                <meta property="og:type" content="article" />
-                <meta property="article:published_time" content={moment(article.sys.createdAt).format("MMM DD, YYYY")} />
-                <meta property="article:author" content={`${author.name} ${author.lastname}`} />
-                {article.fields.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
-            </Head>
             <div className={styles.core}>
                 <div className={styles.title}>
-                    {article.fields.title}
+                    {product.fields.productName}
                 </div>
                 <div className={styles.authorModule}>
                     <img src={author.image} />
                     <div>
                         <span>Posted by {`${author.name} ${author.lastname}`}</span>
-                        <span>on {moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
+                        <span>on {moment(product.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
                 <div className={styles.featuredImage}>
-                    <img src={article.fields.featuredImage.fields.file.url} />
-                    <summary>{article.fields.featuredImageCaption}</summary>
+                    <img src={product.fields.featuredImage.fields.file.url} />
                 </div>
-                <div className={styles.articleBody}>{documentToReactComponents(article.fields.body, options)}</div>
+                <div className={styles.articleBody}>{documentToReactComponents(product.fields.body, options)}</div>
                 <div className={styles.articleBody}>
                     <ReactMarkdown
-                        source={article.fields.markdown}
+                        source={product.fields.markdown}
                         escapeHtml={false}
                     />
 
                 </div>
                 
             </div>
-            {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
+            {product.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
         </>
     )
 }
 
-Article.getInitialProps = async (ctx) => {
-    const { articleSlug } = ctx.query;
-    const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-    return { article: res.data.article, author: res.data.author };
+Product.getInitialProps = async (ctx) => {
+    const { productSlug } = ctx.query;
+    const res = await fetch('get', `/api/product/?slug=${productSlug}`);
+    return { product: res.data.product, author: res.data.author };
 }
 
-Article.propTypes = {
-    article: PropTypes.object,
+Product.propTypes = {
+    product: PropTypes.object,
     author: PropTypes.object
 }
 
-export default Article;
+export default Product;

@@ -11,11 +11,11 @@ function Footer() {
                 </div>
                 <div className={styles.email}>
                     <p>Get emails with all of the latest holistic medicine, preventative care news and media coverage</p>
-                    <input type="email" placeholder="Email Address" />
-                    <ActionButton type="submit">Join Our Newsletter</ActionButton>
+                    <input type="email" placeholder="Email Address" className={styles.emailInput}/>
+                    <ActionButton type="submit" className={styles.ActionButton}>Join Our Newsletter</ActionButton>
                 </div>
                 <div className={styles.about}>
-                    <span className={styles.link}>About Us</span>
+                    {/* <span className={styles.link}>About Us</span> */}
                 </div>
                 <div className={styles.terms}>
                     <span className={styles.link}>Terms of service</span>

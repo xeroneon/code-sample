@@ -1,18 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const contentful = require('../../helpers/contentful');
 const User = require("../models/User");
+const contentful = require('../../helpers/contentful');
 const { client } = contentful;
 
 router.get("/trending", async (req, res) => {
     try {
-        console.time('articles')
         const articles = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
+            limit: 15
         })
-        console.timeEnd('articles')
         // console.log(articles.items)
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
