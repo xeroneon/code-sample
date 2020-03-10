@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
 import Tag from 'components/Tag/Tag'
-import styles from './Article.module.css';
+import styles from './Product.module.css';
 import moment from 'moment';
 import ReactMarkdown from 'react-markdown/with-html';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
