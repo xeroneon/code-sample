@@ -73,7 +73,6 @@ function Article(props) {
                     />
 
                 </div>
-                
                 <div className={styles.tags}>
                     <p>Tap for recommended posts on the tags you don&apos;t follow</p>
                     {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
