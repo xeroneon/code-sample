@@ -13,7 +13,7 @@ function PartnerCard(props) {
     },[])
     return (
         <>
-            <Link as={`/provider/${partnerName}/${props.city}`} href="/provider/[name]/[city]">
+            <Link as={props.type === 'provider' ? `/provider/${partnerName}/${props.city}` : `/supplier/${props.companyName}`} href={props.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
                 <div className={styles.wrapper}>
                     <div className={styles.root}>
                         <div className={styles.image}>
@@ -39,7 +39,8 @@ PartnerCard.propTypes = {
     city: PropTypes.string,
     lat: PropTypes.string,
     lng: PropTypes.string,
-    type: PropTypes.string
+    type: PropTypes.string,
+    companyName: PropTypes.string
 }
 
 export default PartnerCard;

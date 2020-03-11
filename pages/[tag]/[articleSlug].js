@@ -84,9 +84,13 @@ function Article(props) {
 }
 
 Article.getInitialProps = async (ctx) => {
-    const { articleSlug } = ctx.query;
-    const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-    return { article: res.data.article, author: res.data.author };
+    try {
+        const { articleSlug } = ctx.query;
+        const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
+        return { article: res.data.article, author: res.data.author };
+    } catch(e) {
+        return {}
+    }
 }
 
 Article.propTypes = {

@@ -67,12 +67,16 @@ function Index(props) {
 
 Index.getInitialProps = async () => {
     // console.log(ctx.req)
-    const trending = await fetch('get',`/api/articles/trending`);
-    const providers = await fetch('get',`/api/providers/all`);
-    const suppliers = await fetch('get',`/api/suppliers/all`);
-
-    // console.log(providers.data)
-    return { trending: trending.data, providers: providers.data.providers, suppliers: suppliers.data.suppliers };
+    try {
+        const trending = await fetch('get',`/api/articles/trending`);
+        const providers = await fetch('get',`/api/providers/all`);
+        const suppliers = await fetch('get',`/api/suppliers/all`);
+    
+        // console.log(providers.data)
+        return { trending: trending.data, providers: providers.data.providers, suppliers: suppliers.data.suppliers };
+    } catch(e) {
+        return { trending: [], providers: [], suppliers: []}
+    }
 }
 
 Index.propTypes = {
