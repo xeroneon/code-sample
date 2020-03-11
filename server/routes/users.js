@@ -57,7 +57,8 @@ router.post("/login", async (req, res, next) => {
         req.login(user, function(err) {
             if (err) { return next(err); }
             return res.send({
-                user: {...user._doc, password: null}
+                user: {...user._doc, password: null},
+                success: true
             });
         }); 
     } else {

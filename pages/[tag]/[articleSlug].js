@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
 import Tag from 'components/Tag/Tag'
@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown/with-html';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
+import { UserContext } from 'contexts/UserProvider';
 
 const options = {
     renderMark: {
@@ -36,6 +37,7 @@ const options = {
 
 
 function Article(props) {
+    const { user } = useContext(UserContext);
     const { article, author } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.name} ${author.lastname}` : author.companyName
@@ -91,6 +93,8 @@ function Article(props) {
 
                 </div>
                 <div className={styles.tags}>
+                    { user && <p>Tap for recommended posts on the tags you follow</p> }
+                    {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag key={tag} name={tag} />)}
                     <p>Tap for recommended posts on the tags you don&apos;t follow</p>
                     {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
                 </div>
