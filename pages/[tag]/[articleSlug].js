@@ -73,17 +73,23 @@ function Article(props) {
                     />
 
                 </div>
-                
+                <div className={styles.tags}>
+                    <p>Tap for recommended posts on the tags you don&apos;t follow</p>
+                    {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
+                </div>
             </div>
-            {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
         </>
     )
 }
 
 Article.getInitialProps = async (ctx) => {
-    const { articleSlug } = ctx.query;
-    const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-    return { article: res.data.article, author: res.data.author };
+    try {
+        const { articleSlug } = ctx.query;
+        const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
+        return { article: res.data.article, author: res.data.author };
+    } catch(e) {
+        return {}
+    }
 }
 
 Article.propTypes = {
