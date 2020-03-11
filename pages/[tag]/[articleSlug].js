@@ -38,6 +38,7 @@ const options = {
 function Article(props) {
     const { article, author } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
+    const authorTitle = author.accountType === 'provider' ? `${author.name} ${author.lastname}` : author.companyName
 
     return (
         <>
@@ -50,7 +51,7 @@ function Article(props) {
                 <meta property="og:description" content={article.fields.metaDescription} />
                 <meta property="og:type" content="article" />
                 <meta property="article:published_time" content={moment(article.sys.createdAt).format("MMM DD, YYYY")} />
-                <meta property="article:author" content={`${author.name} ${author.lastname}`} />
+                <meta property="article:author" content={authorTitle} />
                 {article.fields.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
             </Head>
             <div className={styles.core}>
@@ -60,7 +61,7 @@ function Article(props) {
                 <div className={styles.authorModule}>
                     <img src={author.image} />
                     <div>
-                        <span>{`${author.name} ${author.lastname}`}</span>
+                        <span>{authorTitle}</span>
                         <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
                     </div>
                 </div>

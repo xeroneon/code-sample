@@ -6,8 +6,8 @@
 
 .wrapper > label {
     position: absolute;
-    font-size: 20px;
-    top: 17px;
+    font-size: 16px;
+    top: 15px;
     left: 20px;
     color: #225B91;
     background: #F4F4F4;
@@ -19,16 +19,16 @@
     width: 100%;
     background: #F4F4F4;
     border: none;
-    height: 45px;
+    height: 35px;
 
-    font-size: 20px;
+    font-size: 16px;
     text-align: right;
     color: #959595;
     padding-right: 20px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
-    margin: 5px 0 0 0;
+    margin: 3px 0 0 0;
 }
 
 .input > option{

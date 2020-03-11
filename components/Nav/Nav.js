@@ -34,6 +34,7 @@ function Nav() {
         const res = await axios.get('/api/users/logout')
         if (res.status === 200) {
             setUser(null);
+            Router.push('/')
         }
     }
 
