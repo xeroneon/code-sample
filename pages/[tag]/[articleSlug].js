@@ -36,7 +36,8 @@ const options = {
 
 
 function Article(props) {
-    const { article, author } = props
+    const { article, author } = props;
+    const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
 
     return (
         <>
@@ -60,7 +61,22 @@ function Article(props) {
                     <img src={author.image} />
                     <div>
                         <span>{`${author.name} ${author.lastname}`}</span>
-                        <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
+                        <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
+                    </div>
+                </div>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
+                    <p style={{marginRight: '10px', fontWeight: 'bold'}}>Share this experience</p>
+                    <div className="fb-share-button" data-href={`${props.hostname}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${props.hostname}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
+                    <a className="twitter-share-button"
+                        href={`https://twitter.com/intent/tweet?url=${props.hostname}/${tagLink}/${article.fields.slug}`}
+                        target="_blank" rel="noopener noreferrer"
+                        data-size="large">
+                        <img src="/images/twitter.png" width="40px" style={{display: 'inline-block'}} alt="share to twitter"/>
+                    </a>
+                    <a href={`https://www.linkedin.com/shareArticle?url=${props.hostname}/${tagLink}/${article.fields.slug}`} target="_blank" rel="noopener noreferrer">
+                        <img src="/images/linkedin.png" width="30px" alt="share to linkedin"/>
+                    </a>
+                </div>
                 <div className={styles.featuredImage}>
                     <img src={article.fields.featuredImage.fields.file.url} />
                     <summary>{article.fields.featuredImageCaption}</summary>
@@ -83,10 +99,16 @@ function Article(props) {
 }
 
 Article.getInitialProps = async (ctx) => {
+    const {req} = ctx
+    let protocol = 'https:'
+    let host = req ? req.headers.host : window.location.hostname
+    if (host.indexOf('localhost') > -1) {
+        protocol = 'http:'
+    }
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-        return { article: res.data.article, author: res.data.author };
+        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}` };
     } catch(e) {
         return {}
     }
@@ -94,7 +116,8 @@ Article.getInitialProps = async (ctx) => {
 
 Article.propTypes = {
     article: PropTypes.object,
-    author: PropTypes.object
+    author: PropTypes.object,
+    hostname: PropTypes.string
 }
 
 export default Article;

@@ -122,6 +122,14 @@
 	box-sizing: border-box;
 }
 
+.articleBody strong {
+	font-weight: bold !important;
+}
+
+.articleBody em {
+	font-style: italic;
+}
+
 .articleBody>p>a {
 	width: 100%;
 	max-width: 100%;

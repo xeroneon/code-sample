@@ -6,7 +6,7 @@ import Tag from 'components/Tag/Tag';
 // import fetch from 'helpers/fetch';
 
 function ArticleCard(props) {
-    const tagLink = props.primaryTag.toString().replace(/\s/g, '-');
+    const tagLink = props.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const { sponsor } = props;
     console.log("SPONSOR", sponsor);
     return (
