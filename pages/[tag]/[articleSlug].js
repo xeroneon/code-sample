@@ -66,14 +66,14 @@ function Article(props) {
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
                     <p style={{marginRight: '10px', fontWeight: 'bold'}}>Share this experience</p>
-                    <div className="fb-share-button" data-href={`${props.hostname}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${props.hostname}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
+                    <div className="fb-share-button" data-href={`${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
                     <a className="twitter-share-button"
-                        href={`https://twitter.com/intent/tweet?url=${props.hostname}/${tagLink}/${article.fields.slug}`}
+                        href={`https://twitter.com/intent/tweet?url=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`}
                         target="_blank" rel="noopener noreferrer"
                         data-size="large">
                         <img src="/images/twitter.png" width="40px" style={{display: 'inline-block'}} alt="share to twitter"/>
                     </a>
-                    <a href={`https://www.linkedin.com/shareArticle?url=${props.hostname}/${tagLink}/${article.fields.slug}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`https://www.linkedin.com/shareArticle?url=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} target="_blank" rel="noopener noreferrer">
                         <img src="/images/linkedin.png" width="30px" alt="share to linkedin"/>
                     </a>
                 </div>
