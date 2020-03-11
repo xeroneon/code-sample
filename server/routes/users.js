@@ -48,10 +48,10 @@ router.post("/login", async (req, res, next) => {
     const user = await User.findOne({email});
     if (!user) {
         return res.json({
-            message: "User not found, Try Again"
+            message: "User not found, Try Again",
+            success: false
         })
     }
-    console.log(user)
     const isValid = await user.verifyPassword(password);
     if (isValid) {
         req.login(user, function(err) {
@@ -62,7 +62,8 @@ router.post("/login", async (req, res, next) => {
         }); 
     } else {
         return res.json({
-            message: "Password not valid"
+            message: "Password not valid",
+            success: false
         })
     }
 });

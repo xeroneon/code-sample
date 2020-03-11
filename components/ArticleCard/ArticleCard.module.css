@@ -48,6 +48,8 @@
 .tags {
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
+    height: 40px;
 }
 
 .sponsor {
