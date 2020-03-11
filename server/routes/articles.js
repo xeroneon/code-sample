@@ -17,7 +17,7 @@ router.get("/trending", async (req, res) => {
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
             console.log(article.fields.primaryTag)
-            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             // console.log(sponsor)
             return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
         }))
@@ -80,7 +80,7 @@ router.get("/user", async (req, res) => {
         })
         const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 
@@ -106,7 +106,7 @@ router.get("/tag", async (req, res) => {
         })
         const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag[0]});
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 

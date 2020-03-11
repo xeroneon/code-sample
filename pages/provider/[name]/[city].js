@@ -83,7 +83,7 @@ function Provider(props) {
                             title={article.fields.title}
                             featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}
                             slug={article.fields.slug}
-                            primaryTag={article.fields.primaryTag[0]}
+                            primaryTag={article.fields.primaryTag}
                             tags={article.fields.tags}
                             authorName={authorName}
                             authorCity={props.provider.city}
