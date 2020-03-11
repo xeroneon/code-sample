@@ -6,13 +6,13 @@ import ActionButton from 'components/ActionButton/ActionButton'
 import { ModalContext } from 'contexts/ModalProvider';
 import { UserContext } from 'contexts/UserProvider';
 import axios from 'axios';
-import CircleLoader from "react-spinners/CircleLoader";
 
 function Login(props) {
 
     const { form, setForm } = useContext(ModalContext);
     const { setUser } = useContext(UserContext);
     const [ loading, setLoading ] = useState(false);
+    const [error, setError] = useState();
 
     function handleChange(e) {
         e.persist();
@@ -30,6 +30,10 @@ function Login(props) {
         }
         axios.post('/api/users/login', body).then(res => {
             console.log(res.data);
+            if (!res.data.success) {
+                setLoading(false)
+                return setError(res.data.message)
+            }
             setUser(res.data.user);
             props.setOpen(false);
         })
@@ -41,13 +45,12 @@ function Login(props) {
                 <div className={styles.header}>
                     <h1>Login</h1>
                 </div>
+                <p className={styles.error}>{error}</p>
                 <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
                 <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
 
                 <div className={styles.buttons}>
-                    <ActionButton onClick={handleSubmit}>{ loading ? <CircleLoader 
-                        size={20}
-                        color={"#FFF"}/> : 'Login'}</ActionButton>
+                    <ActionButton onClick={handleSubmit}>{ loading ? "Loading..." : 'Login'}</ActionButton>
                 </div>
             </div>
         </>

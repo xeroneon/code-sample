@@ -24,3 +24,8 @@
 .buttons > * {
     margin-top: 25px;
 }
+
+.error {
+    color: #D34240;
+    padding-left: 20px;
+}

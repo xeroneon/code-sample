@@ -56,7 +56,7 @@
 	grid-template-columns: 1fr 3.6fr 1fr;
 	grid-row-gap: 50px;
 	grid-column-gap: 0px; */
-	margin: 120px auto;
+	margin: 50px auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -110,7 +110,7 @@
 }
 .articleBody {
 	/* grid-area: 4 / 2 / 5 / 3; */
-	margin-top: 20px;
+	margin-top: 10px;
 	line-height: 1.9;
 	font-size: 1em;
 	font-weight: 100;
