@@ -24,7 +24,7 @@ function Index(props) {
             <div className={styles.hero}>
                 <h3>Welcome to a new age of,</h3>
                 <h1>Prevention Generation</h1>
-                <h5>Preventative care meets holistic practice. The true future of healthcare</h5>
+                <h5>Preventative care meets holistic practice. The true future of healthcare.</h5>
             </div>
             { userArticles.length > 0 && user && <Carousel header={[`${user.name}'s Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
                 {userArticles.map(article => {

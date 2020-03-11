@@ -50,6 +50,7 @@ class MyApp extends App {
         return (
             <>
                 <Head>
+                    <title>Prevention Generation</title>
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
