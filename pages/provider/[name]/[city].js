@@ -106,8 +106,6 @@ Provider.getInitialProps = async ctx => {
         "get",
         `/api/articles/author?id=${provider.data.provider._id}`
     );
-
-    console.log(provider.data.specialties);
     // return { article: res.data.article, author: res.data.author };
     return {
         provider: provider.data.provider,

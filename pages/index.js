@@ -22,7 +22,6 @@ function mergePartners(providers, suppliers) {
         i % 2 === 0 ? newArray.push(secondaryArray[suppliersIndex]) : null;
         i % 2 === 0 ? suppliersIndex += 1 : null;
     }
-    console.log(newArray)
     return newArray;
 }
 

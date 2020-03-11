@@ -18,19 +18,19 @@ const customStyles = {
         background: '#F4F4F4',
         width: "100%",
         border: 'none',
-        height: '45px',
-        fontSize: '20px',
+        height: '35px',
+        fontSize: '16px',
         // textAlign: 'right',
         color: '#959595',
         // paddingRight: '20px',
         // boxSizing: 'border-box',
-        margin: '5px 0 0 0',
+        margin: '3px 0 0 0',
         borderRadius: '0',
         display: 'flex'
     }),
     placeholder: () => ({
         color: '#225B91',
-        fontSize: '20px',
+        fontSize: '16px',
         marginLeft: '10px'
     }),
     option: (provided, state) => ({
@@ -39,14 +39,14 @@ const customStyles = {
         background: state.isFocused ? '#225B91' :'#F4F4F4',
         width: "100%",
         border: 'none',
-        height: '45px',
-        fontSize: '20px',
+        height: '35px',
+        fontSize: '16px',
         // textAlign: 'right',
         color: state.isFocused ? '#FFF' : '#959595',
         paddingRight: '20px',
         boxSizing: 'border-box',
-        margin: '5px 0 0 0',
-        padding: '15px 20px',
+        margin: '3px 0 0 0',
+        padding: '10px 20px',
         borderRadius: '0'
     }),
     dropdownIndicator: () => ({

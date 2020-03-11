@@ -22,20 +22,21 @@ function Login(props) {
         }))
     }
 
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault();
         setLoading(true);
         const body = {
             email: form.email,
             password: form.password
         }
         axios.post('/api/users/login', body).then(res => {
-            console.log(res.data);
             if (!res.data.success) {
                 setLoading(false)
                 return setError(res.data.message)
+            } else {
+                setUser(res.data.user);
+                props.setOpen(false);
             }
-            setUser(res.data.user);
-            props.setOpen(false);
         })
     }
 
@@ -46,12 +47,14 @@ function Login(props) {
                     <h1>Login</h1>
                 </div>
                 <p className={styles.error}>{error}</p>
-                <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
-                <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
+                <form>
+                    <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
+                    <Input type="password" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} />
 
-                <div className={styles.buttons}>
-                    <ActionButton onClick={handleSubmit}>{ loading ? "Loading..." : 'Login'}</ActionButton>
-                </div>
+                    <div className={styles.buttons}>
+                        <ActionButton onClick={handleSubmit} type='submit'>{ loading ? "Loading..." : 'Login'}</ActionButton>
+                    </div>
+                </form>
             </div>
         </>
     )
