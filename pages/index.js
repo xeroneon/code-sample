@@ -10,15 +10,16 @@ import PartnerCard from 'components/PartnerCard/PartnerCard';
 
 
 function mergePartners(providers, suppliers) {
-    
+    let mainArray = providers.length > suppliers.length ? providers : suppliers
+    let secondaryArray = providers.length > suppliers.length ? suppliers : providers
     let newArray = [];
     let suppliersIndex = 0;
-    for (let i = 0; i < providers.length; i++) {
-        newArray.push(providers[i]);
-        if (suppliersIndex > suppliers.length-1) {
+    for (let i = 0; i < mainArray.length; i++) {
+        newArray.push(mainArray[i]);
+        if (suppliersIndex > secondaryArray.length-1) {
             break;
         }
-        i % 2 === 0 ? newArray.push(suppliers[suppliersIndex]) : null;
+        i % 2 === 0 ? newArray.push(secondaryArray[suppliersIndex]) : null;
         i % 2 === 0 ? suppliersIndex += 1 : null;
     }
     console.log(newArray)
@@ -74,6 +75,7 @@ function Index(props) {
                         lat={partner.lat}
                         lng={partner.lng}
                         type={partner.accountType}
+                        companyName={partner.companyName}
                     />
                 })}
             </Carousel>
