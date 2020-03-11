@@ -43,7 +43,7 @@ function Article(props) {
             <Head>
                 <title>{article.fields.title}</title>
                 <meta property="og:title" content={article.fields.title} />
-                <meta property="og:url" content={`${process.env.BASEURL_DEV}/${article.fields.primaryTag[0]}/${article.fields.slug}`} />
+                <meta property="og:url" content={`${process.env.BASEURL_DEV}/${article.fields.primaryTag}/${article.fields.slug}`} />
                 <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="og:image:secure_url" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="og:description" content={article.fields.metaDescription} />
@@ -59,8 +59,8 @@ function Article(props) {
                 <div className={styles.authorModule}>
                     <img src={author.image} />
                     <div>
-                        <span>Posted by {`${author.name} ${author.lastname}`}</span>
-                        <span>on {moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
+                        <span>{`${author.name} ${author.lastname}`}</span>
+                        <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span></div></div>
                 <div className={styles.featuredImage}>
                     <img src={article.fields.featuredImage.fields.file.url} />
                     <summary>{article.fields.featuredImageCaption}</summary>
