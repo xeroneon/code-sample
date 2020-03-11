@@ -45,6 +45,7 @@ module.exports = {
         AWS_SECRET: process.env.AWS_SECRET,
 
         GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-        ADMIN_CODE: process.env.ADMIN_CODE
+        ADMIN_CODE: process.env.ADMIN_CODE,
+        DOMAIN_NAME: process.env.DOMAIN_NAME
     }
 }

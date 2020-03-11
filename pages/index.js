@@ -6,7 +6,25 @@ import TrendingCarousel from 'components/TrendingCarousel/TrendingCarousel';
 import Carousel from 'components/Carousel/Carousel';
 import { UserContext } from 'contexts/UserProvider';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
-import PartnerCard from 'components/PartnerCard/PartnerCard'
+import PartnerCard from 'components/PartnerCard/PartnerCard';
+
+
+function mergePartners(providers, suppliers) {
+    let mainArray = providers.length > suppliers.length ? providers : suppliers
+    let secondaryArray = providers.length > suppliers.length ? suppliers : providers
+    let newArray = [];
+    let suppliersIndex = 0;
+    for (let i = 0; i < mainArray.length; i++) {
+        newArray.push(mainArray[i]);
+        if (suppliersIndex > secondaryArray.length-1) {
+            break;
+        }
+        i % 2 === 0 ? newArray.push(secondaryArray[suppliersIndex]) : null;
+        i % 2 === 0 ? suppliersIndex += 1 : null;
+    }
+    console.log(newArray)
+    return newArray;
+}
 
 function Index(props) {
 
@@ -46,7 +64,7 @@ function Index(props) {
             </Carousel> }
             <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured Health `, <span key="sfdgnhdf"> Partners </span> ]}>
-                {props.providers.map(partner => {
+                {mergePartners(props.providers, props.suppliers).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
                         image={partner.image}
@@ -57,6 +75,7 @@ function Index(props) {
                         lat={partner.lat}
                         lng={partner.lng}
                         type={partner.accountType}
+                        companyName={partner.companyName}
                     />
                 })}
             </Carousel>
@@ -81,7 +100,9 @@ Index.getInitialProps = async () => {
 
 Index.propTypes = {
     trending: PropTypes.array,
-    providers: PropTypes.array
+    providers: PropTypes.array,
+    suppliers: PropTypes.array,
+
 }
 
 export default Index
