@@ -11,6 +11,17 @@
     /* left: 60px; */
 }
 
+.scroll>div{
+    /* white-space: nowrap; */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.scroll>div::-webkit-scrollbar {
+    display: none;
+}
+
 .cell {
     height: 200px;
     width: 350px;
