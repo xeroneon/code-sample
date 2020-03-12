@@ -46,6 +46,8 @@ module.exports = {
 
         GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
         ADMIN_CODE: process.env.ADMIN_CODE,
-        DOMAIN_NAME: process.env.DOMAIN_NAME
+        DOMAIN_NAME: process.env.DOMAIN_NAME,
+        PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+        PAYPAL_SECRET: process.env.PAYPAL_SECRET
     }
 }

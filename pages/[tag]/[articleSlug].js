@@ -94,9 +94,11 @@ function Article(props) {
                 </div>
                 <div className={styles.tags}>
                     { user && <p>Tap for recommended posts on the tags you follow</p> }
-                    {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag key={tag} name={tag} />)}
+                    { user && user.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
+                    {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag link key={tag} name={tag} />)}
                     <p>Tap for recommended posts on the tags you don&apos;t follow</p>
-                    {article.fields.tags.map(tag => <Tag key={tag} name={tag} />)}
+                    { !user?.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
+                    {article.fields.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
         </>

@@ -49,6 +49,8 @@
 }
 .tags {
 	padding: 30px;
+	display: flex;
+    justify-content: center;
 }
 .map img {
 	width: 100%;

@@ -31,6 +31,10 @@ function Supplier(props) {
                         <GreyButton icon="call" />
                     </div>
                 </div>
+                <div className={styles.sponsoredTag}>
+                    <h3 style={{fontWeight: 'bold', color: '#89AABE', margin: '10px'}}>Official Sponsor Of</h3>
+                    <Tag sponsored link name={supplier.sponsoredTag} />
+                </div>
                 <div className={styles.tags}>
                     {supplier.tags.map(tag => (
                         <Tag key={tag} name={tag} />
