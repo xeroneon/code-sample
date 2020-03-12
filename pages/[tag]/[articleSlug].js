@@ -55,6 +55,10 @@ function Article(props) {
                 <meta property="article:published_time" content={moment(article.sys.createdAt).format("MMM DD, YYYY")} />
                 <meta property="article:author" content={authorTitle} />
                 {article.fields.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
+                <meta name="twitter:card" content="summary" />
+                <meta name="twitter:title" content={article.fields.title} />
+                <meta name="twitter:description" content={article.fields.metaDescription} />
+                <meta name="twitter:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
             </Head>
             <div className={styles.core}>
                 <div className={styles.title}>
