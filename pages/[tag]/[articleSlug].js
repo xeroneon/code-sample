@@ -47,7 +47,7 @@ function Article(props) {
             <Head>
                 <title>{article.fields.title}</title>
                 <meta property="og:title" content={article.fields.title} />
-                <meta property="og:url" content={`${process.env.BASEURL_DEV}/${article.fields.primaryTag}/${article.fields.slug}`} />
+                <meta property="og:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag}/${article.fields.slug}`} />
                 <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="og:image:secure_url" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="og:description" content={article.fields.metaDescription} />
