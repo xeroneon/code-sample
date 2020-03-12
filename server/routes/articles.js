@@ -102,7 +102,7 @@ router.get("/tag", async (req, res) => {
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            'fields.tags[all]': req.query.tag
+            'fields.tags[all]': req.query.tag.replace(/-/g, ' ').replace(/_/g, '/')
         })
         const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);

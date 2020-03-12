@@ -48,7 +48,9 @@
 
 }
 .tags {
-	padding: 30px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
 }
 .map img {
 	width: 100%;
@@ -56,8 +58,11 @@
 	overflow: hidden;
 	object-fit: cover;
 }
-.map {
-	height: 200px;
+.sponsoredTag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
 }
 @media only screen and (max-width: 1024px) {
 	.hero {
