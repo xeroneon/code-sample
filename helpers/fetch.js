@@ -7,7 +7,6 @@ const fetch = (method, path, data, params) => {
     const options = {
         method: method.toUpperCase(),
         baseURL: process.env.BASEURL_DEV,
-        // baseURL: 'http://127.0.0.1:3000',
         url: path,
         data: data || {},
         params: params || {}

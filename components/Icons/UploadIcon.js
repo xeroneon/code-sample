@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function UploadIcon(props) {
     return (
         <svg
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="https://www.w3.org/2000/svg"
             fillRule="evenodd"
             strokeLinecap="round"
             strokeLinejoin="round"

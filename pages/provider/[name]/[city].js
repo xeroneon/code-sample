@@ -60,7 +60,7 @@ function Provider(props) {
                             id={specialty.sys.id}
                             authorImage={props.provider.image}
                             title={specialty.fields.specialtyName}
-                            featuredImage={`http:${specialty.fields.featuredImage.fields.file.url}`}
+                            featuredImage={`https:${specialty.fields.featuredImage.fields.file.url}`}
                             tags={specialty.fields.tags}
                             authorName={authorName}
                             authorCity={props.provider.city}
@@ -81,7 +81,7 @@ function Provider(props) {
                             id={article.sys.id}
                             authorImage={props.provider.image}
                             title={article.fields.title}
-                            featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}
+                            featuredImage={`https:${article.fields.featuredImage.fields.file.url}`}
                             slug={article.fields.slug}
                             primaryTag={article.fields.primaryTag}
                             tags={article.fields.tags}

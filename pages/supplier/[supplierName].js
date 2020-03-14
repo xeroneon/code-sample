@@ -32,8 +32,10 @@ function Supplier(props) {
                     </div>
                 </div>
                 <div className={styles.sponsoredTag}>
-                    <h3 style={{fontWeight: 'bold', color: '#89AABE', margin: '10px'}}>Official Sponsor Of</h3>
-                    <Tag sponsored link name={supplier.sponsoredTag} />
+                    <div>
+                        <h3 style={{fontWeight: 'bold', color: '#101E41', margin: '10px', textTransform:'uppercase'}}>Official Sponsor Of</h3>
+                        <Tag className={styles.tag} sponsored link name={supplier.sponsoredTag} />
+                    </div>
                 </div>
                 <div className={styles.tags}>
                     {supplier.tags.map(tag => (
@@ -74,7 +76,7 @@ function Supplier(props) {
                             id={article.sys.id}
                             authorImage={supplier.image}
                             title={article.fields.title}
-                            featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}
+                            featuredImage={`https:${article.fields.featuredImage.fields.file.url}`}
                             slug={article.fields.slug}
                             primaryTag={article.fields.primaryTag}
                             tags={article.fields.tags}

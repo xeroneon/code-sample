@@ -1,14 +1,87 @@
-.root {
+ .root {
 	box-sizing: border-box;
 	display: grid;
-	grid-template-rows: 2fr repeat(2, 1fr) 3fr;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: 1fr 1.5fr 1fr;
 	background: #B8CEDF;
 	font-weight: 900;
-	padding: 60px;
+	padding: 40px;
 	width: 100%;
-	height: 450px;
+	min-height: 250px;
+	align-items: center;
 }
+
+.root a {
+	text-decoration: none;
+	color: inherit;
+}
+.image {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.image>img {
+	width: 150px;
+}
+
+.links {
+	text-align: center;
+}
+.link {
+	text-transform: uppercase;
+}
+
+.links>p {
+	color: #0C3668;
+	font-size: .8em;
+	font-weight: 100;
+	margin-top: 10px;
+}
+
+.connect {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 100%;
+	/* place-items: center; */
+	/* flex-wrap: wrap; */
+	/* flex-basis: 33%; */
+}
+
+.connect img {
+	margin: 3px;
+}
+
+.emailInput {
+	box-sizing: border-box;
+	margin: 8px 0 8px 0;
+	border: 1px solid #A8ACAD;
+	padding: 15px;
+	width: 70%;
+	color: #A8ACAD;
+	font-size: 1em;
+	align-self: flex-end;
+}
+
+.connect>p {
+	/* align-self: flex-end; */
+	margin-bottom: 10px;
+}
+@media only screen and (max-width: 600px) {
+	.root {
+		grid-template-columns: 1fr;
+		row-gap: 20px;
+	}
+	.ActionButton {
+		margin: 10px;
+	}
+	.links {
+		display: flex;
+		flex-direction: column;
+	}
+}
+/*
 .image {
 	grid-area: 1 / 1 / 2 / 3;
 }
@@ -107,4 +180,4 @@
 		grid-area: g;
 		justify-self: center;
 	}
-}
+} */
