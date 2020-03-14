@@ -51,7 +51,7 @@ function Index(props) {
                         id={article.sys.id}
                         authorImage={article.author.image}
                         title={article.fields.title}
-                        featuredImage={`http:${article.fields.featuredImage.fields.file.url}`}
+                        featuredImage={`https:${article.fields.featuredImage.fields.file.url}`}
                         slug={article.fields.slug}
                         primaryTag={article.fields.primaryTag}
                         tags={article.fields.tags}

@@ -12,6 +12,7 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const User = require('./models/User')
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
@@ -60,6 +61,7 @@ nextApp.prepare().then(() => {
     });
 
     app.use(cors());
+    app.use(cookieParser());
       
     app.use(passport.initialize());
     app.use(passport.session());
@@ -72,6 +74,7 @@ nextApp.prepare().then(() => {
     app.use("/api/uploads", require("./routes/uploads"));
     app.use("/api/providers", require("./routes/providers"));
     app.use("/api/suppliers", require("./routes/suppliers"));
+    app.use("/api/payments", require("./routes/payments"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });

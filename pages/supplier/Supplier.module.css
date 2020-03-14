@@ -62,7 +62,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100px;
+    height: 150px;
+}
+.sponsoredTag>div {
+	display: flex;
+	width: 300px;
+	padding: 5px 50px;
+	/* box-sizing: border-box; */
+	height: 130px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #101E41;
+}
+.tag {
+	transform: scale(1.25,1.25);
 }
 @media only screen and (max-width: 1024px) {
 	.hero {

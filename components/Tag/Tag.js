@@ -10,7 +10,7 @@ function Tag(props) {
                 wrapper={children => <Link as={`/tag/${props.name.replace(/\s/g, '-').replace(/\//g, '_')}`} href="/tag/[tag]">{children}</Link>}
             >
                 <span
-                    className={`${props.active ? styles.active : styles.root} ${props.sponsored ? styles.sponsored : styles.root} ${styles.root}`}
+                    className={`${props.active ? styles.active : styles.root} ${props.sponsored ? styles.sponsored : styles.root} ${styles.root} ${props.className}`}
                     onClick={props.onClick}
                 >
                     <span height="100%" style={{display: 'grid', placeContent: 'center', float: 'left'}}>{props.sponsored && <i className={`${styles.star} material-icons`}>star&nbsp;</i>}</span>
@@ -34,7 +34,8 @@ Tag.propTypes = {
     sponsored: PropTypes.bool,
     onClick: PropTypes.func,
     active: PropTypes.bool,
-    link: PropTypes.bool
+    link: PropTypes.bool,
+    className: PropTypes.string
 }
 
 export default Tag;
