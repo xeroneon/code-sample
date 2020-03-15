@@ -32,19 +32,24 @@ router.get("/trending", async (req, res) => {
 
 router.get("/", async (req, res) => {
 
-    const entries = await client.getEntries({
-        content_type: 'article',
-        'sys.revision[gte]': 1,
-        include: 10,
-        'fields.slug': req.query.slug
-    })
+    try {
+        const entries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.slug': req.query.slug
+        })
+    
+        const author = await User.findById(entries.items[0].fields.author.fields.authorId)
+    
+        return res.json({
+            article: entries.items[0],
+            author: { ...author._doc, password: null }
+        })
+    } catch (e) {
+        return res.status(404).end();
+    }
 
-    const author = await User.findById(entries.items[0].fields.author.fields.authorId)
-
-    return res.json({
-        article: entries.items[0],
-        author: { ...author._doc, password: null }
-    })
 })
 
 router.get("/author", async (req, res) => {
