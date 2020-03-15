@@ -9,6 +9,7 @@ import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
+import Error from 'next/error'
 
 const options = {
     renderMark: {
@@ -37,6 +38,9 @@ const options = {
 
 
 function Article(props) {
+    if (props.errorCode) {
+        return <Error statusCode={props.errorCode} />
+    }
     const { user } = useContext(UserContext);
     const { article, author } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
@@ -118,7 +122,8 @@ Article.getInitialProps = async (ctx) => {
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}` };
+        const errorCode = res.statusCode > 200 ? res.statusCode : false
+        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode };
     } catch(e) {
         return {}
     }
@@ -127,7 +132,11 @@ Article.getInitialProps = async (ctx) => {
 Article.propTypes = {
     article: PropTypes.object,
     author: PropTypes.object,
-    hostname: PropTypes.string
+    hostname: PropTypes.string,
+    errorCode: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.number
+    ]),
 }
 
 export default Article;
