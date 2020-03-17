@@ -26,6 +26,8 @@
     "aws-sdk": "^2.614.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "braintree": "^2.22.0",
+    "braintree-web-drop-in-react": "^1.1.0",
     "connect-mongo": "^3.2.0",
     "contentful": "^7.11.3",
     "contentful-management": "^5.12.1",

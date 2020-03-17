@@ -52,6 +52,11 @@ function ImageUpload(props) {
             image,
         }
         axios.post("/api/users/create", body).then(res => {
+            // if (form.accountType !== 'personal') {
+            //     setLoading(false);
+            //     setUser(res.data.user);
+            //     return setPage('select-tier');
+            // }
             props.setOpen(false);
             setUser(res.data.user);
             setLoading(false);

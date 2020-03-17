@@ -37,7 +37,7 @@ Provider.getInitialProps = async (ctx) => {
     const { tag } = ctx.query;
     const formattedTag = tag.replace(/-/g, ' ').replace(/_/g, '/')
     const articles = await fetch('get',`/api/articles/tag?tag=${formattedTag}`);
-    console.log(articles.data.articles)
+    // console.log(articles.data.articles)
     return {
         articles: articles.data.articles,
         tag: formattedTag

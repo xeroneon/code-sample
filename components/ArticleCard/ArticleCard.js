@@ -8,7 +8,7 @@ import Tag from 'components/Tag/Tag';
 function ArticleCard(props) {
     const tagLink = props.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const { sponsor } = props;
-    console.log("SPONSOR", sponsor);
+    // console.log("SPONSOR", sponsor);
     return (
         <>
             <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]">

@@ -37,7 +37,9 @@ function Footer() {
                         <span className={styles.link}>About Us | </span>
                     </a>
                     <span className={styles.link}>Terms of service | </span>
-                    <span className={styles.link}>Contact | </span>
+                    <a href="mailto:info@preventiongeneration.com">
+                        <span className={styles.link}>Contact | </span>
+                    </a>
                     <span className={styles.link}>Privacy Policy</span>
                     <p>© {new Date().getFullYear()} AHWA LLC All rights reserved. | Reproduction in whole or part is prohibited.</p>
                 </div>
@@ -54,7 +56,7 @@ function Footer() {
                         <a href="https://instagram.com/preventiongeneration/" target="_blank" rel="noopener noreferrer">
                             <img src="/images/insta.png" width="33px"/>
                         </a>
-                        <a href="https://www.youtube.com/channel/UCQ10j5wJ0QKMLUwHP9bgyVQ" target="_blank" without rel="noopener noreferrer">
+                        <a href="https://www.youtube.com/channel/UCQ10j5wJ0QKMLUwHP9bgyVQ" target="_blank" rel="noopener noreferrer">
                             <img src="/images/youtube.png" width="45px"/>
                         </a>
                     </span>

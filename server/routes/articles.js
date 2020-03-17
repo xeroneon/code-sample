@@ -16,7 +16,7 @@ router.get("/trending", async (req, res) => {
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            console.log(article.fields.primaryTag)
+            // console.log(article.fields.primaryTag)
             const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             // console.log(sponsor)
             return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
@@ -100,7 +100,7 @@ router.get("/user", async (req, res) => {
 })
 
 router.get("/tag", async (req, res) => {
-
+    console.log(req.query.tag);
     try {
 
         const entries = await client.getEntries({

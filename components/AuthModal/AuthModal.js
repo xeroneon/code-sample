@@ -6,6 +6,7 @@ import { ModalContext } from 'contexts/ModalProvider';
 import ImageUpload from './ImageUpload/ImageUpload';
 import TagPicker from './TagPicker/TagPicker';
 import SelectTier from './SelectTier/SelectTier';
+import Payment from './Payment/Payment';
 
 const customStyles = {
     content : {
@@ -16,7 +17,7 @@ const customStyles = {
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
         border: 'none',
-        width: '400px',
+        width: '360px',
         padding: '0',
         paddingBottom: '20px',
         maxHeight: '90vh'
@@ -28,16 +29,11 @@ Modal.defaultStyles.overlay.backgroundColor = 'rgba(0,0,0,.5)';
 function AuthModal() {
 
     const { open, setOpen, page } = useContext(ModalContext);
-    // console.log(open)
-    // useEffect(() => {
-    //     setOpen(true)
-    // })
 
     return (
         <>
             <Modal
                 isOpen={open}
-                // onAfterOpen={this.afterOpenModal}
                 onRequestClose={() => setOpen(false)}
                 style={customStyles}
                 contentLabel="Example Modal"
@@ -45,9 +41,10 @@ function AuthModal() {
                 <i onClick={() => setOpen(false)} className="material-icons" style={{padding: "20px", paddingBottom: '0', cursor: 'pointer'}}>close</i>
                 { page === 'signup' && <Signup setOpen={setOpen}/> }
                 { page === 'login' && <Login setOpen={setOpen}/>}
-                { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }
                 { page === 'tag-picker' && <TagPicker setOpen={setOpen}/> }
+                { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }
                 { page === 'select-tier' && <SelectTier setOpen={setOpen}/> }
+                { page === 'payment' && <Payment setOpen={setOpen}/> }
             </Modal>
         </>
     )

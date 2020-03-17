@@ -6,41 +6,51 @@ const { managementClient } = contentful;
 const axios = require('axios');
 
 router.post("/create", async (req, res, next) => {
-    const { name, lastname, accountType } = req.body;
-    let lat;
-    let lng;
-    if (req.body.address && req.body.city && req.body.state) {
-        const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address},${req.body.city},${req.body.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
-        console.log('LATLON', res)
-        lat = res.data.results[0].geometry.location.lat;
-        lng = res.data.results[0].geometry.location.lng;
-    }
-    const user = await User.create({...req.body, lat, lng}).catch(e => res.send(e));
+    try {
+        const { name, lastname, accountType } = req.body;
+        let lat;
+        let lng;
+        if (req.body.address && req.body.city && req.body.state) {
+            const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address},${req.body.city},${req.body.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+            // console.log('LATLON', res)
+            lat = res.data.results[0].geometry.location.lat;
+            lng = res.data.results[0].geometry.location.lng;
+        }
+        const user = await User.create({...req.body, location: {
+            type: "Point",
+            coordinates: [lng, lat]
+        }}).catch(e => res.send(e));
 
-    if (accountType !== "personal") {
-        const environment = await managementClient();
-        const entry = await environment.createEntry('author', {
-            fields: {
-                authorId: {
-                    'en-US': user._id
-                },
-                authorName: {
-                    'en-US': `${name} ${lastname}`
-                },
-                companyName: {
-                    'en-US': user.companyName
+        if (accountType !== "personal") {
+            const environment = await managementClient();
+            const entry = await environment.createEntry('author', {
+                fields: {
+                    authorId: {
+                        'en-US': user._id
+                    },
+                    authorName: {
+                        'en-US': `${name} ${lastname}`
+                    },
+                    companyName: {
+                        'en-US': user.companyName
+                    }
                 }
-            }
-        });
-        entry.publish();
-    }
+            });
+            entry.publish();
+        }
 
-    req.login(user, function(err) {
-        if (err) { return next(err); }
-        res.json({
-            user: {...user._doc, password: null}
+        req.login(user, function(err) {
+            if (err) { return next(err); }
+            res.json({
+                user: {...user._doc, password: null}
+            });
         });
-    });
+    } catch (e) {
+        return res.status(400).send({
+            success: false,
+            message: "Error creating user, try again"
+        })
+    }
 });
 
 router.post("/login", async (req, res, next) => {
@@ -87,15 +97,28 @@ router.get("/logout", async (req, res) => {
 
 router.put('/update', async (req, res) => {
     try {
+        let lat;
+        let lng;
+        if (req.body.updates.address && req.body.updates.city && req.body.updates.state) {
+            const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.updates.address},${req.body.updates.city},${req.body.updates.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+            // console.log('LATLON', res)
+            lat = res.data.results[0].geometry.location.lat;
+            lng = res.data.results[0].geometry.location.lng;
+        }
 
-        await User.updateOne({_id: req.body._id}, {...req.body.updates});
+        await User.updateOne({_id: req.body._id}, {...req.body.updates, location: {
+            type: "Point",
+            coordinates: [lng, lat]
+        }});
         const user = await User.findById(req.body._id).select('-password');
         return res.send({
-            user: user._doc
+            user: user._doc,
+            success: true
         })
     } catch(e) {
         console.log(e)
         return res.status(400).send({
+            success: false,
             message: "Error updating user"
         })
     }

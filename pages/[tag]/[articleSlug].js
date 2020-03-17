@@ -9,7 +9,9 @@ import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
-import Error from 'next/error'
+import Error from 'next/error';
+import ArticleCard from 'components/ArticleCard/ArticleCard';
+import Carousel from 'components/Carousel/Carousel';
 
 const options = {
     renderMark: {
@@ -100,7 +102,7 @@ function Article(props) {
 
                 </div>
                 <div className={styles.tags}>
-                    { user && <p>Tap for recommended posts on the tags you follow</p> }
+                    { user && user.tags.filter(tag => article.fields.tags.includes(tag)) > 0 && <p>Tap for recommended posts on the tags you follow</p> }
                     { user && user.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
                     {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag link key={tag} name={tag} />)}
                     <p>Tap for recommended posts on the tags you don&apos;t follow</p>
@@ -108,6 +110,27 @@ function Article(props) {
                     {article.fields.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
+            { props.similarArticles &&
+                props.similarArticles.length !== 0 &&
+                props.similarArticles[0].fields.slug !== props.article.fields.slug &&
+                <Carousel header={[`Curated Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
+                    {props.similarArticles.filter(item => item.fields.slug !== props.article.fields.slug).map(article => {
+                        const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+                        return <ArticleCard 
+                            key={article.sys.id}
+                            id={article.sys.id}
+                            authorImage={article.author.image}
+                            title={article.fields.title}
+                            featuredImage={`https:${article.fields.featuredImage.fields.file.url}`}
+                            slug={article.fields.slug}
+                            primaryTag={article.fields.primaryTag}
+                            tags={article.fields.tags}
+                            authorName={authorName}
+                            authorCity={article.author.city}
+                            sponsor={article.sponsor}
+                        />
+                    })}
+                </Carousel> }
         </>
     )
 }
@@ -123,7 +146,8 @@ Article.getInitialProps = async (ctx) => {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
         const errorCode = res.statusCode > 200 ? res.statusCode : false
-        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode };
+        const similarArticles = await fetch('get', `api/articles/tag?tag=${res.data.article.fields.tags[Math.floor(Math.random() * res.data.article.fields.tags.length)]}`)
+        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles };
     } catch(e) {
         return {}
     }
@@ -131,6 +155,7 @@ Article.getInitialProps = async (ctx) => {
 
 Article.propTypes = {
     article: PropTypes.object,
+    similarArticles: PropTypes.array,
     author: PropTypes.object,
     hostname: PropTypes.string,
     errorCode: PropTypes.oneOfType([

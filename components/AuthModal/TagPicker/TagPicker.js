@@ -15,7 +15,6 @@ function TagPicker() {
         e.persist();
         const i = form.tags.indexOf(tag);
         if (i > -1 ) {
-            console.log('remove')
             return setForm(state => ({
                 ...state,
                 tags: form.tags.filter(item => item !== tag)
@@ -44,7 +43,7 @@ function TagPicker() {
                 <div className={styles.tagWrapper}>
                     {tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
-                <ActionButton onClick={() => setPage(form.accountType !== 'personal' ? 'select-tier' : 'image-upload')}>Continue</ActionButton>
+                <ActionButton onClick={() => setPage('image-upload')}>Continue</ActionButton>
             </div>
         </>
     )
