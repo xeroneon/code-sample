@@ -34,9 +34,10 @@ function Signup() {
         e.preventDefault();
         setForm(state => ({
             ...state,
-            tier
+            tier,
+            plan: `${tier}${selectedPrice === 0 ? '_monthly' : '_anual'}`
         }))
-        setPage('image-upload');
+        setPage('payment');
     }
 
     return (

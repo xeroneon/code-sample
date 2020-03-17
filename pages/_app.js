@@ -32,7 +32,7 @@ class MyApp extends App {
     //   return { ...appProps }
     // }
     success = (position) => {
-        console.log(position)
+        // console.log(position)
         localStorage.setItem('lat', position.coords.latitude)
         localStorage.setItem('lon', position.coords.longitude)
 

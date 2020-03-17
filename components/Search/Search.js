@@ -11,7 +11,7 @@ function Search(props) {
 
     useEffect(() => {
         fetch('get', `/api/tags/search?query=${search}`).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             setTags(res.data.results);
         })
     }, [search])

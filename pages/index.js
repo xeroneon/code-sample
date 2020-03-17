@@ -13,14 +13,13 @@ function mergePartners(providers, suppliers) {
     let mainArray = providers.length > suppliers.length ? providers : suppliers
     let secondaryArray = providers.length > suppliers.length ? suppliers : providers
     let newArray = [];
-    let suppliersIndex = 0;
+    let secondaryIndex = 0;
     for (let i = 0; i < mainArray.length; i++) {
         newArray.push(mainArray[i]);
-        if (suppliersIndex > secondaryArray.length-1) {
-            break;
+        if ( i % 2 === 0 && secondaryArray[secondaryIndex] !== undefined) {
+            newArray.push(secondaryArray[secondaryIndex])
+            secondaryIndex += 1
         }
-        i % 2 === 0 ? newArray.push(secondaryArray[suppliersIndex]) : null;
-        i % 2 === 0 ? suppliersIndex += 1 : null;
     }
     return newArray;
 }
@@ -28,11 +27,13 @@ function mergePartners(providers, suppliers) {
 function Index(props) {
 
     const { user } = useContext(UserContext);
-    const [ userArticles, setUserArticles ] = useState([])
+    const [ userArticles, setUserArticles ] = useState([]);
+    const [ providers, setProviders ] = useState([]);
 
     useEffect(() => {
         if (user) {
-            fetch('get', 'api/articles/user').then(res => {setUserArticles(res.data.articles); console.log(res.data.articles)})
+            fetch('get', 'api/articles/user').then(res => setUserArticles(res.data.articles)).catch(e => console.log(e))
+            fetch('get',`/api/providers/all?lat=${window.localStorage.getItem('lat')}&lng=${window.localStorage.getItem('lon')}`).then(res => setProviders(res.data.providers)).catch(e => console.log(e));
         }
     }, [user])
 
@@ -43,7 +44,8 @@ function Index(props) {
                 <h1>Prevention Generation</h1>
                 <h5>Preventative care meets holistic practice. The true future of healthcare.</h5>
             </div>
-            { userArticles.length > 0 && user && <Carousel header={[`${user.name}'s Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
+            { user && userArticles.length > 0 && <Carousel header={[`${user.name}'s Health`, <span key="user"> posts </span> ]}>
+                {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
                 {userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
@@ -61,8 +63,11 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
+            { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s Health`, <span key="usernoarticles"> posts </span> ]}>
+                <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
+            </Carousel> }
             <TrendingCarousel items={props.trending} />
-            <Carousel header={[`Featured Health `, <span key="sfdgnhdf"> Partners </span> ]}>
+            { !user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
                 {mergePartners(props.providers, props.suppliers).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
@@ -77,7 +82,41 @@ function Index(props) {
                         companyName={partner.companyName}
                     />
                 })}
-            </Carousel>
+            </Carousel> }
+            { user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
+                {providers.length > 0 && mergePartners(providers, props.suppliers).map(partner => {
+                    return <PartnerCard 
+                        key={partner._id}
+                        image={partner.image}
+                        name={partner.name}
+                        lastname={partner.lastname}
+                        tags={partner.tags}
+                        city={partner.city}
+                        lat={partner?.location?.coordinates[1]}
+                        lng={partner?.location?.coordinates[0]}
+                        type={partner.accountType}
+                        companyName={partner.companyName}
+                    />
+                })}
+            </Carousel> }
+
+            <style jsx>
+                {`
+                    
+                    #noArticles {
+                        width: 300px;
+                        height: 200px;
+                        display: grid;
+                        place-content: center;
+                        padding: 10px;
+                        color: #143968;
+                        margin: 10px;
+                        box-sizing: border-box;
+                        border: 1px solid #143968;
+                        border-radius: 2px;
+                    }
+                `}
+            </style>
         </>
     )
 }

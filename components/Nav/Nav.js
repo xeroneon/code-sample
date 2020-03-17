@@ -20,7 +20,7 @@ function Nav() {
     useEffect(() => {
         if (Cookies.get('connect.sid') !== undefined) {
             axios.get('/api/users').then(res => {
-                console.log(res.data.user)
+                // console.log(res.data.user)
                 setUser(res.data.user);
             });
         }

@@ -64,13 +64,18 @@ const UserSchema = new Schema({
     city: String,
     state: String,
     address: String,
+    location: {
+        type: { type: String },
+        coordinates: []
+    },
     lat: String,
     lng: String,
     bio: String,
-    tier: String
+    tier: String,
+    subActive: Boolean
     
 });
-
+UserSchema.index({ location: "2dsphere" });
 UserSchema.plugin(bcrypt);
 
 
