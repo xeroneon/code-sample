@@ -14,7 +14,11 @@
     height: 50px;
     margin: 0 10px;
     padding-left: 30px;
-    width: 230px;
+    width: 310px;
+}
+
+.search::placeholder {
+    font-size: 1.2em;
 }
 
 .icon {
