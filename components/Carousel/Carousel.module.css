@@ -11,6 +11,10 @@
     /* left: 60px; */
 }
 
+/* .root .flickity-button {
+	background: transparent !important;
+  } */
+
 .scroll>div{
     /* white-space: nowrap; */
     overflow-x: auto;

@@ -72,7 +72,8 @@ const UserSchema = new Schema({
     lng: String,
     bio: String,
     tier: String,
-    subActive: Boolean
+    subActive: Boolean,
+    specialty: String
     
 });
 UserSchema.index({ location: "2dsphere" });

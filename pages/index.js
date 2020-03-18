@@ -80,6 +80,8 @@ function Index(props) {
                         lng={partner.lng}
                         type={partner.accountType}
                         companyName={partner.companyName}
+                        bio={partner.bio}
+                        specialty={partner.specialty}
                     />
                 })}
             </Carousel> }
@@ -96,6 +98,8 @@ function Index(props) {
                         lng={partner?.location?.coordinates[0]}
                         type={partner.accountType}
                         companyName={partner.companyName}
+                        bio={partner.bio}
+                        specialty={partner.specialty}
                     />
                 })}
             </Carousel> }

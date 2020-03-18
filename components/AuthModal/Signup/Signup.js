@@ -112,6 +112,7 @@ function Signup() {
                     { form.accountType && form.accountType !== 'personal' && <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
+                    { form.accountType && form.accountType === 'provider' && <Input type="text" name="specialty" value={form.specialty || ''} placeholder="Specialty" onChange={handleChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code" onChange={handleChange} />}
                 
                     <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
