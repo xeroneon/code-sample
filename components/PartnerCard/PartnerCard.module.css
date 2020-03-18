@@ -38,7 +38,7 @@
 .bio {
     position: relative;
     margin: 20px;
-    height: 80px
+    height: 60px
 }
 
 .bio p {
@@ -61,6 +61,12 @@
 .name {
     /* font-weight: bold; */
     font-size: 1.4em;
+}
+
+.specialty {
+    color: #143968;
+    margin: 5px;
+    height: 10px;
 }
 
 .distance {
