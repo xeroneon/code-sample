@@ -7,7 +7,7 @@ import {haversineDistance} from 'helpers/calculateDistance';
 
 function PartnerCard(props) {
     const partnerName = [props.name, props.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
-    const [ distance, setDistance ] = useState();
+    const [ setDistance ] = useState();
     useEffect(() => {
         setDistance(haversineDistance([props.lat, props.lng], [window.localStorage.getItem('lat'), window.localStorage.getItem('lon')], true))
     },[])
@@ -18,11 +18,16 @@ function PartnerCard(props) {
                     <div className={styles.root}>
                         <div className={styles.image}>
                             <img src={props.image} />
-                            {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> }
+                            {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
                         </div>
-                        <div className={styles.info}>
-                            <h4>{props.name} {props.lastname}</h4>
-                            {props.tags.map(tag => <Tag link key={tag} name={tag} />)}
+                        <h4 className={styles.name}>{props.name} {props.lastname}</h4>
+                        <div className={styles.bio}>
+                            <p>
+                                {props.bio}
+                            </p>
+                        </div>
+                        <div className={styles.tags}>
+                            {props.tags.slice(0,4).map(tag => <Tag link key={tag} name={tag} />)}
                         </div>
                     </div>
                 </div>
@@ -40,7 +45,8 @@ PartnerCard.propTypes = {
     lat: PropTypes.string,
     lng: PropTypes.string,
     type: PropTypes.string,
-    companyName: PropTypes.string
+    companyName: PropTypes.string,
+    bio: PropTypes.string
 }
 
 export default PartnerCard;

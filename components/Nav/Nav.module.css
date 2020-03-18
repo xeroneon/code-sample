@@ -59,11 +59,16 @@
 .button {
     background: none;
     border: none;
-    font-family: CircularStd;
-    font-weight: 900;
-    font-size: 22px;
-    color: #225B91;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+    color: rgb(67, 69, 78);
     margin: 0 20px 0 0;
+    
+}
+
+.button:hover {
+    color: #225B91;
 
 }
 

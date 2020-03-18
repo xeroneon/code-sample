@@ -1,10 +1,10 @@
 .root {
 
-	border-radius: 3px;
+	border-radius: 1px;
 	background-color: #E5ECF1;
-	padding: 8px 10px;
+	padding: 7px 7px;
     color: #143968;
-    font: bold .8em;
+    font-weight: 400;
     font-size: .9em;
     user-select: none;
     margin: 5px 10px 5px 0;

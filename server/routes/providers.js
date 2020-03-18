@@ -43,7 +43,6 @@ router.get("/all", async (req, res) => {
             }}).select('-password') :
             await User.find({accountType: 'provider'}).select('-password')
 
-        // console.log(providers)
         res.send({
             providers
         })
