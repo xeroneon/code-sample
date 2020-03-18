@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 import styles from './PartnerCard.module.css';
 import Tag from 'components/Tag/Tag';
 import Link from 'next/link';
-import {haversineDistance} from 'helpers/calculateDistance';
+// import {haversineDistance} from 'helpers/calculateDistance';
 
 function PartnerCard(props) {
     const partnerName = [props.name, props.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
-    const [ setDistance ] = useState();
-    useEffect(() => {
-        setDistance(haversineDistance([props.lat, props.lng], [window.localStorage.getItem('lat'), window.localStorage.getItem('lon')], true))
-    },[])
+    // const [ setDistance ] = useState();
+    // useEffect(() => {
+    //     setDistance(haversineDistance([props.lat, props.lng], [window.localStorage.getItem('lat'), window.localStorage.getItem('lon')], true))
+    // },[])
     return (
         <>
             <Link as={props.type === 'provider' ? `/provider/${partnerName}/${props.city}` : `/supplier/${props.companyName}`} href={props.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
