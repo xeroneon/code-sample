@@ -6,20 +6,21 @@ const customStyles = {
     valueContainer: (provided) => {
         return {
             ...provided,
-            color: '#959595',
+            color: '#225B91',
         }
     },
     singleValue: () => ({
-        color: '#959595',
+        color: '#225B91',
+        marginLeft: '10px'
     }),
     control: (provided) => ({
         // none of react-select's styles are passed to <Control />
         ...provided,
-        background: '#F4F4F4',
+        border: "1px solid #225B91",
         width: "100%",
-        border: 'none',
         height: '35px',
         fontSize: '16px',
+        fontWeight: 'bold',
         // textAlign: 'right',
         color: '#959595',
         // paddingRight: '20px',
@@ -36,13 +37,13 @@ const customStyles = {
     option: (provided, state) => ({
         // none of react-select's styles are passed to <Control />
         ...provided,
-        background: state.isFocused ? '#225B91' :'#F4F4F4',
+        background: state.isFocused ? '#225B91' :'none',
         width: "100%",
-        border: 'none',
+        // border: "1px solid #225B91",
         height: '35px',
         fontSize: '16px',
         // textAlign: 'right',
-        color: state.isFocused ? '#FFF' : '#959595',
+        color: state.isFocused ? '#FFF' : '#225B91',
         paddingRight: '20px',
         boxSizing: 'border-box',
         margin: '3px 0 0 0',
@@ -50,10 +51,15 @@ const customStyles = {
         borderRadius: '0'
     }),
     dropdownIndicator: () => ({
-        float: 'right'
+        float: 'right',
+        color: '#225B91'
+    }),
+    indicatorSeparator: () => ({
+        color: '#225B91'
     }),
     menu: () => ({
-        borderRadius: '0'
+        borderRadius: '0',
+        border: "1px solid #225B91",
     }),
     
 }

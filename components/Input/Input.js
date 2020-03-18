@@ -5,8 +5,8 @@ function Input(props) {
     return (
         <>
             <div className={styles.wrapper}>
-                <label htmlFor={props.name}>{props.placeholder}</label>
-                { (props.type === 'text' || props.type === 'password') && <input type={props.type} name={props.name}  value={props.value} onChange={props.onChange} className={styles.input} /> }
+                {/* <label htmlFor={props.name}>{props.placeholder}</label> */}
+                { (props.type === 'text' || props.type === 'password') && <input type={props.type} name={props.name} placeholder={props.placeholder}  value={props.value} onChange={props.onChange} className={styles.input} /> }
                 { props.type === 'select' &&
                     <select type={props.type} name={props.name}  value={props.value} onChange={props.onChange} className={styles.input}>
                         {props.children}
