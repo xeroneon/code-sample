@@ -6,6 +6,10 @@
     box-sizing: border-box; 
 }
 
+.wrapper form {
+    padding: 30px;
+}
+
 .header {
     width: 100%;
     padding: 30px;

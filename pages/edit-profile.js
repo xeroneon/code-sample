@@ -246,7 +246,7 @@ function EditProfile() {
                 }
 
                 form {
-                    width: 100%;
+                    width: 70%;
                 }
 
                 .profileCard p {

@@ -2,33 +2,42 @@
     width: 100%;
     position: relative;
     height: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .wrapper > label {
     position: absolute;
     font-size: 16px;
-    top: 15px;
+    top: 14px;
     left: 20px;
     color: #225B91;
-    background: #F4F4F4;
-
     pointer-events: none;
+    font-weight: bold;
 }
 
 .input {
     width: 100%;
-    background: #F4F4F4;
     border: none;
     height: 35px;
+    border: 1px solid #225B91;
+    border-radius: 2px;
 
     font-size: 16px;
-    text-align: right;
-    color: #959595;
-    padding-right: 20px;
+    /* text-align: right; */
+    color: #225B91;
+    padding-left: 20px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
     margin: 3px 0 0 0;
+    font-weight: bold;
+}
+
+.input::placeholder {
+    font-size: 16px;
+    color: #959595;
+    font-weight: bold;
 }
 
 .input > option{
