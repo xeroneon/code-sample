@@ -31,12 +31,12 @@ function Supplier(props) {
                         <GreyButton icon="call" />
                     </div>
                 </div>
-                <div className={styles.sponsoredTag}>
+                { supplier.specialty && <div className={styles.sponsoredTag}>
                     <div>
                         <h3 style={{fontWeight: 'bold', color: '#101E41', margin: '10px', textTransform:'uppercase'}}>Official Sponsor Of</h3>
                         <Tag className={styles.tag} sponsored link name={supplier.sponsoredTag} />
                     </div>
-                </div>
+                </div> }
                 <div className={styles.tags}>
                     {supplier.tags.map(tag => (
                         <Tag key={tag} name={tag} />
