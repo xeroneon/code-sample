@@ -64,3 +64,8 @@
 .wrapper input[type=radio] {
     background: red;
 }
+
+.signupButton {
+    width: 100%;
+    justify-content: center;
+}

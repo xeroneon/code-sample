@@ -97,8 +97,7 @@ function Signup() {
             <div className={styles.wrapper}>
                 <p style={{paddingLeft: '30px', marginTop: '15px'}}>Step 1 of 3</p>
                 <div className={styles.header}>
-                    <h1>Sign up</h1>
-                    <p>Register to become part of the Prevention Generation movement.</p>
+                    <h4>Join our movement</h4>
                 </div>
                 <ul className={styles.errors}>
                     {errors.map(error => <li key={error}>* {error}</li>)}
@@ -121,9 +120,9 @@ function Signup() {
                     <h4 style={{marginTop: '30px'}}>Account type*</h4>
                     <Radio name="accountType" id="personal" value='personal' tooltip='personal tooltip here' onChange={handleChange}>Personal</Radio>
                     <Radio name="accountType" id="supplier" value='supplier' tooltip='supplier tooltip here' onChange={handleChange}>Supplier</Radio>
-                    <Radio name="accountType" id="provider" value='provider' tooltip='provider tooltip here' disabled onChange={handleChange}>Provider</Radio>
-                    <p style={{color: '#959595', fontSize: '.7em', margin: '10px 0'}}>To sign up as a provider please visit <a href="https://www.ahwa.com/privacy-policy" style={{color: '#225B91', textDecoration: 'none'}}>AHWA</a></p>
-                    <span style={{marginBottom: '30px'}}>&nbsp;</span>
+                    <Radio name="accountType" id="provider" value='provider' tooltip='provider tooltip here' disabled onChange={handleChange}>Provider <p style={{color: '#959595', fontSize: '.7em', margin: '10px 0', paddingLeft: '15px'}}>To sign up as a provider please visit <a href="https://www.ahwa.com/privacy-policy" target="_blank" rel='noopener noreferrer' style={{color: '#225B91', textDecoration: 'none'}}>AHWA</a></p></Radio>
+    
+                    {/* <span style={{marginBottom: '15px'}}>&nbsp;</span> */}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
@@ -136,7 +135,7 @@ function Signup() {
                         <a href="https://www.ahwa.com/privacy-policy" target="_blank" rel='noreferrer noopener' style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy</a>
                     </p>
                     <div className={styles.buttons}>
-                        <ActionButton onClick={(e) => handleSubmit(e)} type="submit">SIGN UP</ActionButton>
+                        <ActionButton onClick={(e) => handleSubmit(e)} type="submit" className={styles.signupButton}>SIGN UP</ActionButton>
                         <button className={styles.guestButton}>Continue as Guest</button>
                     </div>
                 </form>

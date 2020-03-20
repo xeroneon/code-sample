@@ -26,7 +26,7 @@ function AuthModal() {
                 className={styles.modalStyle}
                 // closeTimeoutMS={70}
             >
-                <i onClick={() => setOpen(false)} className="material-icons" style={{padding: "20px", paddingBottom: '0', cursor: 'pointer'}}>close</i>
+                <i onClick={() => setOpen(false)} className="material-icons" style={{padding: "20px", paddingBottom: '0', cursor: 'pointer', position: 'absolute', top: '0', right: '0'}}>close</i>
                 { page === 'signup' && <Signup setOpen={setOpen}/> }
                 { page === 'login' && <Login setOpen={setOpen}/>}
                 { page === 'tag-picker' && <TagPicker setOpen={setOpen}/> }

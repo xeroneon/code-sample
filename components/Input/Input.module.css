@@ -3,6 +3,7 @@
     position: relative;
     height: auto;
     display: flex;
+    align-items: center;
     justify-content: center;
 }
 
@@ -17,29 +18,39 @@
 }
 
 .wrapper i {
-    position: relative;
+    /* position: relative;
     right: 30px;
     top: 20px;
-    float: right;
     display: inline;
     height: 0px;
-    width: 0px;
-    color: #225B91;
+    width: 0px; */
+    color: gray;
+}
 
+.iconWrapper {
+    border: 1px solid lightgrey;
+    border-left: 0px none;
+    height: 33px;
+    width: 35px;
+    margin: 15px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .input {
     width: 100%;
     display: block;
-    border: none;
     height: 35px;
     border: 1px solid lightgrey;
+    border-right: 0px none;
     /* border-radius: 2px; */
 
     font-size: 16px;
     /* text-align: right; */
     color: #333;
     padding-left: 20px;
+    padding-right: 20px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
