@@ -21,6 +21,27 @@ router.get("/", async (req, res) => {
     })
 })
 
+router.get("/author", async (req, res) => {
+    const { id } = req.query;
+
+    try {
+
+        const entries = await client.getEntries({
+            content_type: 'product',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.author.sys.contentType.sys.id': 'author',
+            'fields.author.fields.authorId[match]': id
+        })
+        res.send({
+            products: entries.items
+        });
+    } catch(e) {
+        console.error(e)
+    }
+
+})
+
 
 
 

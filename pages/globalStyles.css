@@ -71,7 +71,12 @@ small {
 }
 a {
 	outline: 0 !important;
- }
+	text-decoration: none;
+}
+
+a:visited {
+	color: inherit;
+}
 @media screen and (max-width: 720px) {
 	.flickity-button {
 		display: none;

@@ -6,6 +6,7 @@ import styles from "./Provider.module.css";
 import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
 import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
+import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import GreyButton from "components/GreyButton/GreyButton";
@@ -70,7 +71,31 @@ function Provider(props) {
                 })}
             </Carousel>
 
-            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span>]}>
+            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Products </span>]}>
+                {props.products.map(product => {
+                    const authorName = [props.provider.name, props.provider.lastname]
+                        .map(name => name.toLowerCase().replace(/\s/g, "_"))
+                        .join("-");
+                    return (
+                        <ProductCard
+                            key={product.sys.id}
+                            id={product.sys.id}
+                            authorImage={props.provider.image}
+                            title={product.fields.productName}
+                            featuredImage={`https:${product.fields.featuredImage.fields.file.url}`}
+                            slug={product.fields.slug}
+                            // primaryTag={product.fields.primaryTag}
+                            tags={product.fields.tags}
+                            authorName={authorName}
+                            authorCity={props.provider.city}
+                            accountType={props.provider.accountType}
+                            link={product.fields.productUrl}
+                        />
+                    );
+                })}
+            </Carousel>
+
+            { props.articles.length > 0 && <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span>]}>
                 {props.articles.map(article => {
                     const authorName = [props.provider.name, props.provider.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -90,8 +115,27 @@ function Provider(props) {
                         />
                     );
                 })}
-            </Carousel>
-
+            </Carousel> }
+            { props.articles.length === 0 && <Carousel header={[`Our Health`, <span key="usernoarticles"> posts </span> ]}>
+                <div id="noArticles"><h4>No Articles to display</h4></div>
+            </Carousel> }
+            <style jsx>
+                {`
+                    
+                    #noArticles {
+                        width: 300px;
+                        height: 200px;
+                        display: grid;
+                        place-content: center;
+                        padding: 10px;
+                        color: #143968;
+                        margin: 10px;
+                        box-sizing: border-box;
+                        border: 1px solid #143968;
+                        border-radius: 2px;
+                    }
+                `}
+            </style>
         </>
     );
 }
@@ -106,18 +150,24 @@ Provider.getInitialProps = async ctx => {
         "get",
         `/api/articles/author?id=${provider.data.provider._id}`
     );
+    const products = await fetch(
+        "get",
+        `/api/products/author?id=${provider.data.provider._id}`
+    );
     // return { article: res.data.article, author: res.data.author };
     return {
         provider: provider.data.provider,
         articles: articles.data.articles,
-        specialties: provider.data.specialties
+        specialties: provider.data.specialties,
+        products: products.data.products
     };
 };
 
 Provider.propTypes = {
     provider: PropTypes.object,
     articles: PropTypes.array,
-    specialties: PropTypes.array
+    specialties: PropTypes.array,
+    products: PropTypes.array
 };
 
 export default Provider;

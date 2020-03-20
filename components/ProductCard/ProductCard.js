@@ -1,23 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './SpecialtyCard.module.css';
+import styles from './ProductCard.module.css';
 import Link from 'next/link';
 import Tag from 'components/Tag/Tag';
+// import fetch from 'helpers/fetch';
 
-function SpecialtyCard(props) {
+function ProductCard(props) {
+    // const tagLink = props?.primaryTag?.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const { sponsor } = props;
+    // console.log("SPONSOR", sponsor);
     return (
         <>
-            <a href={props.link} target="_blank" rel="noopener noreferrer" className={styles.link}>
+            <a href={props.link} target="_blank" rel="noopener noreferrer">
                 <div className={styles.root}>
                     <div className={styles.thumbnail}>
                         <img src={props.featuredImage} className={styles.thumbnailImage}/>
                     </div>
-                    <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
+                    { props?.accountType === 'provider' && <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
                         <img src={props.authorImage} className={styles.authorImage}/>
-                    </Link>
+                    </Link> }
+                    { props?.accountType === 'supplier' && <Link as={`/supplier/${props.companyName}`} href="/supplier/[supplierName]">
+                        <img src={props.authorImage} className={styles.authorImage}/>
+                    </Link> }
                     <div className={styles.tags}>
-                        {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
+                        {/* {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>} */}
+                        {/* {!sponsor && <Tag link name={props.primaryTag}/>} */}
                         {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
                     </div>
                     {sponsor &&
@@ -36,7 +43,7 @@ function SpecialtyCard(props) {
     )
 }
 
-SpecialtyCard.propTypes = {
+ProductCard.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
     featuredImage: PropTypes.string,
@@ -48,7 +55,9 @@ SpecialtyCard.propTypes = {
     authorName: PropTypes.string,
     authorCity: PropTypes.string,
     sponsor: PropTypes.object,
+    accountType: PropTypes.string,
+    companyName: PropTypes.string,
     link: PropTypes.string
 }
 
-export default SpecialtyCard;
+export default ProductCard;
