@@ -123,6 +123,17 @@ router.put('/update', async (req, res) => {
         })
     }
 })
+
+router.post('/follow', async (req, res) => {
+    try {
+        // const { userId } = req.body;
+    } catch(e) {
+        return res.status(400).send({
+            success: false,
+            message: "Error following user"
+        })
+    }
+})
 // example contentful request
 // router.get("/test", async (req, res) => {
 //     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");

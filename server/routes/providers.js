@@ -18,11 +18,18 @@ router.get("/", async (req, res) => {
             include: 10,
             'fields.authorId': provider[0]._id
         })
+        const products = await client.getEntries({
+            content_type: 'product',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.authorId': provider[0]._id
+        })
         console.log(specialties)
 
         res.send({
             provider: provider[0],
-            specialties: specialties.items
+            specialties: specialties.items,
+            products: products.items
         })
     } catch(e) {
         res.status(400).send({message: "Couldnt find provider"})

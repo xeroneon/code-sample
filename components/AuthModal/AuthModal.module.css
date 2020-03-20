@@ -9,6 +9,7 @@
     transform: translate(-50%, -50%);
     border: none;
     padding: 0;
+    padding-top: 10px;
     padding-bottom: 20px;
     max-height: 90vh;
     overflow: auto;
