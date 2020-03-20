@@ -1,5 +1,6 @@
-import React, {createContext, useState } from 'react';
+import React, {createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip'
 
 export const ModalContext = createContext()
 
@@ -7,6 +8,10 @@ export function ModalProvider(props) {
     const [ open, setOpen ] = useState(false);
     const [ page, setPage ] = useState('signup')
     const [ form, setForm ] = useState({tags: []})
+
+    useEffect(() => {
+        ReactTooltip.rebuild();
+    }, [open])
 
     return(
         <ModalContext.Provider

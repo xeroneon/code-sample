@@ -125,3 +125,21 @@ a {
 	left: 86%;
 	opacity: 100% !important;
 }
+
+/* react-modal */
+/* .ReactModal__Content {
+	transform: scale(0);
+	opacity: 0;
+    transition: all 70ms ease-in-out;
+}
+
+.ReactModal__Content--after-open{
+	transform: scale(1);
+	opacity: 1;
+
+}
+
+.ReactModal__Content--before-close{
+	transform: scale(0);
+	opacity: 0;
+} */

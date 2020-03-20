@@ -1,0 +1,50 @@
+.wrapper {
+    height: 20px;
+    width: fit-content;
+    margin: 20px 0;
+}
+
+.wrapper input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+}
+
+.check {
+    display: block;
+    position: relative;
+    border: 2px solid #143968;
+    height: 20px;
+    width: 20px;
+    top: -32px;
+    left: 0px;
+      z-index: 5;
+      transition: background .15s linear;
+      -webkit-transition: background .15s linear;
+}
+
+.wrapper label{
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: 100;
+    margin: 10px auto;
+    padding-left: 30px;
+    height: 20px;
+    z-index: 9;
+    cursor: pointer;
+    -webkit-transition: all 0.25s linear;
+}
+
+.check:hover {
+    cursor: pointer;
+}
+
+.wrapper input[type=radio]:checked ~ .check {
+    background: #143968;
+}
+.wrapper input[type=radio]:disabled ~ .check{
+    border: 2px solid #959595;
+}
+.wrapper input[type=radio]:disabled ~ label{
+    color: #959595
+}
