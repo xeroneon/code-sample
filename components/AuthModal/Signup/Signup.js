@@ -97,7 +97,7 @@ function Signup() {
             <div className={styles.wrapper}>
                 <p style={{paddingLeft: '30px', marginTop: '15px'}}>Step 1 of 3</p>
                 <div className={styles.header}>
-                    <h4>Join our movement</h4>
+                    <h4>Join our movement!</h4>
                 </div>
                 <ul className={styles.errors}>
                     {errors.map(error => <li key={error}>* {error}</li>)}
