@@ -4,8 +4,9 @@
     align-items: center;
     background: #225B91;
     border: none;
-    border-radius: 50px;
+    border-radius: 2px;
     color: white;
+    font-weight: bold;
 }
 
 .root:focus {

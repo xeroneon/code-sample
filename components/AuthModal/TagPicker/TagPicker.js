@@ -37,6 +37,7 @@ function TagPicker() {
     return (
         <>
             <div className={styles.wrapper}>
+                <p style={{paddingLeft: '30px', marginTop: '15px'}}>Step 1 of 3</p>
                 <div className={styles.header}>
                     <h1>Pick the tags you are interested in</h1>
                 </div>

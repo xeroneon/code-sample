@@ -65,6 +65,7 @@ function ImageUpload(props) {
     
     return (
         <div className={styles.wrapper}>
+            <p style={{paddingLeft: '30px', marginTop: '15px'}}>Step 1 of 3</p>
             <div className={styles.header}>
                 <h1>Upload a profile image</h1>
             </div>

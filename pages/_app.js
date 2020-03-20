@@ -4,6 +4,8 @@ import Nav from 'components/Nav/Nav';
 import Footer from 'components/Footer/Footer';
 import Modal from 'react-modal';
 import AuthModal from 'components/AuthModal/AuthModal';
+// import ReactTooltip from 'react-tooltip'
+
 import Head from 'next/head';
 import 'public/reset.css';
 import 'cropperjs/dist/cropper.css';
@@ -73,8 +75,17 @@ class MyApp extends App {
                         <Component {...pageProps} />
                         <Footer />
                         <AuthModal />
+                        {/* <ReactTooltip place='right' effect="solid" backgroundColor='black' id='radio' className="tooltip"/> */}
                     </ModalProvider>
                 </UserProvider>
+
+                <style jsx>
+                    {`
+                    .tooltip {
+                        z-index: 200
+                    }
+                `}
+                </style>
             </>
         );
     }

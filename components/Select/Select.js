@@ -10,13 +10,13 @@ const customStyles = {
         }
     },
     singleValue: () => ({
-        color: '#225B91',
+        color: '#959595',
         marginLeft: '10px'
     }),
     control: (provided) => ({
         // none of react-select's styles are passed to <Control />
         ...provided,
-        border: "1px solid #225B91",
+        border: "1px solid lightgrey",
         width: "100%",
         height: '35px',
         fontSize: '16px',
@@ -25,12 +25,12 @@ const customStyles = {
         color: '#959595',
         // paddingRight: '20px',
         // boxSizing: 'border-box',
-        margin: '3px 0 0 0',
+        margin: '15px 0 0 0',
         borderRadius: '0',
         display: 'flex'
     }),
     placeholder: () => ({
-        color: '#225B91',
+        color: '#959595',
         fontSize: '16px',
         marginLeft: '10px'
     }),

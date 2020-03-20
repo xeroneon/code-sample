@@ -20,7 +20,7 @@ function Search(props) {
         <>
             <div className={`${styles.root} ${props.hidden ? styles.hidden : null}`}>
                 <span className={styles.icon}><i className="material-icons-outlined">search</i></span>
-                <input className={styles.search} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="find a health partner or health tag…"/>
+                <input className={styles.search} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="find health partner or tag…"/>
                 <div className={`${styles.results} ${search.length > 0 ? styles.active : styles.disabled}`}>
                     <h3>Tags</h3>
                     <hr/>
