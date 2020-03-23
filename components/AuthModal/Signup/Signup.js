@@ -29,11 +29,11 @@ const formSchema = yup.object({
         .test('zip', 'Must be a valid zip', function(value) {
             const regex = /^\d{5}$|^\d{5}-\d{4}$/;
             return regex.test(value) ? true : false
-        }),
-    alerts: yup.string()
-        .required('Alerts is a required field'),
-    deals: yup.string()
-        .required('Special Health Deals is a required field')
+        })
+    // alerts: yup.string()
+    //     .required('Alerts is a required field'),
+    // deals: yup.string()
+    //     .required('Special Health Deals is a required field')
 })
 
 const partnerSchema = yup.object({

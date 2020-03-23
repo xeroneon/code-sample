@@ -100,6 +100,7 @@ function Index(props) {
                         companyName={partner.companyName}
                         bio={partner.bio}
                         specialty={partner.specialty}
+                        address={`${partner.address}`}
                     />
                 })}
             </Carousel> }

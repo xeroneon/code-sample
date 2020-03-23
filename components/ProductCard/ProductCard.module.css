@@ -3,8 +3,6 @@
     height: 450px;
     padding: 20px;
     position: relative;
-    text-decoration: none;
-
 }
 
 .root:hover {
@@ -16,7 +14,6 @@
     height: 100%;
     object-fit: cover;
     overflow: hidden;
-    border-radius: 2px;
 }
 
 .thumbnail {
@@ -35,8 +32,6 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical; 
     overflow: hidden;
-    color: initial;
-    text-decoration: none;
     /* display: block; */
     /* height: 2.4em; */
 }
@@ -45,7 +40,7 @@
     position: absolute;
     left: 30px;
     top: 30px;
-    border-radius: 1000px;
+    /* border-radius: 50px; */
     width: 75px;
     height: 75px;
 }

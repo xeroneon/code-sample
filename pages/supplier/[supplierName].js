@@ -5,6 +5,7 @@ import fetch from "helpers/fetch";
 import styles from "./Supplier.module.css";
 import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
+import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import GreyButton from "components/GreyButton/GreyButton";
@@ -44,28 +45,32 @@ function Supplier(props) {
                 </div>
             </div>
 
-            {/* <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Specialties </span>]}>
-                {props.specialties.map(specialty => {
-                    const authorName = [supplier.name, supplier.lastname]
+            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Products </span>]}>
+                {props.products.map(product => {
+                    const authorName = [props.supplier.name, props.supplier.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
                         .join("-");
                     return (
-                        <SpecialtyCard
-                            key={specialty.sys.id}
-                            id={specialty.sys.id}
-                            authorImage={supplier.image}
-                            title={specialty.fields.specialtyName}
-                            featuredImage={`http:${specialty.fields.featuredImage.fields.file.url}`}
-                            tags={specialty.fields.tags}
+                        <ProductCard
+                            key={product.sys.id}
+                            id={product.sys.id}
+                            authorImage={props.supplier.image}
+                            title={product.fields.productName}
+                            featuredImage={`https:${product.fields.featuredImage.fields.file.url}`}
+                            slug={product.fields.slug}
+                            // primaryTag={product.fields.primaryTag}
+                            tags={product.fields.tags}
                             authorName={authorName}
-                            authorCity={supplier.city}
-                            link={specialty.fields.specialtyUrl}
+                            authorCity={props.supplier.city}
+                            accountType={props.supplier.accountType}
+                            companyName={props.supplier.companyName}
+                            link={product.fields.productUrl}
                         />
                     );
                 })}
-            </Carousel> */}
+            </Carousel>
 
-            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span>]}>
+            { props.articles.length > 0 && <Carousel header={["Our Health", <span key="sfdgnhdfgn"> posts </span>]}>
                 {props.articles.map(article => {
                     const authorName = [supplier.name, supplier.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -87,7 +92,27 @@ function Supplier(props) {
                         />
                     );
                 })}
-            </Carousel>
+            </Carousel> }
+            { props.articles.length === 0 && <Carousel header={[`Our Health`, <span key="usernoarticles"> posts </span> ]}>
+                <div id="noArticles"><h4>No Articles to display</h4></div>
+            </Carousel> }
+            <style jsx>
+                {`
+                    
+                    #noArticles {
+                        width: 300px;
+                        height: 200px;
+                        display: grid;
+                        place-content: center;
+                        padding: 10px;
+                        color: #143968;
+                        margin: 10px;
+                        box-sizing: border-box;
+                        border: 1px solid #143968;
+                        border-radius: 2px;
+                    }
+                `}
+            </style>
 
         </>
     );
@@ -103,19 +128,24 @@ Supplier.getInitialProps = async ctx => {
         "get",
         `/api/articles/author?id=${supplier.data.supplier._id}`
     );
-
+    const products = await fetch(
+        "get",
+        `/api/products/author?id=${supplier.data.supplier._id}`
+    );
     // console.log(provider.data.specialties);
     // return { article: res.data.article, author: res.data.author };
     return {
         supplier: supplier.data.supplier,
         articles: articles.data.articles,
+        products: products.data.products
     };
 };
 
 Supplier.propTypes = {
     supplier: PropTypes.object,
     articles: PropTypes.array,
-    specialties: PropTypes.array
+    specialties: PropTypes.array,
+    products: PropTypes.array
 };
 
 export default Supplier;

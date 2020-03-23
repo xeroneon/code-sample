@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('mongoose-bcrypt');
-
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
+const mongoosePaginate = require('mongoose-paginate');
 
 const UserSchema = new Schema({
     name: {
@@ -32,7 +33,7 @@ const UserSchema = new Schema({
     },
     country: {
         type: String,
-        required: true
+        // required: true
     },
     zip: {
         type: String,
@@ -44,7 +45,7 @@ const UserSchema = new Schema({
     },
     alerts: {
         type: Boolean,
-        required: true
+        // required: true
     },
     tags: {
         type: Array,
@@ -54,9 +55,10 @@ const UserSchema = new Schema({
         type: Array,
     },
     following: [{type: Schema.Types.ObjectId, ref: 'Following'}],
+    followers: [{type: Schema.Types.ObjectId, ref: 'Followers'}],
     deals: {
         type: Boolean,
-        required: true
+        // required: true
     },
     companyName: {
         type: String
@@ -78,6 +80,20 @@ const UserSchema = new Schema({
 });
 UserSchema.index({ location: "2dsphere" });
 UserSchema.plugin(bcrypt);
+UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(mongoose_fuzzy_searching, {fields: [
+    {
+        name: 'name',
+        minSize: 1,
+        weight: 5
+    },
+    {
+        name: 'lastname',
+        minSize: 1,
+        weight: 5
+    }
+]});
+
 
 
 

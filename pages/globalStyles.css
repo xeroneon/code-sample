@@ -71,7 +71,12 @@ small {
 }
 a {
 	outline: 0 !important;
- }
+	text-decoration: none;
+}
+
+a:visited {
+	color: inherit;
+}
 @media screen and (max-width: 720px) {
 	.flickity-button {
 		display: none;
@@ -102,13 +107,15 @@ a {
 
 .flickity-prev-next-button {
 	border-radius: 0% !important;
-	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-	background: white !important;
-	color: #143968 !important;
+	border: .5px solid #143968 !important;
+	border-radius: 2px !important;
+	/* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+	background: #143968 !important;
+	color: #FFF !important;
 	position: relative;
 }
 .flickity-prev-next-button:disabled {
-	background: white !important;
+	background: #143968 !important;
 }
 
 .next {
@@ -118,7 +125,7 @@ a {
 .flickity-button.flickity-prev-next-button.previous {
 	top: -5% !important;
 	left: 86%;
-	background: white !important;
+	background: #143968 !important;
 }
 
 .previous:disabled {
