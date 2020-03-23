@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import fetch from "helpers/fetch";
 import styles from "./Provider.module.css";
@@ -9,44 +9,91 @@ import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
 import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
-import GreyButton from "components/GreyButton/GreyButton";
+// import GreyButton from "components/GreyButton/GreyButton";
 import Head from 'next/head';
+import { UserContext } from 'contexts/UserProvider';
 
 
 function Provider(props) {
+
+    const { user, setUser } = useContext(UserContext);
+
+    async function handleFollow() {
+        if (!user) {
+            return;
+        }
+
+        const res = await fetch('post', '/api/users/follow', {userId: user._id, followId: props.provider._id});
+
+        console.log(res.data);
+        setUser(res.data.user);
+    }
+
+    async function handleUnfollow() {
+        if (!user) {
+            return;
+        }
+
+        const res = await fetch('post', '/api/users/unfollow', {userId: user._id, followId: props.provider._id});
+
+        console.log(res.data);
+        setUser(res.data.user);
+
+    }
+
     return (
         <>
             <Head>
                 <title>{props.provider.companyName}</title>
             </Head>
-            <div className={styles.hero}></div>
-            <div className={styles.providerCard}>
-                <div className={styles.info}>
+            {/* <div className={styles.hero}></div> */}
+            <div className={styles.wrapper}>
+                <div className={styles.left}>
                     <img src={props.provider.image} className={styles.image} />
-                    <div className={styles.companyName}>{props.provider.companyName}</div>
-                    <div className={styles.bio}>{props.provider.bio}</div>
-                    <div className={styles.actionButtons}>
-                        <ActionButton>Follow</ActionButton>
+                    {!user?.following?.includes(props.provider._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
+                    {user && user.following.includes(props.provider._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
+                    <h3>{props.provider.companyName}</h3>
+                    {/* <div className={styles.actionButtons}>
                         <GreyButton icon="language" />
                         <GreyButton icon="mail" />
                         <GreyButton icon="call" />
+                    </div> */}
+                    <div className={styles.infoContainer}>
+                        <div className={styles.info} style={{marginTop: '40px'}}>
+                            <i className={`material-icons-outlined`}>map</i>
+                            <p>{props.provider.address}, {props.provider.city}, {props.provider.state} {props.provider.zip}</p>
+                        </div>
+                        <div className={styles.info}>
+                            <i className={`material-icons-outlined`}>phone</i>
+                            <p>{props.provider.phone}(999) 999-9999</p>
+                        </div>
+                        <div className={styles.info}>
+                            <i className={`material-icons-outlined`}>web</i>
+                            <p>{props.provider.website}https://truong.com</p>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.map}>
-                    <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <img
-                            src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`}
-                        />
-                    </a>
-                </div>
-                <div className={styles.tags}>
-                    {props.provider.tags.map(tag => (
-                        <Tag key={tag} name={tag} />
-                    ))}
+                <div className={styles.right}>
+                    <h1 style={{marginTop: '0'}}>{props.provider.name} {props.provider.lastname}</h1>
+                    <h5 style={{color: '#143968', fontWeight: 'bold'}}>{props.provider.specialty}</h5>
+                    <div className={styles.tags}>
+                        {props.provider.tags.map(tag => (
+                            <Tag key={tag} name={tag} />
+                        ))}
+                    </div>
+                    <div className={styles.bio}>{props.provider.bio}</div>
+                    <div className={styles.map}>
+                        <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img
+                                src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`}
+                            />
+                        </a>
+                    </div>
+
                 </div>
             </div>
 

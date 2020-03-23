@@ -12,9 +12,10 @@
     border: 1px solid #B7CDDE;
     border-radius: 3px;
     height: 50px;
+    line-height: 50px;
     margin: 0 10px;
     padding-left: 30px;
-    width: 310px;
+    width: 240px;
 }
 
 .search::placeholder {
@@ -63,6 +64,20 @@
 
 .disabled {
     display: none;
+}
+
+.partner {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 50px;
+}
+
+.partner img {
+    height: 100%;
+    width: auto;
+    border-radius: 2px;
+    margin-right: 10px;
 }
 
 @media only screen and (max-width: 600px) {

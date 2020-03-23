@@ -21,6 +21,7 @@ function PartnerCard(props) {
                             {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
                         </div>
                         <h4 className={styles.name}>{props.name} {props.lastname}</h4>
+                        <p className={styles.address}>{props.address}</p>
                         <p className={styles.specialty}>{props.specialty}</p>
                         <div className={styles.bio}>
                             <p>
@@ -48,7 +49,8 @@ PartnerCard.propTypes = {
     type: PropTypes.string,
     companyName: PropTypes.string,
     bio: PropTypes.string,
-    specialty: PropTypes.string
+    specialty: PropTypes.string,
+    address: PropTypes.string
 }
 
 export default PartnerCard;

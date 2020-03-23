@@ -39,6 +39,12 @@ router.post("/create", async (req, res, next) => {
             entry.publish();
         }
 
+        if (accountType === 'provider') {
+            return res.send({
+                user: {...user._doc, password: null}
+            })
+        }
+
         req.login(user, function(err) {
             if (err) { return next(err); }
             res.json({
@@ -104,33 +110,121 @@ router.put('/update', async (req, res) => {
             // console.log('LATLON', res)
             lat = res.data.results[0].geometry.location.lat;
             lng = res.data.results[0].geometry.location.lng;
+            await User.updateOne({email: req.body.email}, { location: {
+                type: "Point",
+                coordinates: [lng, lat]
+            }});
         }
 
-        await User.updateOne({_id: req.body._id}, {...req.body.updates, location: {
-            type: "Point",
-            coordinates: [lng, lat]
-        }});
-        const user = await User.findById(req.body._id).select('-password');
+        await User.update({email: req.body.email}, {...req.body.updates});
+        // await User.updateOne({email: req.body.email}, {password: req.body.updates.password});
+        const user = await User.find({email: req.body.email}).select('-password');
         return res.send({
-            user: user._doc,
+            user: user[0],
             success: true
         })
     } catch(e) {
         console.log(e)
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
-            message: "Error updating user"
+            message: "Error updating user",
+            error: e
         })
     }
 })
 
 router.post('/follow', async (req, res) => {
     try {
-        // const { userId } = req.body;
+        const { userId, followId } = req.body;
+
+        const user = await User.findById(userId);
+        const partner = await User.findById(followId);
+
+        user.following.push(partner._id);
+        partner.followers.push(user._id);
+
+        await user.save();
+        await partner.save();
+
+        return res.send({
+            message: 'follow successful',
+            success: true,
+            user
+        })
+    } catch(e) {
+        console.log(e)
+        return res.status(400).send({
+            success: false,
+            message: "Error following user"
+        })
+    }
+})
+
+router.post('/unfollow', async (req, res) => {
+    try {
+        const { userId, followId } = req.body;
+
+        const user = await User.findById(userId);
+        const partner = await User.findById(followId);
+
+        user.following.splice(user.following.indexOf(partner._id), 1);
+        partner.followers.splice(user.following.indexOf(user._id), 1);
+
+        await user.save();
+        await partner.save();
+
+        return res.send({
+            message: 'unfollow successful',
+            success: true,
+            user
+        })
     } catch(e) {
         return res.status(400).send({
             success: false,
             message: "Error following user"
+        })
+    }
+})
+router.get('/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+        console.log(query)
+        const users = await User.fuzzySearch(query,
+            {$or: [
+                { 'accountType': 'provider' },
+                { 'accountType': 'supplier' }
+            ]}
+        ).select('-password');
+        console.log(users);
+
+        return res.send({
+            message: 'Found Users',
+            success: true,
+            users
+        })
+    } catch(e) {
+        return res.status(400).send({
+            success: false,
+            message: "Error finding users"
+        })
+    }
+})
+
+router.get('/list', async (req, res) => {
+    try {
+        const { page, limit } = req.query;
+        const users = await User.paginate({accountType: 'provider'}, { page: page || 1, limit: limit || 10 })
+
+        return res.status(200).send({
+            message: 'Found Users',
+            success: true,
+            users: users.docs
+        })
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error finding users",
+            error: e
         })
     }
 })

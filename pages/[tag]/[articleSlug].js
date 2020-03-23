@@ -98,6 +98,7 @@ function Article(props) {
                     <ReactMarkdown
                         source={article.fields.markdown}
                         escapeHtml={false}
+                        linkTarget='_blank'
                     />
 
                 </div>

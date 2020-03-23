@@ -68,4 +68,5 @@
 .signupButton {
     width: 100%;
     justify-content: center;
+    border-radius: 2px;
 }

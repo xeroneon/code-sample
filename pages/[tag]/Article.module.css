@@ -64,6 +64,10 @@
 	max-width: 960px;
 	color: #686868;
 }
+.core a {
+	color: #143968 !important;
+	text-decoration: underline;
+}
 .title {
 	/* grid-area: 1 / 2 / 2 / 3; */
 	line-height: 1.2;

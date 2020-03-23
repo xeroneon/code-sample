@@ -38,16 +38,17 @@ router.get("/", async (req, res) => {
 
 router.get("/all", async (req, res) => {
     try{
-        const providers = req.query.lng && req.query.lat ?
-            await User.find({accountType: 'provider', location: {
-                $nearSphere: {
-                    $geometry: {
-                        type : "Point",
-                        coordinates : [ req.query.lng, req.query.lat ]
-                    },
-                    $maxDistance: 32186
-                }
-            }}).select('-password') :
+        const providers =
+        // req.query.lng && req.query.lat ?
+        //     await User.find({accountType: 'provider', location: {
+        //         $nearSphere: {
+        //             $geometry: {
+        //                 type : "Point",
+        //                 coordinates : [ req.query.lng, req.query.lat ]
+        //             },
+        //             $maxDistance: 32186
+        //         }
+        //     }}).select('-password') :
             await User.find({accountType: 'provider'}).select('-password')
 
         res.send({
