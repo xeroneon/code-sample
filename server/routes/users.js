@@ -7,7 +7,7 @@ const axios = require('axios');
 
 router.post("/create", async (req, res, next) => {
     try {
-        const { name, lastname, accountType } = req.body;
+        const { name, lastname, accountType } = JSON.parse(req.body);
         let lat;
         let lng;
         if (req.body.address && req.body.city && req.body.state) {
@@ -102,23 +102,25 @@ router.get("/logout", async (req, res) => {
 });
 
 router.put('/update', async (req, res) => {
+
+    const { email, updates } = JSON.parse(req.body)
     try {
         let lat;
         let lng;
-        if (req.body.updates.address && req.body.updates.city && req.body.updates.state) {
-            const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.updates.address},${req.body.updates.city},${req.body.updates.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        if (updates.address && updates.city && updates.state) {
+            const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${updates.address},${updates.city},${updates.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
             // console.log('LATLON', res)
             lat = res.data.results[0].geometry.location.lat;
             lng = res.data.results[0].geometry.location.lng;
-            await User.updateOne({email: req.body.email}, { location: {
+            await User.updateOne({email: email}, { location: {
                 type: "Point",
                 coordinates: [lng, lat]
             }});
         }
 
-        await User.update({email: req.body.email}, {...req.body.updates});
-        // await User.updateOne({email: req.body.email}, {password: req.body.updates.password});
-        const user = await User.find({email: req.body.email}).select('-password');
+        await User.update({email: email}, {...updates});
+        // await User.updateOne({email: email}, {password: updates.password});
+        const user = await User.find({email: email}).select('-password');
         return res.send({
             user: user[0],
             success: true
@@ -213,7 +215,7 @@ router.get('/search', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const { page, limit } = req.query;
-        const users = await User.paginate({accountType: 'provider'}, { page: page || 1, limit: limit || 10 })
+        const users = await User.paginate({accountType: 'provider'}, { page: parseInt(page) || 1, limit: parseInt(limit) || 10 })
 
         return res.status(200).send({
             message: 'Found Users',
