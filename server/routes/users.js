@@ -7,7 +7,7 @@ const axios = require('axios');
 
 router.post("/create", async (req, res, next) => {
     try {
-        const { name, lastname, accountType } = JSON.parse(req.body);
+        const { name, lastname, accountType } = req.body;
         let lat;
         let lng;
         if (req.body.address && req.body.city && req.body.state) {
@@ -52,9 +52,11 @@ router.post("/create", async (req, res, next) => {
             });
         });
     } catch (e) {
+        console.log(e)
         return res.status(400).send({
             success: false,
-            message: "Error creating user, try again"
+            message: "Error creating user, try again",
+            error: e
         })
     }
 });
@@ -103,7 +105,7 @@ router.get("/logout", async (req, res) => {
 
 router.put('/update', async (req, res) => {
 
-    const { email, updates } = JSON.parse(req.body)
+    const { email, updates } = req.body
     try {
         let lat;
         let lng;
