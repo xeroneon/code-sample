@@ -5,12 +5,14 @@ const contentful = require('../../helpers/contentful');
 const { client } = contentful;
 
 router.get("/trending", async (req, res) => {
+    const { skip } = req.query
     try {
         const articles = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            limit: 15
+            limit: 5,
+            skip: skip || 0
         })
         // console.log(articles.items)
     
