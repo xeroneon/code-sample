@@ -81,7 +81,7 @@ function Index(props) {
                         type={partner.accountType}
                         companyName={partner.companyName}
                         bio={partner.bio}
-                        specialty={partner.specialty}
+                        specialty={partner?.specialty?.name}
                     />
                 })}
             </Carousel> }
@@ -99,8 +99,8 @@ function Index(props) {
                         type={partner.accountType}
                         companyName={partner.companyName}
                         bio={partner.bio}
-                        specialty={partner.specialty}
-                        address={`${partner.address}`}
+                        specialty={partner?.specialty?.name}
+                        address={`${partner.city}, ${partner.state}`}
                     />
                 })}
             </Carousel> }
