@@ -5,7 +5,7 @@ import fetch from "helpers/fetch";
 import styles from "./Provider.module.css";
 import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
-import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
+// import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
 import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
@@ -60,63 +60,54 @@ function Provider(props) {
                     </div> */}
                     <div className={styles.infoContainer}>
                         <div className={styles.info} style={{marginTop: '40px'}}>
-                            <i className={`material-icons-outlined`}>map</i>
-                            <p>{props.provider.address}, {props.provider.city}, {props.provider.state} {props.provider.zip}</p>
+                            <i className={`material-icons-outlined`}>navigation</i>
+                            <a
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address} ${props.provider.city} ${props.provider.state}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <p>{props.provider.address}, {props.provider.city}, {props.provider.state} {props.provider.zip}</p>
+                            </a>
                         </div>
                         <div className={styles.info}>
                             <i className={`material-icons-outlined`}>phone</i>
-                            <p>{props.provider.phone}(999) 999-9999</p>
+                            <a href={`tel:${props.provider.phone}`} target="_blank" rel="noopener noreferrer">
+                                <p>{props.provider.phone}</p>
+                            </a>
                         </div>
                         <div className={styles.info}>
-                            <i className={`material-icons-outlined`}>web</i>
-                            <p>{props.provider.website}https://truong.com</p>
+                            <i className={`material-icons-outlined`}>language</i>
+                            <a href={props.provider.website} target="_blank" rel="noopener noreferrer">
+                                <p>{props.provider.website}</p>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div className={styles.right}>
-                    <h1 style={{marginTop: '0'}}>{props.provider.name} {props.provider.lastname}</h1>
-                    <h5 style={{color: '#143968', fontWeight: 'bold'}}>{props.provider.specialty}</h5>
-                    <div className={styles.tags}>
-                        {props.provider.tags.map(tag => (
-                            <Tag key={tag} name={tag} />
-                        ))}
+                    <div>
+                        <h1 style={{marginTop: '0'}}>{props.provider.name} {props.provider.lastname}</h1>
+                        <h5 style={{color: '#143968', fontWeight: 'bold'}}>{props.provider.specialty.name}</h5>
+                        <div className={styles.tags}>
+                            {props.provider.tags.map(tag => (
+                                <Tag key={tag} name={tag} />
+                            ))}
+                        </div>
+                        <div className={styles.bio}>{props.provider.bio}</div>
                     </div>
-                    <div className={styles.bio}>{props.provider.bio}</div>
                     <div className={styles.map}>
                         <a
-                            href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address}${props.provider.city}`}
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${props.provider.address} ${props.provider.city} ${props.provider.state}`}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             <img
-                                src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address}${props.provider.city}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`}
+                                src={`https://maps.googleapis.com/maps/api/staticmap?markers=${props.provider.address} ${props.provider.city} ${props.provider.state}&zoom=14&size=500x500&key=${process.env.GOOGLE_MAPS_API_KEY}`}
                             />
                         </a>
                     </div>
 
                 </div>
             </div>
-
-            <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Specialties </span>]}>
-                {props.specialties.map(specialty => {
-                    const authorName = [props.provider.name, props.provider.lastname]
-                        .map(name => name.toLowerCase().replace(/\s/g, "_"))
-                        .join("-");
-                    return (
-                        <SpecialtyCard
-                            key={specialty.sys.id}
-                            id={specialty.sys.id}
-                            authorImage={props.provider.image}
-                            title={specialty.fields.specialtyName}
-                            featuredImage={`https:${specialty.fields.featuredImage.fields.file.url}`}
-                            tags={specialty.fields.tags}
-                            authorName={authorName}
-                            authorCity={props.provider.city}
-                            link={specialty.fields.specialtyUrl}
-                        />
-                    );
-                })}
-            </Carousel>
 
             <Carousel header={["Our Health", <span key="sfdgnhdfgn"> Products </span>]}>
                 {props.products.map(product => {
