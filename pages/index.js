@@ -28,12 +28,12 @@ function Index(props) {
 
     const { user } = useContext(UserContext);
     const [ userArticles, setUserArticles ] = useState([]);
-    const [ providers, setProviders ] = useState([]);
+    // const [ providers, setProviders ] = useState([]);
 
     useEffect(() => {
         if (user) {
             fetch('get', 'api/articles/user').then(res => setUserArticles(res.data.articles)).catch(e => console.log(e))
-            fetch('get',`/api/providers/all?lat=${window.localStorage.getItem('lat')}&lng=${window.localStorage.getItem('lon')}`).then(res => setProviders(res.data.providers)).catch(e => console.log(e));
+            // fetch('get',`/api/providers/all?lat=${window.localStorage.getItem('lat')}&lng=${window.localStorage.getItem('lon')}`).then(res => setProviders(res.data.providers)).catch(e => console.log(e));
         }
     }, [user])
 
@@ -69,7 +69,7 @@ function Index(props) {
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
             </Carousel> }
             <TrendingCarousel items={props.trending} />
-            { !user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
+            <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
                 {mergePartners(props.providers, props.suppliers).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
@@ -86,8 +86,8 @@ function Index(props) {
                         specialty={partner?.specialty?.name}
                     />
                 })}
-            </Carousel> }
-            { user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
+            </Carousel>
+            {/* { user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
                 {providers.length > 0 && mergePartners(providers, props.suppliers).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
@@ -105,7 +105,7 @@ function Index(props) {
                         address={`${partner.city}, ${partner.state}`}
                     />
                 })}
-            </Carousel> }
+            </Carousel> } */}
 
             <style jsx>
                 {`
