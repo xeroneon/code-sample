@@ -7,7 +7,7 @@ function TrendingCarousel(props) {
     // console.log(props);
     return (
         <>
-            <Carousel header={["Trending Health", <span key="sfdgnhdfgn"> posts </span> ]}>
+            <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
                 {props.items.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 

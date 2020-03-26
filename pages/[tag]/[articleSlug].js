@@ -114,7 +114,7 @@ function Article(props) {
             { props.similarArticles &&
                 props.similarArticles.length !== 0 &&
                 props.similarArticles[0].fields.slug !== props.article.fields.slug &&
-                <Carousel header={[`Curated Health`, <span key="sfdgnhdfgn"> posts </span> ]}>
+                <Carousel header={[`Curated `, <span key="sfdgnhdfgn"> Health </span>, <br key="sdkjfbn"/>, "posts" ]}>
                     {props.similarArticles.filter(item => item.fields.slug !== props.article.fields.slug).map(article => {
                         const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                         return <ArticleCard 

@@ -16,12 +16,17 @@
 }
 .image {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 }
 
-.image>img {
-	width: 150px;
+.image>p {
+	margin: 10px;
+}
+
+.image>a>img {
+	width: 100px;
 }
 
 .links {

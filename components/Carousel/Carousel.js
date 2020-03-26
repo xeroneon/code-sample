@@ -16,7 +16,7 @@ const flickityOptions = {
 function Carousel(props) {
     return (
         <>
-            <div className={styles.headerBanner}> </div>
+            {/* <div className={styles.headerBanner}> </div> */}
             <div className={styles.header}><h2>{props.header}</h2></div>
             <Flickity
                 className={`${styles.root} ${styles.scroll}`} // default ''
