@@ -116,7 +116,8 @@ function EditProfile() {
         const formData = new FormData();
         formData.append('image', blob)
         const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
-        const updatedUser = await axios.put('api/users/update', {_id: user._id, updates: {image: image.data.imagePath}});
+        console.log(image)
+        const updatedUser = await axios.put('api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
         setUser(updatedUser.data.user)
         setLoading(false);
         setSrc(null);
