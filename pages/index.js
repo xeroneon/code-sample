@@ -44,7 +44,7 @@ function Index(props) {
                 <h1>the prevention generation</h1>
                 <h5>expert health & wellness guidance to better living</h5>
             </div>
-            { user && userArticles.length > 0 && <Carousel header={[`${user.name}'s Health`, <span key="user"> posts </span> ]}>
+            { user && userArticles.length > 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "posts" ]}>
                 {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
                 {userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
@@ -69,7 +69,7 @@ function Index(props) {
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
             </Carousel> }
             <TrendingCarousel items={props.trending} />
-            <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
+            <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers).map(partner => {
                     return <PartnerCard 
                         key={partner._id}

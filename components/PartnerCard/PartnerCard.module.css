@@ -13,6 +13,7 @@
     text-align: center;
     border: .5px solid #143968;
     border-radius: 2px;
+    background: #FFF;
     /* justify-content: space-evenly; */
     /* grid-template-columns: 1fr 2fr; */
     box-sizing: border-box;

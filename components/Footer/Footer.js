@@ -30,7 +30,10 @@ function Footer() {
                     <p>info@preventiongeneration.com - 1 (800) NEW-CARE (654-4389)</p>
                 </div> */}
                 <div className={styles.image}>
-                    <img src="/images/pg-logo.png" />
+                    <p>Content Provided By AHWA Foundation</p>
+                    <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
+                        <img src="/images/AHWA-logo.png" />
+                    </a>
                 </div>
                 <div className={styles.links}>
                     <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
