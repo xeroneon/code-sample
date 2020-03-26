@@ -128,6 +128,7 @@ function Provider(props) {
                             authorCity={props.provider.city}
                             accountType={props.provider.accountType}
                             link={product.fields.productUrl}
+                            type={props.provider.accountType}
                         />
                     );
                 })}

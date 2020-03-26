@@ -129,6 +129,8 @@ function Article(props) {
                             authorName={authorName}
                             authorCity={article.author.city}
                             sponsor={article.sponsor}
+                            type={article.author.accountType}
+                            companyName={article.author.companyName}
                         />
                     })}
                 </Carousel> }
