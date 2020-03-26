@@ -10,7 +10,6 @@ router.get("/trending", async (req, res) => {
         const articles = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,
-            order:'sys.createdAt',
             include: 10,
             limit: 20,
             skip: skip || 0
