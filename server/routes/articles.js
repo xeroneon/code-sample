@@ -41,6 +41,8 @@ router.get("/", async (req, res) => {
             include: 10,
             'fields.slug': req.query.slug
         })
+
+        console.log(entries)
     
         const author = await User.findById(entries.items[0].fields.author.fields.authorId)
     
@@ -111,11 +113,15 @@ router.get("/tag", async (req, res) => {
             include: 10,
             'fields.tags[all]': req.query.tag.replace(/-/g, ' ').replace(/_/g, '/')
         })
-        const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
-            const user = await User.findById(article.fields.author.fields.authorId);
-            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
-            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
-        }))
+        let articlesWithAuthor
+        if(entries.items.length > 0 ) {
+            articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+                const user = await User.findById(article.fields.author.fields.authorId);
+                const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
+                return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+            }))
+
+        }
 
         // console.log("ENTRIES", entries);
         res.send({
