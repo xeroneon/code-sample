@@ -10,16 +10,19 @@ router.post("/create", async (req, res, next) => {
         const { name, lastname, accountType } = req.body;
         let lat;
         let lng;
+        let user;
         if (req.body.address && req.body.city && req.body.state) {
             const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address},${req.body.city},${req.body.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
             // console.log('LATLON', res)
             lat = res.data.results[0].geometry.location.lat;
             lng = res.data.results[0].geometry.location.lng;
+            user = await User.create({...req.body, location: {
+                type: "Point",
+                coordinates: [lng, lat]
+            }}).catch(e => res.send(e));
+        } else {
+            user = await User.create({...req.body}).catch(e => res.send(e));
         }
-        const user = await User.create({...req.body, location: {
-            type: "Point",
-            coordinates: [lng, lat]
-        }}).catch(e => res.send(e));
 
         if (accountType !== "personal") {
             const environment = await managementClient();
