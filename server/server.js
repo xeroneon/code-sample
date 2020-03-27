@@ -13,6 +13,7 @@ const MongoStore = require('connect-mongo')(session);
 const User = require('./models/User')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const basicAuth = require('express-basic-auth')
 
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
@@ -67,6 +68,9 @@ nextApp.prepare().then(() => {
     app.use(passport.session());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+    app.use( /^\/api/ ,basicAuth({
+        users: { 'admin': process.env.BASIC_AUTH_PASS }
+    }))
     app.use("/api/users", require("./routes/users"));
     app.use("/api/tags", require("./routes/tags"));
     app.use("/api/articles", require("./routes/articles"));

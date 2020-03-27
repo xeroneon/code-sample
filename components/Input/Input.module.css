@@ -60,6 +60,12 @@
 
 .input:focus {
     border: 1px solid #225B91;
+    border-right: 0;
+}
+
+.input:focus + .iconWrapper {
+    border: 1px solid #225B91;
+    border-left: 0;
 }
 
 .input::placeholder {

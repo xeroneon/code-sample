@@ -14,6 +14,7 @@
     background: #FAFAFA;
     color: #BDBDBD;
     height: 300px;
+    width: 300px;
     margin: 20px;
     display: flex;
     align-items: center;
@@ -22,6 +23,8 @@
 
 .dropzone p {
     width: 100%;
+    line-height: 1.2em;
+    text-align: center;
 }
 
 .header {
