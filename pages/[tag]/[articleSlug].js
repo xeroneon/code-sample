@@ -113,7 +113,6 @@ function Article(props) {
             </div>
             { props.similarArticles &&
                 props.similarArticles.length !== 0 &&
-                props.similarArticles[0].fields.slug !== props.article.fields.slug &&
                 <Carousel header={[`Curated `, <span key="sfdgnhdfgn"> Health </span>, <br key="sdkjfbn"/>, "posts" ]}>
                     {props.similarArticles.filter(item => item.fields.slug !== props.article.fields.slug).map(article => {
                         const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
@@ -149,7 +148,7 @@ Article.getInitialProps = async (ctx) => {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
         const errorCode = res.statusCode > 200 ? res.statusCode : false
-        const similarArticles = await fetch('get', `api/articles/tag?tag=${res.data.article.fields.tags[Math.floor(Math.random() * res.data.article.fields.tags.length)]}`)
+        const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res.data.article.fields.tags}`)
         return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles };
     } catch(e) {
         return {}

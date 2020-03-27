@@ -57,7 +57,7 @@
 .image {
 	border-radius: 1000px;
 	width: 50%;
-	flex: 1;
+	/* flex: 1; */
 }
 
 .unfollow {
@@ -100,6 +100,22 @@
 	flex-direction: column;
 	align-items: center;
 }
+/* .companyNameMobile {
+	display: none;
+}
+.nameMobile {
+	display: none;
+} */
+@media only screen and (min-width: 600px) {
+	.hideOnDesktop {
+		position: absolute !important;
+		top: -9999px !important;
+		left: -9999px !important;
+	}
+}
+/* .hideOnMobile {
+	display: initial;
+} */
 
 @media only screen and (max-width: 600px) {
     .wrapper {
@@ -108,39 +124,42 @@
 
 	 .left {
 		width: 100%;
-		/* display: grid;
-		grid-template-columns: 1fr 3fr;
-		grid-template-rows: 1fr .2fr 1fr;
-		grid-template-areas:
-			'image image image'
-			'follow name name'
-			'info info info'
-		;
-		justify-items: center; */
-	}
-
-	/*
-
-	.left img {
-		grid-area: image;
-		width: 50%;
-
-	}
-
-	.left .follow {
-		grid-area: follow;
-	}
-	.left h3 {
-		grid-area: name;
-	}
-
-	*/
+	 }
+	 .left h3 {
+		max-width: 100%;
+		text-align: center;
+		margin-bottom: 30px;
+	 }
 	.infoContainer {
 		margin-bottom: 30px;
 	}
+	.hideOnMobile {
+		position: absolute !important;
+		top: -9999px !important;
+		left: -9999px !important;
+	}
+	/* .hideOnDesktop {
+		display: initial;
+	} */
+	/* .infoContainerMobile.info {
+		display: flex !important;
+	}
+	.companyNameMobile {
+		display: block;
+	}
+	.name {
+		display: none;
+	}
+	.companyName {
+		display: none;
+	}
+	.nameMobile {
+		display: block;
+	}
 	.infoContainer .info {
 		width: 100%;
-	} 
+		display: none;
+	} */
 
 	.bio {
 		width: 90%;
