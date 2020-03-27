@@ -9,7 +9,11 @@ const fetch = (method, path, data, params) => {
         baseURL: process.env.BASEURL_DEV,
         url: path,
         data: data || {},
-        params: params || {}
+        params: params || {},
+        auth: {
+            username: 'admin',
+            password: process.env.BASIC_AUTH_PASS
+        }
     };
 
     return axios(options);

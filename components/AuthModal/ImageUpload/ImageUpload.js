@@ -65,7 +65,7 @@ function ImageUpload(props) {
     
     return (
         <div className={styles.wrapper}>
-            <p style={{paddingLeft: '30px', marginTop: '15px', alignSelf: 'flex-start'}}>Step 1 of 3</p>
+            <p style={{paddingLeft: '30px', marginTop: '15px', alignSelf: 'flex-start'}}>Step 3 of 3</p>
             <div className={styles.header}>
                 <h1>Upload a profile image</h1>
             </div>
@@ -82,7 +82,8 @@ function ImageUpload(props) {
                 {
                     isDragActive ?
                         <p>Drop the files here ...</p> :
-                        <p>Drag and drop some files here, or click to select files</p>
+                        <p>Drag and drop profile picture here<br/>
+                        Or, click here to select file</p>
                 }
             </div>
 

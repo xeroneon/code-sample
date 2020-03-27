@@ -48,6 +48,7 @@ module.exports = {
         ADMIN_CODE: process.env.ADMIN_CODE,
         DOMAIN_NAME: process.env.DOMAIN_NAME,
         PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
-        PAYPAL_SECRET: process.env.PAYPAL_SECRET
+        PAYPAL_SECRET: process.env.PAYPAL_SECRET,
+        BASIC_AUTH_PASS: process.env.BASIC_AUTH_PASS
     }
 }
