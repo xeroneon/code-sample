@@ -5,7 +5,7 @@ import Input from 'components/Input/Input';
 import ActionButton from 'components/ActionButton/ActionButton'
 import { ModalContext } from 'contexts/ModalProvider';
 import { UserContext } from 'contexts/UserProvider';
-import axios from 'axios';
+import fetch from 'helpers/fetch';
 
 function Login(props) {
 
@@ -29,7 +29,7 @@ function Login(props) {
             email: form.email,
             password: form.password
         }
-        axios.post('/api/users/login', body).then(res => {
+        fetch('post', '/api/users/login', body).then(res => {
             if (!res.data.success) {
                 setLoading(false)
                 return setError(res.data.message)

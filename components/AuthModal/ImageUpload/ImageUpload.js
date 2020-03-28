@@ -6,6 +6,7 @@ import { ModalContext } from 'contexts/ModalProvider';
 import { UserContext } from 'contexts/UserProvider';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import fetch from 'helpers/fetch';
 import Cropper from 'react-cropper';
 import md5 from 'md5';
 
@@ -44,14 +45,18 @@ function ImageUpload(props) {
             const dataUri = cropperRef.current.getCroppedCanvas().toDataURL()
             const blob = dataURLtoBlob(dataUri)
             formData.append('image', blob)
-            const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
+            const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
+                username: 'admin',
+                password: process.env.BASIC_AUTH_PASS
+            }});
+            console.log(res)
             image = res.data.imagePath
         }
         const body = {
             ...form,
             image,
         }
-        axios.post("/api/users/create", body).then(res => {
+        fetch('post', "/api/users/create", body).then(res => {
             // if (form.accountType !== 'personal') {
             //     setLoading(false);
             //     setUser(res.data.user);
