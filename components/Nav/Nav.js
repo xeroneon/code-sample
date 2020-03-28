@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react'
 import styles from './Nav.module.css';
 import { ModalContext } from 'contexts/ModalProvider';
 import { UserContext } from 'contexts/UserProvider';
-import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
 import MobileMenu from 'components/MobileMenu/MobileMenu';
 
@@ -10,6 +9,7 @@ import Cookies from 'js-cookie';
 import Router from 'next/router';
 import Link from 'next/link';
 import Search from 'components/Search/Search';
+import fetch from 'helpers/fetch';
 
 function Nav() {
 
@@ -19,7 +19,7 @@ function Nav() {
 
     useEffect(() => {
         if (Cookies.get('connect.sid') !== undefined) {
-            axios.get('/api/users').then(res => {
+            fetch('get', '/api/users').then(res => {
                 // console.log(res.data.user)
                 setUser(res.data.user);
             });
@@ -31,7 +31,7 @@ function Nav() {
     },[user])
 
     async function logout() {
-        const res = await axios.get('/api/users/logout')
+        const res = await fetch('get', '/api/users/logout')
         if (res.status === 200) {
             setUser(null);
             Router.push('/')

@@ -13,6 +13,7 @@ import ActionButton from "components/ActionButton/ActionButton";
 import Cropper from 'react-cropper';
 import axios from 'axios';
 import * as yup from 'yup';
+import fetch from 'helpers/fetch';
 
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -115,9 +116,12 @@ function EditProfile() {
         const blob = dataURLtoBlob(dataUri)
         const formData = new FormData();
         formData.append('image', blob)
-        const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}});
+        const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'},         auth: {
+            username: 'admin',
+            password: process.env.BASIC_AUTH_PASS
+        }});
         console.log(image)
-        const updatedUser = await axios.put('api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
+        const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
         setUser(updatedUser.data.user)
         setLoading(false);
         setSrc(null);
@@ -154,7 +158,7 @@ function EditProfile() {
             if (user?.accountType !== 'personal') {
                 await partnerSchema.validate(form, {abortEarly: false})
             }
-            const updatedUser = await axios.put('api/users/update', {_id: user._id, updates: form});
+            const updatedUser = await fetch('put', 'api/users/update', {_id: user._id, updates: form});
             setUser(updatedUser.data.user)
             setLoading(false);
         } catch (error) {

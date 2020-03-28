@@ -69,7 +69,8 @@ nextApp.prepare().then(() => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use( /^\/api/ ,basicAuth({
-        users: { 'admin': process.env.BASIC_AUTH_PASS }
+        users: { 'admin': process.env.BASIC_AUTH_PASS },
+        unauthorizedResponse: {message: 'unauthorized'}
     }))
     app.use("/api/users", require("./routes/users"));
     app.use("/api/tags", require("./routes/tags"));
