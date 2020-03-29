@@ -12,7 +12,6 @@ const UserSchema = new Schema({
     },
     lastname: {
         type: String,
-        required: true,
         trim: true,
     },
     email: {
@@ -88,12 +87,20 @@ UserSchema.plugin(mongoose_fuzzy_searching, {fields: [
     {
         name: 'name',
         minSize: 1,
-        weight: 5
+        weight: 5,
+        prefixOnly: true
     },
     {
         name: 'lastname',
         minSize: 1,
-        weight: 5
+        weight: 5,
+        prefixOnly: true
+    },
+    {
+        name: 'companyName',
+        minSize: 1,
+        weight: 5,
+        prefixOnly: true
     }
 ]});
 

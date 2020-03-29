@@ -9,6 +9,7 @@ function Search(props) {
     const [ search, setSearch ] = useState('');
     const [ tags, setTags ] = useState([]);
     const [ partners, setPartners ] = useState([]);
+    const [ suppliers, setSuppliers ] = useState([]);
 
     useEffect(() => {
         fetch('get', `/api/tags/search?query=${search}`).then(res => {
@@ -17,7 +18,8 @@ function Search(props) {
         })
         fetch('get', `/api/users/search?query=${search}`).then(res => {
             // console.log(res.data)
-            setPartners(res.data.users);
+            setPartners(res.data.users.filter(user => user.accountType === 'provider'));
+            setSuppliers(res.data.users.filter(user => user.accountType === 'supplier'));
         })
     }, [search])
 
@@ -28,18 +30,26 @@ function Search(props) {
                 <input className={styles.search} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Find a health partner or health tag…"/>
                 <p className={styles.poweredBy}>Powered by Health<br/>Feed Engine (HFM™) </p>
                 <div className={`${styles.results} ${search.length > 0 ? styles.active : styles.disabled}`}>
-                    <h3>Tags</h3>
-                    <hr />
-                    {tags.length === 0 && <h5>No tags matching search</h5>}
+                    { tags.length > 0 && <><h3>Tags</h3>
+                        <hr /></>}
                     {tags.map(tag => <Tag link key={tag.name} name={tag.name} onClick={() => {setSearch(''); props.close ? props.close() : null}}/>)}
-                    <h3>Providers</h3>
-                    <hr />
-                    {partners.length === 0 && <h5>No providers matching your search</h5>}
+                    { partners.length > 0 && <><h3>Providers</h3>
+                        <hr /></>}
                     {partners.map(partner => {
                         return (
                             <div key={partner._id} className={styles.partner}>
                                 <img src={partner.image}/>
                                 <h4>{partner.name} {partner.lastname}</h4>
+                            </div>
+                        )
+                    })}
+                    { suppliers.length > 0 && <><h3>Suppliers</h3>
+                        <hr /></>}
+                    {suppliers.map(supplier => {
+                        return (
+                            <div key={supplier._id} className={styles.partner}>
+                                <img src={supplier.image}/>
+                                <h4>{supplier.companyName}</h4>
                             </div>
                         )
                     })}
