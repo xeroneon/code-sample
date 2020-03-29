@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
-import Tag from 'components/Tag/Tag'
+import Tag from 'components/Tag/Tag';
 import styles from './Article.module.css';
 import moment from 'moment';
 import ReactMarkdown from 'react-markdown/with-html';
@@ -103,10 +103,10 @@ function Article(props) {
 
                 </div>
                 <div className={styles.tags}>
-                    { user && user.tags.filter(tag => article.fields.tags.includes(tag)) > 0 && <p>Tap for recommended posts on the tags you follow</p> }
+                    { user && user.tags.filter(tag => article.fields.tags.includes(tag) || tag === article.fields.primaryTag).length > 0 && <p style={{margin: '10px 0'}}>Tap for recommended posts on the tags you follow</p> }
                     { user && user.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
                     {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag link key={tag} name={tag} />)}
-                    <p>Tap for recommended posts on the tags you don&apos;t follow</p>
+                    <p style={{margin: '10px 0'}}>Tap for recommended posts on the tags you don&apos;t follow</p>
                     { !user?.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
                     {article.fields.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>

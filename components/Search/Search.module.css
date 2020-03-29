@@ -14,18 +14,27 @@
     height: 50px;
     line-height: 50px;
     margin: 0 10px;
-    padding-left: 30px;
-    width: 240px;
+    padding-left: 40px;
+    width: 350px;
 }
 
 .search::placeholder {
-    font-size: 1.2em;
+    font-size: .8em;
+}
+
+.poweredBy {
+    position: absolute;
+    font-size: .6em;
+    top: 18px;
+    right: 20px;
+    font-style: italic;
+    color: #A9A9A9;
 }
 
 .icon {
     color: #D0D1D2;
     position: absolute;
-    left: 15px;
+    left: 20px;
     top: 15px;
 }
 
