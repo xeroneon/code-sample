@@ -32,7 +32,7 @@ function Footer() {
                 <div className={styles.image}>
                     <p>Content Provided By AHWA Foundation</p>
                     <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
-                        <img src="/images/AHWA-logo.png" />
+                        <img src="/images/AHWA_Foundation.png" />
                     </a>
                 </div>
                 <div className={styles.links}>

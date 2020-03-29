@@ -51,6 +51,25 @@ const partnerSchema = yup.object({
         .test('code', 'Not a valid Admin Code', function(value) {
             return value === process.env.ADMIN_CODE ? true : false
         }),
+    email: yup.string()
+        .email('Email must be a valid email')
+        .required('Email is a required field'),
+    password: yup.string()
+        .required('Password is a required field'),
+    accountType: yup.string()
+        .required('Account Type is a required field'),
+    zip: yup.string()
+        .required('Zip Code is a required field')
+        .test('zip', 'Must be a valid zip', function(value) {
+            const regex = /^\d{5}$|^\d{5}-\d{4}$/;
+            return regex.test(value) ? true : false
+        }),
+    name: yup.string()
+        .required('Contact Name is a required field'),
+    phone: yup.string()
+        .required('Phone Number is a required field'),
+    website: yup.string()
+        .required('Website Url is a required field'),
 })
 
 
@@ -72,6 +91,8 @@ function Signup() {
             fetch('get', `/api/users/check-email?email=${e.target.value}`).then(res => {
                 if (res.data.success === false) {
                     setErrors(prevState => [...prevState, res.data.message])
+                } else {
+                    setErrors([])
                 }
             });
         }
@@ -89,10 +110,9 @@ function Signup() {
         e.preventDefault();
         try {
 
-            await formSchema.validate(form, {abortEarly: false})
-            if (form.accountType !== 'personal') {
-                await partnerSchema.validate(form, {abortEarly: false})
-            }
+            form.accountType === 'personal'
+                ? await formSchema.validate(form, {abortEarly: false})
+                : await partnerSchema.validate(form, {abortEarly: false})
             setPage('tag-picker')
         } catch (error) {
             console.log('e', error)
@@ -111,24 +131,9 @@ function Signup() {
                     {errors.map(error => <li key={error}>* {error}</li>)}
                 </ul>
                 <form>
-                    <Input type="text" name="name" value={form.name || ''} placeholder="First Name*" icon='account_circle' onChange={handleChange} />
-                    <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name*" icon='account_circle' onChange={handleChange} />
-                    <Input type="text" name="email" value={form.email || ''} placeholder="Email*" icon='email' onChange={handleChange} />
-                    <Input type="password" name="password" value={form.password || ''} placeholder="Password*" icon='lock' onChange={handleChange} />
-                    {/* <br/> */}
-                    {/* <Select  name="accountType" placeholder="Account Type" options={[{value: "supplier", label: "Supplier"}, {value: "personal", label: "Personal"}]} onChange={handleSelectChange} /> */}
-                    {/* <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} /> */}
-                    <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code*" icon="navigation" onChange={handleChange} />
-
-                    {/* <Select name="alerts" placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/> */}
-                    {/* <Select name="deals" placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} /> */}
-                    
-                    {/* <input className={styles.radio} type="radio" id="personal" name="accountType" value="personal" onChange={handleChange} />
-                    <label className={styles.radioLabel} htmlFor="personal">Personal</label><br /> */}
                     <h4 style={{marginTop: '30px'}}>Account type*</h4>
                     <Radio name="accountType" id="personal" value='personal' tooltip='personal tooltip here' onChange={handleChange}>Personal</Radio>
                     <Radio name="accountType" id="supplier" value='supplier' tooltip='supplier tooltip here' onChange={handleChange}>Supplier</Radio>
-                    {/* <a href="https://www.ahwa.com" target="_blank" rel='noopener noreferrer'> */}
                     <div onClick={() => window.open('https://ahwa.com', '_blank')}>
                         <Radio name="accountType" id="provider" value='provider' tooltip='provider tooltip here' disabled onChange={handleChange}>
                             Provider 
@@ -140,17 +145,21 @@ function Signup() {
                             </p>
                         </Radio>
                     </div>
-                    {/* </a> */}
-    
-                    {/* <span style={{marginBottom: '15px'}}>&nbsp;</span> */}
-                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />}
-                    { form.accountType && form.accountType !== 'personal' && <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />}
-                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />}
-                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />}
-                    {/* { form.accountType && form.accountType === 'provider' && <Input type="text" name="specialty" value={form.specialty || ''} placeholder="Specialty" onChange={handleChange} />} */}
-                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code" onChange={handleChange} />}
-                    {/* <input type="radio" id="other" name="gender" value="other">
-                        <label for="other">Other</label> */}
+                    { form.accountType && form.accountType === 'personal' && <Input type="text" name="name" value={form.name || ''} placeholder="First Name*" icon='account_circle' onChange={handleChange} />}
+                    { form.accountType && form.accountType === 'personal' && <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name*" icon='account_circle' onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="companyName" icon="storefront" value={form.companyName || ''} placeholder="Company Name*" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="name" icon="account_circle" value={form.name || ''} placeholder="Contact Name*" onChange={handleChange} />}
+                    { form.accountType && <Input type="text" name="email" value={form.email || ''} placeholder="Email*" icon='email' onChange={handleChange} />}
+                    { form.accountType && <Input type="password" name="password" value={form.password || ''} placeholder="Password*" icon='lock' onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="address" icon="house" value={form.address || ''} placeholder="Address*" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="city" icon="domain" value={form.city || ''} placeholder="City*" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Select name="state" placeholder="State*" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />}
+                    { form.accountType && <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code*" icon="navigation" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="phone" value={form.phone || ''} placeholder="Phone Number*" icon="phone" onChange={handleChange} />}
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="website" value={form.website || ''} placeholder="Website URL*" icon="web" onChange={handleChange} />}
+
+                    { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code*" onChange={handleChange} />}
+
                     <p style={{color: '#959595', fontSize: '.8em', margin: '20px 5px 5px 0'}}>I acknowledge and agree to the use of my contact information to communicate with me about AHWA or its third-party partners&apos; products, services, events and research opportunities. The use of the information I provide will be consistent with the AHWA
                         <a href="https://www.ahwa.com/privacy-policy" target="_blank" rel='noreferrer noopener' style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy</a>
                     </p>
