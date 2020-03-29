@@ -20,7 +20,7 @@ function AuthModal() {
         <>
             <Modal
                 isOpen={open}
-                onRequestClose={() => setOpen(false)}
+                // onRequestClose={() => setOpen(false)}
                 // style={customStyles}
                 contentLabel="Auth Modal"
                 className={styles.modalStyle}

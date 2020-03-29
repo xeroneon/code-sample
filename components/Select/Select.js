@@ -67,7 +67,7 @@ const customStyles = {
 function Select(props) {
     return (
         <>
-            <ReactSelect name={props.name} isSearchable={false} options={props.options} styles={customStyles} placeholder={props.placeholder} onChange={props.onChange}/>
+            <ReactSelect name={props.name} isSearchable={true} options={props.options} styles={customStyles} placeholder={props.placeholder} onChange={props.onChange}/>
         </>
     )
 }
