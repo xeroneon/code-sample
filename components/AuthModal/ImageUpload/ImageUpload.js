@@ -55,6 +55,7 @@ function ImageUpload(props) {
         const body = {
             ...form,
             image,
+            subActive: true
         }
         fetch('post', "/api/users/create", body).then(res => {
             // if (form.accountType !== 'personal') {

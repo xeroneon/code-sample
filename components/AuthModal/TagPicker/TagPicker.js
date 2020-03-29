@@ -39,7 +39,7 @@ function TagPicker() {
             <div className={styles.wrapper}>
                 <p style={{paddingLeft: '30px', marginTop: '15px', justifySelf: 'start'}}>Step 2 of 3</p>
                 <div className={styles.header}>
-                    <h1>{form.accountType === 'personal' ? 'Pick the tags you are interested in' : 'Pick the tags your business is aligned with'}</h1>
+                    <h1>{form.accountType === 'personal' ? 'Pick the tags you are interested in' : 'Pick the tags that are aligned with your business'}</h1>
                 </div>
                 <div className={styles.tagWrapper}>
                     {tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}

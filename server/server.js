@@ -61,7 +61,7 @@ nextApp.prepare().then(() => {
         });
     });
 
-    app.use(cors());
+    app.use(cors({origins: ['https://preventiongeneration.com']}));
     app.use(cookieParser());
       
     app.use(passport.initialize());
@@ -80,6 +80,7 @@ nextApp.prepare().then(() => {
     app.use("/api/providers", require("./routes/providers"));
     app.use("/api/suppliers", require("./routes/suppliers"));
     app.use("/api/payments", require("./routes/payments"));
+    app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });

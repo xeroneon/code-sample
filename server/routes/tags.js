@@ -58,7 +58,7 @@ router.get("/sponsor", async (req, res) => {
 
 router.get("/search", async (req, res) => {
     const { query } = req.query
-    const results = await Tag.fuzzySearch({query, minSize: 1});
+    const results = await Tag.fuzzySearch({query, prefixOnly: true, minSize: 1});
     // console.log("TAGS", results)
     res.send({
         results
