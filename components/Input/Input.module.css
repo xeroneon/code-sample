@@ -14,7 +14,8 @@
     left: 20px;
     color: #225B91;
     pointer-events: none;
-    font-weight: bold;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .wrapper i {
@@ -68,10 +69,14 @@
     border-left: 0;
 }
 
+.input:focus.input::placeholder {
+    font-weight: bold;
+}
+
 .input::placeholder {
     font-size: 16px;
     color: #959595;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .input > option{

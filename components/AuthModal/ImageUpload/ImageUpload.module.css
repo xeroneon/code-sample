@@ -11,12 +11,14 @@
 
 .dropzone {
     border: #eee 2px dashed;
-    background: #FAFAFA;
+    /* background: #FAFAFA; */
     color: #BDBDBD;
-    height: 300px;
+    height: 150px;
     width: 300px;
     margin: 20px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
 }
@@ -38,4 +40,35 @@
 .preview {
     width: 80%;
     margin: auto;
+}
+
+.selectButton {
+    padding: 10px 20px;
+    color: #143968;
+    border: 2px solid #143968;
+    /* align-self: center; */
+    display: inline;
+    text-transform: uppercase;
+}
+
+.selectButton:hover {
+    cursor: pointer;
+}
+
+.imagePlaceholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    border: 2px solid #143968;
+    background: #eee;
+}
+
+.dolater {
+    color: #143968;
+    font-weight: bold;
+    margin: 10px;
+    font-size: .8em;
+}
+.dolater:hover {
+    cursor: pointer;
 }

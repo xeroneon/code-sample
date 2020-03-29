@@ -74,6 +74,7 @@ function ImageUpload(props) {
             <div className={styles.header}>
                 <h1>Upload a profile image</h1>
             </div>
+            {!src && <div className={styles.imagePlaceholder}>&nbsp;</div>}
             { src && <Cropper
                 src={src}
                 aspectRatio={1 / 1}
@@ -87,12 +88,13 @@ function ImageUpload(props) {
                 {
                     isDragActive ?
                         <p>Drop the files here ...</p> :
-                        <p>Drag and drop profile picture here<br/>
-                        Or, click here to select file</p>
+                        <p>Drag and drop profile picture here<br/><br/>
+                        Or <br/><br/> <div className={styles.selectButton}>Select file</div></p>
                 }
             </div>
 
             <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
+            <div onClick={submit} className={styles.dolater}>I&apos;ll do this later</div>
 
         </div>
     )

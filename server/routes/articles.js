@@ -81,7 +81,7 @@ router.get("/user", async (req, res) => {
 
     try {
 
-        const user = await User.findOne({_id: req.user._id}).populate('Following')
+        const user = await User.findOne({_id: req.user._id})
 
         const entries = await client.getEntries({
             content_type: 'article',
@@ -129,9 +129,22 @@ router.get("/tag", async (req, res) => {
             include: 10,
             'fields.tags[all]': req.query.tag.replace(/-/g, ' ').replace(/_/g, '/')
         })
-        let articlesWithAuthor
-        if(entries.items.length > 0 ) {
-            articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+        const primaryEntries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.primaryTag[all]': req.query.tag.replace(/-/g, ' ').replace(/_/g, '/')
+        })
+        const allEntries = [...entries.items, ...primaryEntries.items]
+        
+        const allEntriesSorted = allEntries.filter((object,index) => index === allEntries.findIndex(obj => JSON.stringify(obj) === JSON.stringify(object))).sort(function(a, b) {
+            a = a.sys.updatedAt
+            b = b.sys.updatedAt
+            return a > b ? -1 : a < b ? 1 : 0;
+        });
+        let articlesWithAuthor = []
+        if(allEntriesSorted.length > 0 ) {
+            articlesWithAuthor = await Promise.all(allEntriesSorted.map(async article => {
                 const user = await User.findById(article.fields.author.fields.authorId);
                 const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
                 return { ... article, author: {...user._doc }, sponsor: sponsor[0]}

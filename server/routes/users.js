@@ -235,6 +235,46 @@ router.get('/list', async (req, res) => {
         })
     }
 })
+
+router.get('/check-email', async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.query.email})
+        if (user) {
+            res.status(200).send({
+                success: false,
+                message: 'Email in use'
+            })
+        } else {
+            res.status(200).send({
+                success: true,
+                message: 'Email available'
+            })
+        }
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error finding users",
+            error: e
+        })
+    }
+})
+
+router.get('/following', async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.query.email}).populate('following')
+        // console.log('following', user)
+        res.send({
+            message: 'Found following',
+            following: user.following
+        });
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error finding users",
+            error: e
+        })
+    }
+})
 // example contentful request
 // router.get("/test", async (req, res) => {
 //     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");

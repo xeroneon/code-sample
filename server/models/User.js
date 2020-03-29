@@ -54,8 +54,8 @@ const UserSchema = new Schema({
     goals: {
         type: Array,
     },
-    following: [{type: Schema.Types.ObjectId, ref: 'Following'}],
-    followers: [{type: Schema.Types.ObjectId, ref: 'Followers'}],
+    following: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
     deals: {
         type: Boolean,
         // required: true

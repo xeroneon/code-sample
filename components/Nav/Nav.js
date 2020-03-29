@@ -53,7 +53,7 @@ function Nav() {
                 {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Log In</button> }
             </nav>
             <ReactTooltip place='bottom' id='nav' type='light' effect='solid' globalEventOff='click' className={styles.tooltip} clickable={true}>
-                { user?.accountType !== 'provider' && <p style={{color: '#0C3668'}} onClick={() => Router.push('/edit-profile')}>Account</p> }
+                { user?.accountType !== 'provider' && <p style={{color: '#0C3668'}} onClick={() => Router.push('/account')}>Account</p> }
                 { user?.accountType === 'provider' && <a href='https://ahwa.com/login' target='_blank' rel="noopener noreferrer"><p style={{color: '#0C3668'}}>Account</p></a> }
                 <p style={{color: '#D4403E'}} onClick={logout}>Sign Out</p>
             </ReactTooltip>
