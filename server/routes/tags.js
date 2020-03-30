@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Tag = require("../models/Tag");
 const User = require("../models/User");
+const contentful = require('../../helpers/contentful');
+const { client } = contentful;
 
 router.post("/create", async (req, res) => {
     const { name, description } = req.body.fields;
@@ -62,6 +64,17 @@ router.get("/search", async (req, res) => {
     // console.log("TAGS", results)
     res.send({
         results
+    })
+});
+
+router.get("/trending", async (req, res) => {
+    const entries = await client.getEntries({
+        content_type: 'trendingTags',
+        'sys.revision[gte]': 1,
+        'fields.name': 'Trending Tags'
+    })
+    res.status(200).send({
+        tags: entries.items[0].fields.tags
     })
 });
 

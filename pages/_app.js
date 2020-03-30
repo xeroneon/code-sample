@@ -68,6 +68,7 @@ class MyApp extends App {
                         function gtag(){dataLayer.push(arguments)}
                         gtag('js', new Date());
                         gtag('config', 'UA-124257427-1');`}} />
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"></link>
                 </Head>
                 <UserProvider>
                     <ModalProvider>

@@ -5,12 +5,12 @@
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
     display: grid;
-    justify-items: center;
+    justify-items: start;
 }
 
 .header {
     width: 100%;
-    padding: 30px;
+    padding: 20px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box; 
@@ -22,4 +22,8 @@
 
 .tagWrapper {
     padding: 20px;
+}
+
+.button {
+    justify-self: center;
 }
