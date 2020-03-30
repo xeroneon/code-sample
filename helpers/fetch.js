@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true
 
 const fetch = (method, path, data, params, headers) => {
     if (!method) throw new Error('Method is a required field.');
