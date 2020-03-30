@@ -11,7 +11,7 @@ const passport = require('passport'), LocalStrategy = require('passport-local').
 const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const User = require('./models/User')
-// const cors = require('cors');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const basicAuth = require('express-basic-auth')
 
@@ -73,7 +73,7 @@ nextApp.prepare().then(() => {
     //     }
     // });
 
-    // app.use(cors({origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
+    app.use(cors());
     app.use(cookieParser());
     // app.options('/api/users', cors({credentials: true, origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
       
