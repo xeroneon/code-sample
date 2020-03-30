@@ -24,8 +24,11 @@ nextApp.prepare().then(() => {
     const sess = {
         secret: 'keyboard cat',
         resave: false,
-        saveUninitialized: false,
-        cookie: {httpOnly: false},
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: false,
+            sameSite: 'none'
+        },
         store: new MongoStore({ mongooseConnection: mongoose.connection })
     }
        
