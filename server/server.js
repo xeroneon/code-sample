@@ -73,7 +73,7 @@ nextApp.prepare().then(() => {
     //     }
     // });
 
-    app.use(cors());
+    app.use(cors({credentials: true}));
     app.use(cookieParser());
     // app.options('/api/users', cors({credentials: true, origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
       
