@@ -9,14 +9,13 @@ const fetch = (method, path, data, params, headers) => {
         method: method.toUpperCase(),
         baseURL: process.env.BASEURL_DEV,
         url: path,
-        headers,
+        headers: headers || {},
         data: data || {},
         params: params || {},
         auth: {
             username: 'admin',
             password: process.env.BASIC_AUTH_PASS
-        },
-        withCredentials: true
+        }
     };
 
     return axios(options);
