@@ -10,6 +10,7 @@ function TagPicker() {
 
     const { form, setForm, setPage } = useContext(ModalContext);
     const [ tags, setTags ] = useState([]);
+    const [ trending, setTrending ] = useState([]);
 
     function toggleTag(e, tag) {
         e.persist();
@@ -32,6 +33,9 @@ function TagPicker() {
         fetch('get',`/api/tags/all`).then(res => {
             setTags(res.data.tags)
         });
+        fetch('get',`/api/tags/trending`).then(res => {
+            setTrending(res.data.tags)
+        });
     }, []);
 
     return (
@@ -41,10 +45,15 @@ function TagPicker() {
                 <div className={styles.header}>
                     <h1>{form.accountType === 'personal' ? 'Pick the tags you are interested in' : 'Pick the tags that are aligned with your business'}</h1>
                 </div>
+                <h4 style={{justifySelf: 'start', marginLeft: '20px'}}>top trending health tags</h4>
+                <div className={styles.tagWrapper}>
+                    {trending.map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
+                </div>
+                <h4 style={{justifySelf: 'start', marginLeft: '20px'}}>other health tags</h4>
                 <div className={styles.tagWrapper}>
                     {tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
-                <ActionButton onClick={() => setPage('image-upload')}>Continue</ActionButton>
+                <ActionButton className={styles.button} onClick={() => setPage('image-upload')}>Continue</ActionButton>
             </div>
         </>
     )

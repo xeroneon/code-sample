@@ -41,8 +41,10 @@ function Index(props) {
         <>
             <div className={styles.hero}>
                 {/* <h3>Welcome to a new age of,</h3> */}
-                <h1>the prevention generation</h1>
-                <h5>expert health & wellness guidance to better living</h5>
+                <div className={styles.heroText}>
+                    <h1>the prevention generation</h1>
+                    <h5>expert health & wellness guidance to better living</h5>
+                </div>
             </div>
             { user && userArticles.length > 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "posts" ]}>
                 {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}

@@ -16,16 +16,20 @@
 
 }
 
-.hero > h1 {
-    margin: 20px;
-    font-size: 3em;
-    font-weight: bold;
+.heroText > h1 {
+    /* margin: 20px; */
+    margin-bottom: 20px;
+    font-size: 4em;
+    font-weight: normal;
+    color: #000;
+    text-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFF;
+    font-family: 'Poppins', sans-serif;
+    text-align: right;
 }
-.hero > h3 {
-    font-size: 2em;
-    font-weight: lighter;
-}
-.hero > h5 {
+.heroText > h5 {
+    text-shadow: 0 0 10px #000, 0 0 20px #000;
     font-size: 1.6em;
-    font-weight: lighter;
+    font-weight: normal;
+    font-family: 'Poppins', sans-serif;
+    text-align: end;
 }
