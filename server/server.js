@@ -61,9 +61,9 @@ nextApp.prepare().then(() => {
         });
     });
 
-    app.use(cors({credentials: true, origins: ['https://www.preventiongeneration.com']}));
+    app.use(cors({origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
     app.use(cookieParser());
-    app.options('*', cors({credentials: true, origins: ['https://www.preventiongeneration.com']}));
+    app.options('/api/users', cors({credentials: true, origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
       
     app.use(passport.initialize());
     app.use(passport.session());
