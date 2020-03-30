@@ -34,7 +34,7 @@ nextApp.prepare().then(() => {
        
     if (app.get('env') === 'production') {
         app.set('trust proxy', 1) // trust first proxy
-        sess.cookie.secure = false // serve secure cookies
+        sess.cookie.secure = true // serve secure cookies
     }
        
     app.use(session(sess));
