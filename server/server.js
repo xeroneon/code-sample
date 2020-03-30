@@ -61,7 +61,7 @@ nextApp.prepare().then(() => {
         });
     });
 
-    app.use(cors({origins: ['https://preventiongeneration.com']}));
+    app.use(cors({credentials: true, origins: ['https://www.preventiongeneration.com']}));
     app.use(cookieParser());
       
     app.use(passport.initialize());

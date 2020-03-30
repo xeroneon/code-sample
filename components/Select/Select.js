@@ -20,7 +20,7 @@ const customStyles = {
         width: "100%",
         height: '35px',
         fontSize: '16px',
-        // fontWeight: 'bold',
+        fontWeight: 'normal',
         // textAlign: 'right',
         color: '#959595',
         // paddingRight: '20px',
