@@ -15,7 +15,9 @@ const fetch = (method, path, data, params, headers) => {
         auth: {
             username: 'admin',
             password: process.env.BASIC_AUTH_PASS
-        }
+        },
+        withCredentials: true,
+        credentials: 'include'
     };
 
     return axios(options);
