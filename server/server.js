@@ -63,6 +63,7 @@ nextApp.prepare().then(() => {
 
     app.use(cors({credentials: true, origins: ['https://www.preventiongeneration.com']}));
     app.use(cookieParser());
+    app.options('*', cors());
       
     app.use(passport.initialize());
     app.use(passport.session());
