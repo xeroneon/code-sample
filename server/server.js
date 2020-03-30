@@ -27,7 +27,8 @@ nextApp.prepare().then(() => {
         saveUninitialized: true,
         cookie: {
             httpOnly: false,
-            sameSite: 'none'
+            sameSite: 'none',
+            secure: true
         },
         store: new MongoStore({ mongooseConnection: mongoose.connection })
     }
