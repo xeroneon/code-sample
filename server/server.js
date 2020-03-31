@@ -28,7 +28,7 @@ nextApp.prepare().then(() => {
         cookie: {
             httpOnly: false,
             sameSite: 'none',
-            secure: true
+            secure: process.env.NODE_ENV === 'production' ? true : false
         },
         store: new MongoStore({ mongooseConnection: mongoose.connection })
     }

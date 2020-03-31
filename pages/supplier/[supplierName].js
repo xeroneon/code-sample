@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import fetch from "helpers/fetch";
 import styles from "./Supplier.module.css";
@@ -10,26 +10,61 @@ import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
 import GreyButton from "components/GreyButton/GreyButton";
 import Head from 'next/head';
+import { UserContext } from 'contexts/UserProvider';
+
 
 
 function Supplier(props) {
     const { supplier } = props;
+    const { user, setUser } = useContext(UserContext);
+
+    async function handleFollow() {
+        if (!user) {
+            return;
+        }
+
+        const res = await fetch('post', '/api/users/follow', {userId: user._id, followId: props.supplier._id});
+
+        console.log(res.data);
+        setUser(res.data.user);
+    }
+
+    async function handleUnfollow() {
+        if (!user) {
+            return;
+        }
+
+        const res = await fetch('post', '/api/users/unfollow', {userId: user._id, followId: props.supplier._id});
+
+        console.log(res.data);
+        setUser(res.data.user);
+
+    }
+
+
     return (
         <>
             <Head>
                 <title>{supplier.companyName}</title>
             </Head>
-            <div className={styles.hero}></div>
-            <div className={styles.providerCard}>
+            {/* <div className={styles.hero}></div> */}
+            <div className={styles.supplierCard}>
                 <div className={styles.info}>
                     <img src={supplier.image} className={styles.image} />
                     <div className={styles.companyName}>{supplier.companyName}</div>
                     <div className={styles.bio}>{supplier.bio}</div>
                     <div className={styles.actionButtons}>
-                        <ActionButton>Follow</ActionButton>
-                        <GreyButton icon="language" />
-                        <GreyButton icon="mail" />
-                        <GreyButton icon="call" />
+                        {!user?.following?.includes(props.supplier._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
+                        {user && user.following.includes(props.supplier._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
+                        <a href={supplier.website}>
+                            <GreyButton icon="language" />
+                        </a>
+                        <a href={`mailto:${supplier.email}`} >
+                            <GreyButton icon="mail" />
+                        </a>
+                        < a href={`tel:${supplier.phone}`} >
+                            <GreyButton icon="call" />
+                        </a>
                     </div>
                 </div>
                 { supplier.specialty && <div className={styles.sponsoredTag}>
