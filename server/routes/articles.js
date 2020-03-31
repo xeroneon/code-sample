@@ -42,6 +42,10 @@ router.get("/", async (req, res) => {
             'fields.slug': req.query.slug
         })
 
+        if (entries.items.length === 0) {
+            return res.status(404).end();
+        }
+
         console.log(entries)
     
         const author = await User.findById(entries.items[0].fields.author.fields.authorId)
@@ -189,6 +193,7 @@ router.get("/tag-array", async (req, res) => {
         });
     } catch(e) {
         console.error(e)
+        res.status(404).end();
     }
 
 })

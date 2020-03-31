@@ -1,5 +1,7 @@
 const contentful = require('../../helpers/contentful');
 const { client } = contentful;
+const User = require("../models/User");
+const Tag = require("../models/Tag");
 
 async function getUrls() {
     let urls = ['/'];
@@ -24,6 +26,33 @@ async function getUrls() {
             count = articles.items.length
             skip += articles.items.length
         }
+
+        const partners = await User.find({$or: [
+            { 'accountType': 'provider' },
+            { 'accountType': 'supplier' }
+        ]});
+        urls = [...urls, ...partners.map(partner => {
+            if (partner.accountType === 'provider') {
+                const partnerName = [partner.name, partner.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+                return {
+                    url: `/provider/${partnerName}/${partner.city}`,
+                    changeFreq: 'weekly'
+                }
+            } else {
+                return {
+                    url: `/supplier/${partner.companyName}`,
+                    changeFreq: 'weekly'
+                }
+            }
+        })]
+
+        const tags = await Tag.find();
+        urls = [...urls, ...tags.map(tag => {
+            return {
+                url: `/${tag.name.toString().replace(/\s/g, '-').replace(/\//g, '_')}`,
+                changeFreq: 'weekly'
+            }
+        })]
         return urls;
 
     } catch(e) {
