@@ -13,8 +13,9 @@ const MongoStore = require('connect-mongo')(session);
 const User = require('./models/User')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const basicAuth = require('express-basic-auth')
-
+const basicAuth = require('express-basic-auth');
+const expressSitemapXml = require('express-sitemap-xml');
+const getUrls = require('./routes/sitemap');
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -89,6 +90,7 @@ nextApp.prepare().then(() => {
         users: { 'admin': process.env.BASIC_AUTH_PASS },
         unauthorizedResponse: {message: 'unauthorized'}
     }))
+    app.use(expressSitemapXml(getUrls, 'https://preventiongeneration.com'));
     app.use("/api/users", require("./routes/users"));
     app.use("/api/tags", require("./routes/tags"));
     app.use("/api/articles", require("./routes/articles"));
