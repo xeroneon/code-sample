@@ -147,11 +147,12 @@ Article.getInitialProps = async (ctx) => {
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
+        // console.log(res.statusCode)
         const errorCode = res.statusCode > 200 ? res.statusCode : false
-        const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res.data.article.fields.tags}`)
+        const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
         return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles };
     } catch(e) {
-        return {}
+        return {errorCode: 404}
     }
 }
 
