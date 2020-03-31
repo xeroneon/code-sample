@@ -9,6 +9,10 @@
     place-content: center;
 }
 
+.root:hover {
+    cursor: pointer;
+}
+
 /* 
 THIS IS WHERE TO FIND THE ICONS
 https://material.io/resources/icons/?style=outline

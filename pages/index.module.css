@@ -33,3 +33,20 @@
     font-family: 'Poppins', sans-serif;
     text-align: end;
 }
+
+@media only screen and (max-width: 600px) {
+    .heroText {
+        padding: 20px;
+    }
+
+    .heroText h1 {
+        font-size: 3em;
+        text-align: center;
+    }
+
+    .heroText h5 {
+        text-align: center;
+        font-size: 1.2em;
+        line-height: 1.2em;
+    }
+}

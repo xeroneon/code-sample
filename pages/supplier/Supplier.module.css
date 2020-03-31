@@ -1,13 +1,10 @@
-.core {
-
-}
 .hero {
 	background: #101E41;
 	width: 100%;
 	min-height: 300px;
 }
-.providerCard {
-	margin: -50px auto 0 auto;
+.supplierCard {
+	margin: 50px auto 0 auto;
 	margin-bottom: 50px;
 	box-shadow: 5px 5px 79px -37px rgba(0,0,0,0.75);
 	background: white;
@@ -77,6 +74,9 @@
 }
 .tag {
 	transform: scale(1.25,1.25);
+}
+.unfollow {
+	background: #959595 !important;
 }
 @media only screen and (max-width: 1024px) {
 	.hero {

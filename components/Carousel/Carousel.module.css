@@ -66,6 +66,12 @@
         width: 70vw;
     }
     .header {
-        width: 80vw
+        font-size: 1.2em;
+        padding: 30px 30px;
+
     }
-  }
+
+    .root {
+        top: -30px;
+    }
+}
