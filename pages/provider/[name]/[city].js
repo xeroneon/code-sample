@@ -5,7 +5,7 @@ import fetch from "helpers/fetch";
 import styles from "./Provider.module.css";
 import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
-// import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
+import SpecialtyCard from "components/SpecialtyCard/SpecialtyCard";
 import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
@@ -134,6 +134,23 @@ function Provider(props) {
                     </div>
 
                 </div>
+            </div>
+            <div className={styles.header}><h2>{[`Our `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "specialties" ]}</h2></div>
+            <div className={styles.specialtyWrapper}>
+                {props.specialties.map(specialty => {
+                    console.log(specialty)
+                    if (specialty.fields.specialtyName === props.provider.specialty.name) {
+                        return <SpecialtyCard link={props.provider.specialty.url} specialtyName={props.provider.specialty.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
+                    }
+                    
+                    return props.provider.secondarySpecialties.map(item => {
+                        if (specialty.fields.specialtyName === item.name) {
+                            return <SpecialtyCard link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
+                        }
+
+                    })
+                 
+                })}
             </div>
 
             <Carousel header={["Our ", <span key="sfdgnhdfgn"> Health </span>, <br key="dkfjvb"/>, "posts"]}>
