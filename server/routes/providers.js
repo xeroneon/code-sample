@@ -16,8 +16,9 @@ router.get("/", async (req, res) => {
             content_type: 'specialty',
             'sys.revision[gte]': 1,
             include: 10,
-            'fields.authorId': provider[0]._id
+            'fields.specialtyName[in]': [provider[0].specialty.name, ...provider[0].secondarySpecialties.map(item => item.name)].toString()
         })
+        console.log([provider[0].specialty.name, ...provider[0].secondarySpecialties.map(item => item.name)].toString())
         const products = await client.getEntries({
             content_type: 'product',
             'sys.revision[gte]': 1,

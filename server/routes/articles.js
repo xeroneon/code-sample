@@ -4,6 +4,16 @@ const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
 const { client } = contentful;
 
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+
 router.get("/trending", async (req, res) => {
     const { skip } = req.query
     try {
@@ -112,6 +122,8 @@ router.get("/user", async (req, res) => {
             const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
+
+        shuffle(articlesWithAuthor)
 
         // console.log("ENTRIES", entries);
         res.send({
