@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './Search.module.css';
 import fetch from 'helpers/fetch';
 import Tag from 'components/Tag/Tag';
+import Link from 'next/link';
 
 function Search(props) {
 
@@ -10,6 +11,7 @@ function Search(props) {
     const [ tags, setTags ] = useState([]);
     const [ partners, setPartners ] = useState([]);
     const [ suppliers, setSuppliers ] = useState([]);
+    const [specialties, setSpecialties ] = useState([]);
 
     useEffect(() => {
         fetch('get', `/api/tags/search?query=${search}`).then(res => {
@@ -21,6 +23,10 @@ function Search(props) {
             setPartners(res.data.users.filter(user => user.accountType === 'provider'));
             setSuppliers(res.data.users.filter(user => user.accountType === 'supplier'));
         })
+        fetch('get', `/api/specialties/search?query=${search}`).then(res => {
+            // console.log(res.data)
+            setSpecialties(res.data.results);
+        })
     }, [search])
 
     return (
@@ -29,28 +35,46 @@ function Search(props) {
                 <span className={styles.icon}><i className="material-icons-outlined">search</i></span>
                 <input className={styles.search} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Find a health partner or health tag…"/>
                 <p className={styles.poweredBy}>Powered by Health<br/>Feed Engine (HFM™) </p>
-                <div className={`${styles.results} ${search.length > 0 ? styles.active : styles.disabled}`}>
+                <div onClick={() => setSearch('')} className={`${styles.results} ${search.length > 0 ? styles.active : styles.disabled}`}>
                     { tags.length > 0 && <><h3>Tags</h3>
                         <hr /></>}
                     {tags.map(tag => <Tag link key={tag.name} name={tag.name} onClick={() => {setSearch(''); props.close ? props.close() : null}}/>)}
+                    { specialties.length > 0 && <><h3>Specialties</h3>
+                        <hr /></>}
+                    {specialties.map(specialty => {
+                        return (
+                            <Link key={specialty.name} href={`/specialty/${specialty.fields.specialtyName.replace(/\s/g, '-').replace(/\//g, '_')}`}>
+                                <div key={specialty.sys.id} className={styles.partner}>
+                                    <img src={specialty.fields.featuredImage.fields.file.url}/>
+                                    <h4>{specialty.fields.specialtyName}</h4>
+                                </div>
+                            </Link>
+                        )
+                    })}
                     { partners.length > 0 && <><h3>Providers</h3>
                         <hr /></>}
                     {partners.map(partner => {
+                        const partnerName = [partner.name, partner.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+
                         return (
-                            <div key={partner._id} className={styles.partner}>
-                                <img src={partner.image}/>
-                                <h4>{partner.name} {partner.lastname}</h4>
-                            </div>
+                            <Link key={partner._id} as={`/provider/${partnerName}/${partner.city}`} href={`/provider/[name]/[city]`}>
+                                <div className={styles.partner}>
+                                    <img src={partner.image}/>
+                                    <h4>{partner.name} {partner.lastname}</h4>
+                                </div>
+                            </Link>
                         )
                     })}
                     { suppliers.length > 0 && <><h3>Suppliers</h3>
                         <hr /></>}
                     {suppliers.map(supplier => {
                         return (
-                            <div key={supplier._id} className={styles.partner}>
-                                <img src={supplier.image}/>
-                                <h4>{supplier.companyName}</h4>
-                            </div>
+                            <Link key={supplier._id} as={`/supplier/${supplier.companyName}`} href={'/supplier/[supplierName]'}>
+                                <div className={styles.partner}>
+                                    <img src={supplier.image}/>
+                                    <h4>{supplier.companyName}</h4>
+                                </div>
+                            </Link>
                         )
                     })}
                 </div>

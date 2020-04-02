@@ -100,6 +100,7 @@ nextApp.prepare().then(() => {
     app.use("/api/suppliers", require("./routes/suppliers"));
     app.use("/api/payments", require("./routes/payments"));
     app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));
+    app.use("/api/specialties", require("./routes/specialties"));
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });
