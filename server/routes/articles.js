@@ -2,7 +2,16 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
-const { client } = contentful;
+const { client, managementClient } = contentful;
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_FROM,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
 
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -206,6 +215,94 @@ router.get("/tag-array", async (req, res) => {
     } catch(e) {
         console.error(e)
         res.status(404).end();
+    }
+
+})
+
+router.post("/create", async (req, res) => {
+    // console.log(req.query.tags);
+    try {
+        const authors = await client.getEntries({
+            content_type: 'author',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.authorId': req.body.authorId
+        })
+        if (authors.items.length === 0) {
+            return res.status(404).send({
+                message: "Couldn't find author"
+            })
+        }
+        const environment = await managementClient();
+        const entry = await environment.createEntry('article', {
+            fields: {
+                title: {
+                    'en-US': req.body.title
+                },
+                slug: {
+                    'en-US': req.body.slug
+                },
+                featuredImageCaption: {
+                    'en-US': req.body.featuredImageCaption
+                },
+                author: {
+                    'en-US': {
+                        sys: {
+                            type: "Link",
+                            linkType: "Entry",
+                            id: authors.items[0].sys.id
+                        }
+                    }
+                },
+                body: {
+                    'en-US': req.body.body
+                },
+                markdown: {
+                    'en-US': req.body.markdown
+                },
+                metaDescription: {
+                    'en-US': req.body.metaDescription
+                },
+                primaryTag: {
+                    'en-US': req.body.primaryTag
+                },
+                tags: {
+                    'en-US': req.body.tags
+                }
+            }
+        });
+
+        console.log(process.env.EMAIL_FROM)
+
+        const mailOptions = {
+            from: process.env.EMAIL_FROM, // sender address
+            to: process.env.EMAIL_TO, // list of receivers
+            subject: `${authors.items[0].fields.companyName} has submitted a post`, // Subject line
+            html: `<p>View post <a target="_blank" href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/dev/entries/${entry.sys.id}">here</a></p>`// plain text body
+        };
+
+        transporter.sendMail(mailOptions, function (err, info) {
+            if(err) {
+                return res.status(500).send({
+                    message: 'Could not send email'
+                })
+            }
+            else {
+                console.log(info);
+                return res.send({
+                    entry,
+                    success: true
+                })
+
+            }
+        });
+
+       
+    } catch(e) {
+        console.log(e)
+        res.status(500).send({
+            e
+        });
     }
 
 })
