@@ -54,8 +54,8 @@ function Supplier(props) {
                     <div className={styles.companyName}>{supplier.companyName}</div>
                     <div className={styles.bio}>{supplier.bio}</div>
                     <div className={styles.actionButtons}>
-                        {!user?.following?.includes(props.supplier._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
-                        {user && user.following.includes(props.supplier._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
+                        {user?._id !== supplier._id && !user?.following?.includes(props.supplier._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
+                        {user?._id !== supplier._id && user && user.following.includes(props.supplier._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
                         <a href={supplier.website}>
                             <GreyButton icon="language" />
                         </a>
@@ -75,7 +75,7 @@ function Supplier(props) {
                 </div> }
                 <div className={styles.tags}>
                     {supplier.tags.map(tag => (
-                        <Tag key={tag} name={tag} />
+                        <Tag link key={tag} name={tag} />
                     ))}
                 </div>
             </div>

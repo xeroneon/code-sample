@@ -50,10 +50,10 @@ function Provider(props) {
             <div className={styles.wrapper}>
                 <div className={styles.left}>
                     <img src={props.provider.image} className={styles.image} />
-                    {!user?.following?.includes(props.provider._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
-                    {user && user.following.includes(props.provider._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
+                    {user?._id !== props.provider._id && !user?.following?.includes(props.provider._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
+                    {user?._id !== props.provider._id && user && user.following.includes(props.provider._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
                     <h3 className={`${styles.companyName} ${styles.hideOnMobile}`}>{props.provider.companyName}</h3>
-                    <h3 className={styles.hideOnDesktop}>{props.provider.name} {props.provider.lastname}</h3>
+                    <h3 className={styles.hideOnDesktop}>{props.provider?.prefix} {props.provider.name} {props.provider.lastname} {props.provider?.suffix}</h3>
                     {/* <div className={styles.actionButtons}>
                         <GreyButton icon="language" />
                         <GreyButton icon="mail" />
@@ -86,12 +86,12 @@ function Provider(props) {
                 </div>
                 <div className={styles.right}>
                     <div>
-                        <h1 className={`${styles.name} ${styles.hideOnMobile}`} style={{marginTop: '0'}}>{props.provider.name} {props.provider.lastname}</h1>
+                        <h1 className={`${styles.name} ${styles.hideOnMobile}`} style={{marginTop: '0'}}>{props.provider?.prefix} {props.provider.name} {props.provider.lastname} {props.provider?.suffix}</h1>
                         <h1 className={styles.hideOnDesktop} style={{marginTop: '0'}}>{props.provider.companyName}</h1>
                         <h5 style={{color: '#143968', fontWeight: 'bold'}}>{props?.provider?.specialty?.name}</h5>
                         <div className={styles.tags}>
                             {props.provider.tags.map(tag => (
-                                <Tag key={tag} name={tag} />
+                                <Tag link key={tag} name={tag} />
                             ))}
                         </div>
                         <div className={styles.bio}>{props.provider.bio}</div>
