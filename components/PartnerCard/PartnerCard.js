@@ -23,8 +23,8 @@ function PartnerCard(props) {
                         {props.type === 'provider' && <h4 className={styles.name}>{props.name} {props.lastname}</h4>}
                         {props.type === 'supplier' && <h4 className={styles.name}>{props.companyName}</h4>}
                         <p className={styles.address}>{props.address}</p>
-                        <p className={styles.specialty}>{props.specialty}</p>
-                        <p className={styles.specialty}>{props.primaryCategory}</p>
+                        { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
+                        { props.primaryCategory && <p className={styles.specialty}>{props.primaryCategory}</p> }
                         <div className={styles.bio}>
                             <p>
                                 {props.bio}
