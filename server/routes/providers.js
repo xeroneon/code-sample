@@ -60,5 +60,22 @@ router.get("/all", async (req, res) => {
     }
 })
 
+router.get("/specialty", async (req, res) => {
+    try {
+        console.log(req.query.specialty.replace(/-/g, ' ').replace(/_/g, '/'))
+        const providers = await User.find({$or: [
+            {'specialty.name': { $regex : new RegExp(req.query.specialty.replace(/-/g, ' ').replace(/_/g, '/'), "i") }},
+            {'secondarySpecialties.name': { $regex : new RegExp(req.query.specialty.replace(/-/g, ' ').replace(/_/g, '/'), "i") }}
+        ]})
+
+
+        res.send({
+            providers
+        })
+    } catch (e) {
+        res.status(400).send({message: "Couldnt find providers"})
+    }
+})
+
 
 module.exports = router;
