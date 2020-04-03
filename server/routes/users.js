@@ -91,6 +91,11 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.get("/", async (req, res) => {
+    if (!req.user) {
+        return res.send({
+            success: false,
+        })
+    }
     res.send({user: {...req.user._doc, password: null}})
 });
 

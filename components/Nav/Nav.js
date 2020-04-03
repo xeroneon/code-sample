@@ -21,6 +21,9 @@ function Nav() {
         if (Cookies.get('connect.sid') !== undefined) {
             fetch('get', '/api/users').then(res => {
                 // console.log(res.data.user)
+                if(!res.data.success) {
+                    return
+                }
                 setUser(res.data.user);
             });
         }
