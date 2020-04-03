@@ -67,7 +67,7 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
+            { user && userArticles.length === 0 && user?.accountType !== 'supplier' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
             </Carousel> }
             <TrendingCarousel items={props.trending} />
@@ -87,6 +87,8 @@ function Index(props) {
                         bio={partner.bio}
                         specialty={partner?.specialty?.name}
                         primaryCategory={partner?.primaryCategory}
+                        suffix={partner?.suffix}
+                        prefix={partner?.prefix}
                     />
                 })}
             </Carousel>

@@ -20,7 +20,7 @@ function PartnerCard(props) {
                             <img src={props.image} />
                             {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
                         </div>
-                        {props.type === 'provider' && <h4 className={styles.name}>{props.name} {props.lastname}</h4>}
+                        {props.type === 'provider' && <h4 className={styles.name}>{props.prefix} {props.name} {props.lastname} {props.suffix}</h4>}
                         {props.type === 'supplier' && <h4 className={styles.name}>{props.companyName}</h4>}
                         <p className={styles.address}>{props.address}</p>
                         { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
@@ -53,7 +53,9 @@ PartnerCard.propTypes = {
     bio: PropTypes.string,
     specialty: PropTypes.string,
     address: PropTypes.string,
-    primaryCategory: PropTypes.string
+    primaryCategory: PropTypes.string,
+    prefix: PropTypes.string,
+    suffix: PropTypes.string
 }
 
 export default PartnerCard;
