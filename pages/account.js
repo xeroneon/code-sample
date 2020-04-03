@@ -27,7 +27,7 @@ function Account() {
                 <div className='userCard'>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <img src={user?.image} />
-                        <p>{user?.name} {user?.lastname}</p>
+                        { user?.accountType !== 'supplier' && <p>{user?.name} {user?.lastname}</p>}
                     </div>
                     <Link href='/edit-profile'>
                         <div className='edit'>edit profile</div>
