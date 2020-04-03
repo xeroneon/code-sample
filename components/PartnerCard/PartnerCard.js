@@ -6,7 +6,7 @@ import Link from 'next/link';
 // import {haversineDistance} from 'helpers/calculateDistance';
 
 function PartnerCard(props) {
-    const partnerName = [props.name, props.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+    const partnerName = [props.name, props.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-');
     // const [ setDistance ] = useState();
     // useEffect(() => {
     //     setDistance(haversineDistance([props.lat, props.lng], [window.localStorage.getItem('lat'), window.localStorage.getItem('lon')], true))
