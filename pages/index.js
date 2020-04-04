@@ -46,7 +46,7 @@ function Index(props) {
                     <h5>expert health & wellness guidance to better living</h5>
                 </div>
             </div>
-            { user && userArticles.length > 0 && user?.accountType !== 'supplier' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
+            { user && userArticles.length > 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
                 {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
                 {userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
@@ -67,7 +67,7 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            { user && userArticles.length === 0 && user?.accountType !== 'supplier' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
+            { user && userArticles.length === 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
             </Carousel> }
             <TrendingCarousel items={props.trending} />
