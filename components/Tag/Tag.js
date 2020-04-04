@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Tag.module.css';
-import Link from 'next/link';
+import Router from 'next/router';
 function Tag(props) {
     return (
         <>
             <ConditionalLink 
                 condition={props.link}
-                wrapper={children => <Link as={`/tag/${props.name.replace(/\s/g, '-').replace(/\//g, '_')}`} href="/tag/[tag]">{children}</Link>}
+                wrapper={children => <span onClick={(e) => {e.stopPropagation(); Router.push(`/tag/${props.name.replace(/\s/g, '-').replace(/\//g, '_')}`)}}>{children}</span>}
             >
                 <span
                     className={`${props.active ? styles.active : styles.root} ${props.sponsored ? styles.sponsored : styles.root} ${styles.root} ${props.className}`}

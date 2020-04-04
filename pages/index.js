@@ -84,7 +84,7 @@ function Index(props) {
                         lng={partner.lng}
                         type={partner.accountType}
                         companyName={partner.companyName}
-                        bio={partner.bio}
+                        bio={partner?.shortBio}
                         specialty={partner?.specialty?.name}
                         primaryCategory={partner?.primaryCategory}
                         suffix={partner?.suffix}
