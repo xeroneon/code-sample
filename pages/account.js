@@ -33,7 +33,7 @@ function Account() {
                         <div className='edit'>edit profile</div>
                     </Link>
                 </div>
-                <div style={{maxWidth: '300px'}}>
+                <div style={{maxWidth: '300px', display: 'flex', justifyContent: 'center', flexWrap:'wrap'}}>
                     { user?.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
@@ -72,6 +72,7 @@ function Account() {
                     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
                     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
                     margin: 30px;
+                    margin-bottom: 10px;
                     display: grid;
                     align-items: center;
                     justify-items: center;
@@ -79,8 +80,9 @@ function Account() {
                 }
                 .userCard img {
                     margin: 10px;
+                    margin-bottom: 20px;
                     border-radius: 1000px;
-                    width: 80%;
+                    width: 120%;
                 }
                 .edit {
                     width: 300px;

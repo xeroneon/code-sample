@@ -65,12 +65,34 @@ router.get("/", async (req, res) => {
             return res.status(404).end();
         }
 
-        console.log(entries)
+        // console.log(entries)
     
         const author = await User.findById(entries.items[0].fields.author.fields.authorId)
     
         return res.json({
             article: entries.items[0],
+            author: { ...author._doc, password: null }
+        })
+    } catch (e) {
+        return res.status(404).end();
+    }
+
+})
+router.get("/id", async (req, res) => {
+
+    try {
+        const entry = await client.getEntry(req.query.id)
+        const authorEntry = await client.getEntry(entry.fields.author.sys.id)
+        // console.log("ENTRY", authorEntry)
+
+        if (!entry) {
+            return res.status(404).end();
+        }
+    
+        const author = await User.findById(authorEntry.fields.authorId)
+    
+        return res.json({
+            article: entry,
             author: { ...author._doc, password: null }
         })
     } catch (e) {

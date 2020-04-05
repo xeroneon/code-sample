@@ -12,6 +12,7 @@ function Tag(props) {
                 <span
                     className={`${props.active ? styles.active : styles.root} ${props.sponsored ? styles.sponsored : styles.root} ${styles.root} ${props.className}`}
                     onClick={props.onClick}
+                    id={props.id}
                 >
                     <span height="100%" style={{display: 'grid', placeContent: 'center', float: 'left'}}>{props.sponsored && <i className={`${styles.star} material-icons`}>star&nbsp;</i>}</span>
                     {props.name}
@@ -35,7 +36,8 @@ Tag.propTypes = {
     onClick: PropTypes.func,
     active: PropTypes.bool,
     link: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
+    id: PropTypes.string
 }
 
 export default Tag;
