@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+.root h3 {
+    margin-top: 15px;
+}
+
 .search {
     border: 1px solid #B7CDDE;
     border-radius: 3px;

@@ -39,5 +39,25 @@ router.get("/all", async (req, res) => {
     }
 })
 
+router.get('/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+        console.log(query)
+        const users = await User.find({companyName: {$regex : new RegExp("^" + query, 'i')}, 'accountType': 'supplier', subActive: true}).select('-password');
+        console.log(users);
+
+        return res.send({
+            message: 'Found Users',
+            success: true,
+            users
+        })
+    } catch(e) {
+        return res.status(400).send({
+            success: false,
+            message: "Error finding users"
+        })
+    }
+})
+
 
 module.exports = router;

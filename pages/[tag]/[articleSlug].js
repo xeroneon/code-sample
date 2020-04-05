@@ -5,13 +5,14 @@ import Tag from 'components/Tag/Tag';
 import styles from './Article.module.css';
 import moment from 'moment';
 import ReactMarkdown from 'react-markdown/with-html';
-import { BLOCKS, MARKS } from '@contentful/rich-text-types';
+import { BLOCKS, MARKS, INLINES } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 import Error from 'next/error';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Carousel from 'components/Carousel/Carousel';
+import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
 
 const options = {
     renderMark: {
@@ -35,6 +36,10 @@ const options = {
         [BLOCKS.QUOTE]: (node, children) => <p className={styles.quote}>{children}</p>,
         [BLOCKS.HR]: () => <hr className={styles.hr} />,
         [BLOCKS.EMBEDDED_ASSET]: (node) => <img src={`https:${node.data.target.fields.file.url}`} />,
+        [INLINES.EMBEDDED_ENTRY]: (node) => {
+            console.log("NODE", node)
+            return <EmbeddedArticle id={node.data.target.sys.id}/>
+        }
     },
 };
 

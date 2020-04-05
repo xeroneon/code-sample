@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ArticleCard.module.css';
-import Link from 'next/link';
+// import Link from 'next/link';
 import Tag from 'components/Tag/Tag';
 // import fetch from 'helpers/fetch';
+import Router from 'next/router';
 
 function ArticleCard(props) {
     const tagLink = props.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
@@ -11,34 +12,34 @@ function ArticleCard(props) {
     // console.log("SPONSOR", sponsor);
     return (
         <>
-            <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]">
-                <div className={styles.root}>
-                    <div className={styles.thumbnail}>
-                        <img src={props.featuredImage} className={styles.thumbnailImage}/>
-                    </div>
-                    { props.type === 'provider' && <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
-                        <img src={props.authorImage} className={styles.authorImage}/>
-                    </Link> }
-                    { props.type === 'supplier' && <Link as={`/supplier/${props.companyName}`} href="/supplier/[supplierName]">
-                        <img src={props.authorImage} className={styles.authorImage}/>
-                    </Link> }
-                    <div className={styles.tags}>
-                        {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
-                        {!sponsor && <Tag link name={props.primaryTag}/>}
-                        {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
-                    </div>
-                    {sponsor &&
+            {/* <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]"> */}
+            <div className={styles.root} onClick={(e) => {e.stopPropagation(); Router.push(`/${tagLink}/${props.slug}`)}}>
+                <div className={styles.thumbnail}>
+                    <img src={props.featuredImage} className={styles.thumbnailImage}/>
+                </div>
+                { props.type === 'provider' &&
+                    <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/provider/${props.authorName}/${props.authorCity}`)}}/>
+                }
+                { props.type === 'supplier' && 
+                    <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/supplier/${props.companyName}`)}}/>
+                }
+                <div className={styles.tags}>
+                    {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
+                    {!sponsor && <Tag link name={props.primaryTag}/>}
+                    {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
+                </div>
+                {sponsor &&
                     <span className={styles.sponsor}>
                         This post is sponsored by&nbsp;
-                        <Link as={`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`} href={`/${sponsor.accountType}/[name]/[city]`}>
-                            <b>
-                                {sponsor.companyName}
-                            </b>
-                        </Link>
+                        
+                        <b onClick={(e) => {e.stopPropagation(); Router.push(`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`)}}>
+                            {sponsor.companyName}
+                        </b>
+                        
                     </span>}
-                    <h4 className={styles.title}>{props.title}</h4>
-                </div>
-            </Link>
+                <h4 className={styles.title}>{props.title}</h4>
+            </div>
+            {/* </Link> */}
         </>
     )
 }

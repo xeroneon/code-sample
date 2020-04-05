@@ -1,0 +1,75 @@
+.root {
+    width: 260px;
+    height: 350px;
+    padding: 20px;
+    position: relative;
+}
+
+.root:hover {
+    cursor: pointer;
+}
+
+.thumbnailImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.thumbnail {
+    height:200px;
+    width: 100%;
+    /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+}
+
+.title {
+    font-size: 1.4em;
+    line-height: 1.2em;
+    height: 2.4em;
+    padding-top: 15px;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; 
+    overflow: hidden;
+    /* display: block; */
+    /* height: 2.4em; */
+}
+
+.authorImage {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    border-radius: 1000px;
+    width: 75px;
+    height: 75px;
+}
+
+.tags {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.sponsor {
+    font-size: .8em;
+}
+
+.sponsor b {
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .root {
+        width: 300px;
+    }
+
+    .thumbnail {
+        height:240px;
+    }
+}

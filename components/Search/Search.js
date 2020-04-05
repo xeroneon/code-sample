@@ -14,19 +14,24 @@ function Search(props) {
     const [specialties, setSpecialties ] = useState([]);
 
     useEffect(() => {
-        fetch('get', `/api/tags/search?query=${search}`).then(res => {
-            // console.log(res.data)
-            setTags(res.data.results);
-        })
-        fetch('get', `/api/users/search?query=${search}`).then(res => {
-            // console.log(res.data)
-            setPartners(res.data.users.filter(user => user.accountType === 'provider'));
-            setSuppliers(res.data.users.filter(user => user.accountType === 'supplier'));
-        })
-        fetch('get', `/api/specialties/search?query=${search}`).then(res => {
-            // console.log(res.data)
-            setSpecialties(res.data.results);
-        })
+        if (search.length > 0 ) {
+            fetch('get', `/api/tags/search?query=${search}`).then(res => {
+                // console.log(res.data)
+                setTags(res.data.results);
+            })
+            fetch('get', `/api/users/search?query=${search}`).then(res => {
+                // console.log(res.data)
+                setPartners(res.data.users.filter(user => user.accountType === 'provider'));
+            })
+            fetch('get', `/api/suppliers/search?query=${search}`).then(res => {
+                // console.log(res.data)
+                setSuppliers(res.data.users.filter(user => user.accountType === 'supplier'));
+            })
+            fetch('get', `/api/specialties/search?query=${search}`).then(res => {
+                // console.log(res.data)
+                setSpecialties(res.data.results);
+            })
+        }
     }, [search])
 
     return (

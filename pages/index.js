@@ -43,7 +43,7 @@ function Index(props) {
                 {/* <h3>Welcome to a new age of,</h3> */}
                 <div className={styles.heroText}>
                     <h1>the prevention generation</h1>
-                    <h5>expert health & wellness guidance to better living</h5>
+                    <h5>lifestyle health & wellness guidance personalized to you</h5>
                 </div>
             </div>
             { user && userArticles.length > 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
@@ -84,7 +84,7 @@ function Index(props) {
                         lng={partner.lng}
                         type={partner.accountType}
                         companyName={partner.companyName}
-                        bio={partner.bio}
+                        bio={partner?.shortBio}
                         specialty={partner?.specialty?.name}
                         primaryCategory={partner?.primaryCategory}
                         suffix={partner?.suffix}

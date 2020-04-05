@@ -96,7 +96,7 @@ router.get("/", async (req, res) => {
             success: false,
         })
     }
-    res.send({user: {...req.user._doc, password: null}})
+    res.send({user: {...req.user._doc, password: null}, success: true})
 });
 
 router.get("/logout", async (req, res) => {
@@ -201,12 +201,7 @@ router.get('/search', async (req, res) => {
     try {
         const { query } = req.query;
         console.log(query)
-        const users = await User.fuzzySearch({query, prefixOnly: true,},
-            {$or: [
-                { 'accountType': 'provider' },
-                { 'accountType': 'supplier' }
-            ]}
-        ).select('-password');
+        const users = await User.fuzzySearch({query, prefixOnly: true,}, { 'accountType': 'provider', subActive: true }).select('-password');
         console.log(users);
 
         return res.send({
