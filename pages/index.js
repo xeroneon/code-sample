@@ -45,9 +45,9 @@ function Index(props) {
                     <h5>lifestyle health & wellness guidance personalized to you</h5>
                 </div>
             </div>
-            { user && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
-                {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>}
-                {userArticles.length > 0 && userArticles.map(article => {
+            { user && userArticles.length > 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
+                {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
+                {userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
                         key={article.sys.id}
@@ -66,9 +66,9 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            {/* { user && userArticles.length === 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
+            { user && userArticles.length === 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
-            </Carousel> } */}
+            </Carousel> }
             <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers).map(partner => {
