@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'components/Carousel/Carousel';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
-import WelcomeArticle from 'components/ArticleCard/WelcomeArticle';
-import { UserContext } from 'contexts/UserProvider';
+// import WelcomeArticle from 'components/ArticleCard/WelcomeArticle';
+// import { UserContext } from 'contexts/UserProvider';
 
 function TrendingCarousel(props) {
-    const { user } = useContext(UserContext);
+    // const { user } = useContext(UserContext);
 
     return (
         <>
-            { !user && <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
-                <WelcomeArticle key='welcome' />
+            <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
+                {/* <WelcomeArticle key='welcome' /> */}
                 {props.items.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
@@ -30,8 +30,8 @@ function TrendingCarousel(props) {
                         companyName={article.author.companyName}
                     />
                 })}
-            </Carousel>}
-            { user && <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
+            </Carousel>
+            {/* { user && <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
                 {props.items.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
@@ -50,7 +50,7 @@ function TrendingCarousel(props) {
                         companyName={article.author.companyName}
                     />
                 })}
-            </Carousel>}
+            </Carousel>} */}
         </>
     )
 }
