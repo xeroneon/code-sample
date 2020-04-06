@@ -40,15 +40,14 @@ function Index(props) {
     return (
         <>
             <div className={styles.hero}>
-                {/* <h3>Welcome to a new age of,</h3> */}
                 <div className={styles.heroText}>
                     <h1>the prevention generation</h1>
                     <h5>lifestyle health & wellness guidance personalized to you</h5>
                 </div>
             </div>
-            { user && userArticles.length > 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
-                {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
-                {userArticles.map(article => {
+            { user && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
+                {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>}
+                {userArticles.length > 0 && userArticles.map(article => {
                     const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
                     return <ArticleCard 
                         key={article.sys.id}
@@ -67,9 +66,9 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            { user && userArticles.length === 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
+            {/* { user && userArticles.length === 0 && user?.accountType === 'personal' && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
-            </Carousel> }
+            </Carousel> } */}
             <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers).map(partner => {
@@ -92,25 +91,6 @@ function Index(props) {
                     />
                 })}
             </Carousel>
-            {/* { user && <Carousel header={[`Featured Health `, <span key="partners"> Partners </span> ]}>
-                {providers.length > 0 && mergePartners(providers, props.suppliers).map(partner => {
-                    return <PartnerCard 
-                        key={partner._id}
-                        image={partner.image}
-                        name={partner.name}
-                        lastname={partner.lastname}
-                        tags={partner.tags}
-                        city={partner.city}
-                        lat={partner?.location?.coordinates[1]}
-                        lng={partner?.location?.coordinates[0]}
-                        type={partner.accountType}
-                        companyName={partner.companyName}
-                        bio={partner.bio}
-                        specialty={partner?.specialty?.name}
-                        address={`${partner.city}, ${partner.state}`}
-                    />
-                })}
-            </Carousel> } */}
 
             <style jsx>
                 {`

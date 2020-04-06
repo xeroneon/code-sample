@@ -18,7 +18,6 @@ function Nav() {
     const [ mobileMenuOpened, setMobileMenuOpened ] = useState(false);
 
     useEffect(() => {
-        console.log(Cookies.get('connect.sid'))
         if (Cookies.get('connect.sid') !== undefined) {
             fetch('get', '/api/users').then(res => {
                 // console.log(res.data.user)
