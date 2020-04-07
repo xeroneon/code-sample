@@ -7,8 +7,8 @@ import Carousel from "components/Carousel/Carousel";
 import ArticleCard from "components/ArticleCard/ArticleCard";
 import ProductCard from "components/ProductCard/ProductCard";
 import Tag from "components/Tag/Tag";
-import ActionButton from "components/ActionButton/ActionButton";
-import GreyButton from "components/GreyButton/GreyButton";
+// import ActionButton from "components/ActionButton/ActionButton";
+// import GreyButton from "components/GreyButton/GreyButton";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 
@@ -47,12 +47,41 @@ function Supplier(props) {
             <Head>
                 <title>{supplier.companyName}</title>
             </Head>
-            {/* <div className={styles.hero}></div> */}
-            <div className={styles.supplierCard}>
-                <div className={styles.info}>
-                    <img src={supplier.image} className={styles.image} />
+            <div className={styles.hero}></div>
+            <div className={styles.supplierInfo}>
+                <div className={styles.supplierCard}>
+                    <img src={supplier.image} className={styles.supplierImage} />
                     <div className={styles.companyName}>{supplier.companyName}</div>
                     <div className={styles.bio}>{supplier.bio}</div>
+                    <div className={styles.contactWrapper}>
+                        <a href={supplier.website} target="_blank" rel="noopener noreferrer">
+                            <div className={styles.contactButton}><i className="material-icons-outlined">language</i></div>
+                        </a>
+                        < a href={`tel:${supplier.phone}`} target="_blank" rel="noopener noreferrer">
+                            <div className={styles.contactButton}><i className="material-icons-outlined">phone</i></div>
+                        </a>
+                        <a href={`mailto:${supplier.email}`} target="_blank" rel="noopener noreferrer">
+                            <div className={styles.contactButton}><i className="material-icons-outlined">email</i></div>
+                        </a>
+                    </div>
+                    {user?._id !== supplier._id && !user?.following?.includes(props.supplier._id) && <div className={styles.follow} onClick={handleFollow}>+ Follow</div> }
+                    {user?._id !== supplier._id && user && user.following.includes(props.supplier._id) && <div className={`${styles.unfollow} ${styles.follow}`} onClick={handleUnfollow}>- Unfollow</div> }
+                </div>
+                <div className={styles.tagWrapper}>
+                    <div className={styles.sponsor}>
+                        <p>Official sponsor of</p>
+                        <Tag link name="Back Pain" sponsored/>
+                    </div>
+                    <div className={styles.tags}>
+                        {supplier.tags.map(tag => (
+                            <Tag link key={tag} name={tag} />
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+            {/* <div className={styles.supplierCard}>
+                <div className={styles.info}>
                     <div className={styles.actionButtons}>
                         {user?._id !== supplier._id && !user?.following?.includes(props.supplier._id) && <ActionButton onClick={handleFollow} className={styles.follow}>Follow</ActionButton>}
                         {user?._id !== supplier._id && user && user.following.includes(props.supplier._id) && <ActionButton onClick={handleUnfollow} className={`${styles.unfollow} ${styles.follow}`}>Unfollow</ActionButton>}
@@ -78,7 +107,7 @@ function Supplier(props) {
                         <Tag link key={tag} name={tag} />
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             <Carousel header={["Our ", <span key="sfdgnhdfgn"> Health </span>,<br key="woirety"/>, 'products']}>
                 {props.products.map(product => {
