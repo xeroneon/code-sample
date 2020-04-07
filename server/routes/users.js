@@ -5,7 +5,7 @@ const contentful = require('../../helpers/contentful');
 const { managementClient } = contentful;
 const axios = require('axios');
 
-router.post("/create", async (req, res, next) => {
+router.post("/create", async (req, res) => {
     try {
         const { name, lastname, accountType } = req.body;
         let lat;
@@ -48,8 +48,12 @@ router.post("/create", async (req, res, next) => {
             })
         }
 
-        req.login(user, function(err) {
-            if (err) { return next(err); }
+        req.login(user._doc, function(err) {
+            if (err) { return res.status(400).send({
+                success: false,
+                message: "Error creating user, try again",
+                error: err
+            }); }
             res.json({
                 user: {...user._doc, password: null}
             });

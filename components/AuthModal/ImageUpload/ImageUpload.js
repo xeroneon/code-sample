@@ -25,6 +25,7 @@ function ImageUpload(props) {
     const { setUser } = useContext(UserContext);
     const [ src, setSrc ] = useState(undefined);
     const [ loading, setLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
     const cropperRef = useRef(null);
 
     const onDrop = useCallback(acceptedFiles => {
@@ -45,12 +46,18 @@ function ImageUpload(props) {
             const dataUri = cropperRef.current.getCroppedCanvas().toDataURL()
             const blob = dataURLtoBlob(dataUri)
             formData.append('image', blob)
-            const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
-                username: 'admin',
-                password: process.env.BASIC_AUTH_PASS
-            }});
-            console.log(res)
-            image = res.data.imagePath
+            try {
+                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
+                    username: 'admin',
+                    password: process.env.BASIC_AUTH_PASS
+                }});
+                console.log(res)
+                image = res.data.imagePath
+
+            } catch(e) {
+                setLoading(false);
+                return setError(true);
+            }
         }
         const body = {
             ...form,
@@ -64,6 +71,7 @@ function ImageUpload(props) {
             //     return setPage('select-tier');
             // }
             props.setOpen(false);
+            setError(null);
             setUser(res.data.user);
             setLoading(false);
         })
@@ -95,6 +103,7 @@ function ImageUpload(props) {
             </div>
 
             <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
+            { error && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
             <div onClick={submit} className={styles.dolater}>I&apos;ll do this later</div>
 
         </div>
