@@ -13,6 +13,7 @@ import Error from 'next/error';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Carousel from 'components/Carousel/Carousel';
 import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
+import Link from 'next/link';
 
 const options = {
     renderMark: {
@@ -49,7 +50,7 @@ function Article(props) {
         return <Error statusCode={props.errorCode} />
     }
     const { user } = useContext(UserContext);
-    const { article, author } = props;
+    const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.name} ${author.lastname}` : author.companyName
 
@@ -76,11 +77,28 @@ function Article(props) {
                     {article.fields.title}
                 </div>
                 <div className={styles.authorModule}>
-                    <img src={author.image} />
-                    <div>
-                        <span>{authorTitle}</span>
-                        <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
-                    </div>
+                    { !props.reviewedBy &&
+                    <>
+                        <img src={author.image} />
+                        <div>
+                            <span>{authorTitle}</span>
+                            <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
+                        </div>
+                    </> }
+                    { reviewedBy &&
+                    <>
+                        <Link as={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} href='/provider/[name]/[city]'>
+                            <img className={styles.cursor} src={reviewedBy.image} />
+                        </Link>
+                        <div>
+                            <span>Medically reviewed by&nbsp;
+                                <Link as={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} href="/provider/[name]/[city]">
+                                    <span className={styles.cursor} style={{color: "#30373B", textDecoration: 'underline'}}>{`${reviewedBy.prefix} ${reviewedBy.name} ${reviewedBy.lastname} ${reviewedBy.suffix}`}</span>
+                                </Link>
+                            </span>
+                            <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
+                        </div>
+                    </> }
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
                     <div className="fb-share-button" data-href={`${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
@@ -152,10 +170,10 @@ Article.getInitialProps = async (ctx) => {
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-        // console.log(res.statusCode)
+        const reviewedBy = res?.data?.article?.fields?.reviewedBy?.fields?.authorId ? await fetch('get', '/api/users/find', {_id: res?.data?.article?.fields?.reviewedBy?.fields?.authorId}) : null;
         const errorCode = res.statusCode > 200 ? res.statusCode : false
         const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
-        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles };
+        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles, reviewedBy: reviewedBy?.data?.user };
     } catch(e) {
         return {errorCode: 404}
     }
@@ -170,6 +188,7 @@ Article.propTypes = {
         PropTypes.bool,
         PropTypes.number
     ]),
+    reviewedBy: PropTypes.object
 }
 
 export default Article;
