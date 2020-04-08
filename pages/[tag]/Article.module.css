@@ -160,6 +160,9 @@
 	width: 100%;
 	margin-top: 50px;
 }
+.cursor:hover {
+    cursor: pointer;
+}
 
 .articleBody>table {
 	border-collapse: collapse;

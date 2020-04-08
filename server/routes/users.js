@@ -102,6 +102,22 @@ router.get("/", async (req, res) => {
     }
     res.send({user: {...req.user._doc, password: null}, success: true})
 });
+router.get("/find", async (req, res) => {
+    try {
+        const user = await User.findOne({...req.body}).select("-password");
+        return res.status(200).send({
+            success: true,
+            user
+        })
+    } catch (e) {
+        console.log(e)
+        return res.status(500).send({
+            success: false,
+            message: "Error finding user",
+            error: e
+        }) 
+    }
+});
 
 router.get("/logout", async (req, res) => {
     req.logout();
