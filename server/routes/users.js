@@ -279,6 +279,21 @@ router.get('/following', async (req, res) => {
         })
     }
 })
+
+router.delete('/', async (req, res) => {
+    try {
+        await User.deleteOne({email: req.query.email})
+        res.send({
+            message: 'Deleted User'
+        });
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error deleting user",
+            error: e
+        })
+    }
+})
 // example contentful request
 // router.get("/test", async (req, res) => {
 //     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");
