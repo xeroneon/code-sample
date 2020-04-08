@@ -13,7 +13,7 @@ import Error from 'next/error';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Carousel from 'components/Carousel/Carousel';
 import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 const options = {
     renderMark: {
@@ -24,7 +24,33 @@ const options = {
     },
     renderNode: {
         [BLOCKS.DOCUMENT]: (node, children) => <div className={styles.articleBody}>{children}</div>,
-        [BLOCKS.PARAGRAPH]: (node, children) => <p className={styles.paragraph}>{children}</p>,
+        [BLOCKS.PARAGRAPH]: (node, children) => {
+        //     const { playing } = this.state;
+        //     const nodeType =
+        //   node.content && node.content[1] && node.content[1].nodeType;
+        //     const uri =
+        //   node.content &&
+        //   node.content[1] &&
+        //   node.content[1].data &&
+        //   node.content[1].data.uri;
+
+            //     if (
+            //         nodeType === "hyperlink" &&
+            //   (uri.includes("youtube") ||
+            //     uri.includes("https://youtu.be") ||
+            //     uri.includes("vimeo"))
+            //     ) {
+            //         return (
+            //             <VideoPlayer
+            //                 ref={this.setPlayerRef}
+            //                 playing={playing}
+            //                 controls={true}
+            //                 url={uri}
+            //             />
+            //         );
+            //     }
+            return <p className={styles.paragraph}>{children}</p>
+        },
         [BLOCKS.HEADING_1]: (node, children) => <h1 className={styles.h1}>{children}</h1>,
         [BLOCKS.HEADING_2]: (node, children) => <h2 className={styles.h2}>{children}</h2>,
         [BLOCKS.HEADING_3]: (node, children) => <h3 className={styles.h3}>{children}</h3>,
@@ -52,7 +78,7 @@ function Article(props) {
     const { user } = useContext(UserContext);
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
-    const authorTitle = author.accountType === 'provider' ? `${author.prefix} ${author.name} ${author.lastname} ${author.suffix}` : author.companyName
+    const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
 
     return (
         <>
@@ -87,14 +113,14 @@ function Article(props) {
                     </> }
                     { reviewedBy &&
                     <>
-                        <Link as={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} href='/provider/[name]/[city]'>
+                        <a href={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} target="_blank" rel="noopener noreferrer">
                             <img className={styles.cursor} src={reviewedBy.image} />
-                        </Link>
+                        </a>
                         <div>
                             <span>Medically reviewed by&nbsp;
-                                <Link as={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} href="/provider/[name]/[city]">
+                                <a href={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} target="_blank" rel="noopener noreferrer">
                                     <span className={styles.cursor} style={{color: "#30373B", textDecoration: 'underline'}}>{`${reviewedBy.prefix} ${reviewedBy.name} ${reviewedBy.lastname} ${reviewedBy.suffix}`}</span>
-                                </Link>
+                                </a>
                             </span>
                             <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
                         </div>

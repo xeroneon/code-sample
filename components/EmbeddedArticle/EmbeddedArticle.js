@@ -33,8 +33,8 @@ function EmbeddedArticle(props) {
                 }
                 <div className={styles.tags}>
                     {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
-                    {!sponsor && <Tag className='tag' link name={article?.fields?.primaryTag}/>}
-                    {article?.fields?.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag className='tag' link key={tag} name={tag}/>)}
+                    {!sponsor && <Tag id="tag" className={styles.tag} link name={article?.fields?.primaryTag}/>}
+                    {article?.fields?.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag className={styles.tag} link key={tag} name={tag}/>)}
                 </div>
                 {sponsor &&
                     <span className={styles.sponsor}>
@@ -47,10 +47,7 @@ function EmbeddedArticle(props) {
                     </span>}
                 <h4 className={styles.title}>{article?.fields?.title}</h4>
                 <style jsx>{`
-                    .tag {
-                        display: initial !important;
-                        padding: 0;
-                    }
+
                 `}</style>
             </div>}
             {/* </Link> */}

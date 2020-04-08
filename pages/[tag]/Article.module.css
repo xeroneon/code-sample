@@ -92,7 +92,7 @@
 .authorModule span:nth-child(2) {
 	font-weight: 700;
 }
-.authorModule>img {
+.authorModule img {
 	float: left;
 	margin-right:15px;
 	vertical-align: middle;
@@ -119,6 +119,10 @@
 	font-size: 1em;
 	font-weight: 100;
 	width: 100%;
+}
+.articleBody span {
+	line-height: 1em;
+	box-sizing: initial;
 }
 .articleBody>img {
 	margin: 60px 0;

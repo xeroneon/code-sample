@@ -52,6 +52,7 @@ class MyApp extends App {
         return (
             <>
                 <Head>
+                    {process.env.NODE_ENV !== 'production' && <meta name="robots" content="noindex" />}
                     <title>Prevention Generation</title>
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                     <link rel="shortcut icon" href="/favicon.ico" />
