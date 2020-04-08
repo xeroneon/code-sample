@@ -52,7 +52,7 @@ function Article(props) {
     const { user } = useContext(UserContext);
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
-    const authorTitle = author.accountType === 'provider' ? `${author.name} ${author.lastname}` : author.companyName
+    const authorTitle = author.accountType === 'provider' ? `${author.prefix} ${author.name} ${author.lastname} ${author.suffix}` : author.companyName
 
     return (
         <>
