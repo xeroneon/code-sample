@@ -3,7 +3,7 @@ const router = express.Router();
 const Tag = require("../models/Tag");
 const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
-const { client } = contentful;
+const { client, managementClient } = contentful;
 
 router.post("/create", async (req, res) => {
     const { name, description } = req.body.fields;
@@ -15,7 +15,23 @@ router.post("/create", async (req, res) => {
             name: name['en-US'],
             description: description['en-US'] || ""
         })
-            .then(() => {res.status(200); res.end();})
+            .then(async () => {
+                const environment = await managementClient();
+                const contentTypes = await environment.getContentTypes();
+                contentTypes.items.filter(item => item.name === 'Article' || item.name === 'Product')
+                    .map(item =>{
+                        item.fields.map(field => {
+                            if (field.id === 'primaryTag') {
+                                field.validations[0].in = [...field.validations[0].in, 'test'].sort();
+                            }
+                            if (field.id === 'tags') {
+                                field.items.validations[0].in = [...field.items.validations[0].in, 'test'].sort();
+                            }
+                        })
+                        item.update();
+                    })
+                res.status(200); res.end();
+            })
             .catch(() => {res.status(400); res.end();})
     }
     else {
@@ -77,6 +93,27 @@ router.get("/trending", async (req, res) => {
         tags: entries.items[0].fields.tags
     })
 });
+// router.get("/test", async (req, res) => {
+//     const environment = await managementClient();
+//     const contentTypes = await environment.getContentTypes();
+//     const contentTypesWithTags = contentTypes.items.filter(item => item.name === 'Article' || item.name === 'Product')
+//         .map(item =>{
+//             item.fields.map(field => {
+//                 if (field.id === 'primaryTag') {
+//                     field.validations[0].in = [...field.validations[0].in, 'test'].sort();
+//                 }
+//                 if (field.id === 'tags') {
+//                     field.items.validations[0].in = [...field.items.validations[0].in, 'test'].sort();
+//                 }
+//             })
+//             item.update();
+//         })
+    
+//     res.status(200).send({
+//         result: contentTypes,
+//         updated: contentTypesWithTags
+//     })
+// });
 
 
 

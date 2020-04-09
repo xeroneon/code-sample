@@ -14,62 +14,7 @@ import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Carousel from 'components/Carousel/Carousel';
 import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
 // import Link from 'next/link';
-
-const options = {
-    renderMark: {
-        [MARKS.BOLD]: text => <b className={styles.bold}>{text}</b>,
-        [MARKS.ITALIC]: text => <i className={styles.italic}>{text}</i>,
-        [MARKS.UNDERLINE]: text => <u className={styles.underLine}>{text}</u>,
-        [MARKS.CODE]: text => <code>{text}</code>,
-    },
-    renderNode: {
-        [BLOCKS.DOCUMENT]: (node, children) => <div className={styles.articleBody}>{children}</div>,
-        [BLOCKS.PARAGRAPH]: (node, children) => {
-        //     const { playing } = this.state;
-        //     const nodeType =
-        //   node.content && node.content[1] && node.content[1].nodeType;
-        //     const uri =
-        //   node.content &&
-        //   node.content[1] &&
-        //   node.content[1].data &&
-        //   node.content[1].data.uri;
-
-            //     if (
-            //         nodeType === "hyperlink" &&
-            //   (uri.includes("youtube") ||
-            //     uri.includes("https://youtu.be") ||
-            //     uri.includes("vimeo"))
-            //     ) {
-            //         return (
-            //             <VideoPlayer
-            //                 ref={this.setPlayerRef}
-            //                 playing={playing}
-            //                 controls={true}
-            //                 url={uri}
-            //             />
-            //         );
-            //     }
-            return <p className={styles.paragraph}>{children}</p>
-        },
-        [BLOCKS.HEADING_1]: (node, children) => <h1 className={styles.h1}>{children}</h1>,
-        [BLOCKS.HEADING_2]: (node, children) => <h2 className={styles.h2}>{children}</h2>,
-        [BLOCKS.HEADING_3]: (node, children) => <h3 className={styles.h3}>{children}</h3>,
-        [BLOCKS.HEADING_4]: (node, children) => <h4 className={styles.h4}>{children}</h4>,
-        [BLOCKS.HEADING_5]: (node, children) => <h5 className={styles.h5}>{children}</h5>,
-        [BLOCKS.HEADING_6]: (node, children) => <h6 className={styles.h6}>{children}</h6>,
-        [BLOCKS.UL_LIST]: (node, children) => <ul className={styles.ul}>{children}</ul>,
-        [BLOCKS.OL_LIST]: (node, children) => <ol className={styles.ol}>{children}</ol>,
-        [BLOCKS.LIST_ITEM]: (node, children) => <li className={styles.li}>{children}</li>,
-        [BLOCKS.QUOTE]: (node, children) => <p className={styles.quote}>{children}</p>,
-        [BLOCKS.HR]: () => <hr className={styles.hr} />,
-        [BLOCKS.EMBEDDED_ASSET]: (node) => <img src={`https:${node.data.target.fields.file.url}`} />,
-        [INLINES.EMBEDDED_ENTRY]: (node) => {
-            console.log("NODE", node)
-            return <EmbeddedArticle id={node.data.target.sys.id}/>
-        }
-    },
-};
-
+import ReactPlayer from 'react-player';
 
 function Article(props) {
     if (props.errorCode) {
@@ -79,6 +24,64 @@ function Article(props) {
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
+
+    const options = {
+        renderMark: {
+            [MARKS.BOLD]: text => <b className={styles.bold}>{text}</b>,
+            [MARKS.ITALIC]: text => <i className={styles.italic}>{text}</i>,
+            [MARKS.UNDERLINE]: text => <u className={styles.underLine}>{text}</u>,
+            [MARKS.CODE]: text => <code>{text}</code>,
+        },
+        renderNode: {
+            [BLOCKS.DOCUMENT]: (node, children) => <div className={styles.articleBody}>{children}</div>,
+            [BLOCKS.PARAGRAPH]: (node, children) => {
+                const nodeType =
+              node.content && node.content[1] && node.content[1].nodeType;
+                const uri =
+              node.content &&
+              node.content[1] &&
+              node.content[1].data &&
+              node.content[1].data.uri;
+    
+                if (
+                    nodeType === "hyperlink" &&
+                  (uri.includes("youtube") ||
+                    uri.includes("https://youtu.be") ||
+                    uri.includes("vimeo"))
+                ) {
+                    return (
+                        <div className={styles.playerWrapper}>
+                            <ReactPlayer
+                                // ref={this.setPlayerRef}
+                                controls={true}
+                                url={uri}
+                                width='100%'
+                                height='100%'
+                                className={styles.reactPlayer}
+                            />
+                        </div>
+                    );
+                }
+                return <p className={styles.paragraph}>{children}</p>
+            },
+            [BLOCKS.HEADING_1]: (node, children) => <h1 className={styles.h1}>{children}</h1>,
+            [BLOCKS.HEADING_2]: (node, children) => <h2 className={styles.h2}>{children}</h2>,
+            [BLOCKS.HEADING_3]: (node, children) => <h3 className={styles.h3}>{children}</h3>,
+            [BLOCKS.HEADING_4]: (node, children) => <h4 className={styles.h4}>{children}</h4>,
+            [BLOCKS.HEADING_5]: (node, children) => <h5 className={styles.h5}>{children}</h5>,
+            [BLOCKS.HEADING_6]: (node, children) => <h6 className={styles.h6}>{children}</h6>,
+            [BLOCKS.UL_LIST]: (node, children) => <ul className={styles.ul}>{children}</ul>,
+            [BLOCKS.OL_LIST]: (node, children) => <ol className={styles.ol}>{children}</ol>,
+            [BLOCKS.LIST_ITEM]: (node, children) => <li className={styles.li}>{children}</li>,
+            [BLOCKS.QUOTE]: (node, children) => <p className={styles.quote}>{children}</p>,
+            [BLOCKS.HR]: () => <hr className={styles.hr} />,
+            [BLOCKS.EMBEDDED_ASSET]: (node) => <img src={`https:${node.data.target.fields.file.url}`} />,
+            [INLINES.EMBEDDED_ENTRY]: (node) => {
+                console.log("NODE", node)
+                return <EmbeddedArticle id={node.data.target.sys.id}/>
+            }
+        },
+    };
 
     return (
         <>
