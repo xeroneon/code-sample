@@ -135,7 +135,7 @@ function Provider(props) {
 
                 </div>
             </div>
-            <div className={styles.header}><h2>{[`Our `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "specialties" ]}</h2></div>
+            <div className={styles.header}><h2>{[`Our `, <span key="partners"> Practice&apos;s </span>, <br key="xcnmbv"/>, "specialties" ]}</h2></div>
             <div className={styles.specialtyWrapper}>
                 {props.specialties.map(specialty => {
                     console.log(specialty)
@@ -153,7 +153,7 @@ function Provider(props) {
                 })}
             </div>
 
-            <Carousel header={["Our ", <span key="sfdgnhdfgn"> Health </span>, <br key="dkfjvb"/>, "products"]}>
+            <Carousel header={["Our ", <span key="sfdgnhdfgn"> Practice&apos;s </span>, <br key="dkfjvb"/>, "products"]}>
                 {props.products.map(product => {
                     const authorName = [props.provider.name, props.provider.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -195,6 +195,7 @@ function Provider(props) {
                             tags={article.fields.tags}
                             authorName={authorName}
                             authorCity={props.provider.city}
+                            type={props.provider.accountType}
                         />
                     );
                 })}
