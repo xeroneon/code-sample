@@ -25,6 +25,7 @@ function PartnerCard(props) {
                         <p className={styles.address}>{props.address}</p>
                         { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
                         { props.primaryCategory && <p className={styles.specialty}>{props.primaryCategory}</p> }
+                        { !props.specialty && !props.primaryCategory && <p className={styles.specialty}>&nbsp;</p>}
                         <div className={styles.bio}>
                             <p>
                                 {props.bio}

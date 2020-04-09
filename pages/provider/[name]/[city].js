@@ -145,7 +145,7 @@ function Provider(props) {
                     
                     return props.provider.secondarySpecialties.map(item => {
                         if (specialty.fields.specialtyName === item.name) {
-                            return <SpecialtyCard link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
+                            return <SpecialtyCard key={item.name} link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
                         }
 
                     })
@@ -172,7 +172,7 @@ function Provider(props) {
                             authorCity={props.provider.city}
                             accountType={props.provider.accountType}
                             link={product.fields.productUrl}
-                            type={props.provider.accountType}
+                            // type={props.provider.accountType}
                         />
                     );
                 })}

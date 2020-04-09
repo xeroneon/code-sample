@@ -16,12 +16,12 @@ function ProductCard(props) {
                     <div className={styles.thumbnail}>
                         <img src={props.featuredImage} className={styles.thumbnailImage}/>
                     </div>
-                    { props?.accountType === 'provider' && <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
+                    {/* { props?.accountType === 'provider' && <Link as={`/provider/${props.authorName}/${props.authorCity}`} href="/provider/[name]/[city]">
                         <img src={props.authorImage} className={styles.authorImage}/>
                     </Link> }
                     { props?.accountType === 'supplier' && <Link as={`/supplier/${props.companyName}`} href="/supplier/[supplierName]">
                         <img src={props.authorImage} className={styles.authorImage}/>
-                    </Link> }
+                    </Link> } */}
                     <div className={styles.tags}>
                         {/* {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>} */}
                         {/* {!sponsor && <Tag link name={props.primaryTag}/>} */}

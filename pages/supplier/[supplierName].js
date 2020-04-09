@@ -126,7 +126,7 @@ function Supplier(props) {
                             tags={product.fields.tags}
                             authorName={authorName}
                             authorCity={props.supplier.city}
-                            accountType={props.supplier.accountType}
+                            // accountType={props.supplier.accountType}
                             companyName={props.supplier.companyName}
                             link={product.fields.productUrl}
                         />
