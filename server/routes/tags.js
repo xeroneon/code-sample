@@ -22,10 +22,10 @@ router.post("/create", async (req, res) => {
                     .map(item =>{
                         item.fields.map(field => {
                             if (field.id === 'primaryTag') {
-                                field.validations[0].in = [...field.validations[0].in, 'test'].sort();
+                                field.validations[0].in = [...field.validations[0].in, name['en-US']].sort();
                             }
                             if (field.id === 'tags') {
-                                field.items.validations[0].in = [...field.items.validations[0].in, 'test'].sort();
+                                field.items.validations[0].in = [...field.items.validations[0].in, name['en-US']].sort();
                             }
                         })
                         item.update();
