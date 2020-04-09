@@ -3,6 +3,7 @@
     height: 350px;
     padding: 20px;
     position: relative;
+    /* display: inline-block; */
 }
 
 .root:hover {

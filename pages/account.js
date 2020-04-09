@@ -28,12 +28,13 @@ function Account() {
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <img src={user?.image} />
                         { user?.accountType !== 'supplier' && <p>{user?.name} {user?.lastname}</p>}
+                        { user?.accountType === 'supplier' && <p>{user?.companyName}</p>}
                     </div>
                     <Link href='/edit-profile'>
                         <div className='edit'>edit profile</div>
                     </Link>
                 </div>
-                <div style={{maxWidth: '300px', display: 'flex', justifyContent: 'center', flexWrap:'wrap'}}>
+                <div style={{maxWidth: '300px', display: 'flex', justifyContent: 'center', flexWrap:'wrap', marginBottom: '30px'}}>
                     { user?.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
@@ -82,7 +83,7 @@ function Account() {
                     margin: 10px;
                     margin-bottom: 20px;
                     border-radius: 1000px;
-                    width: 120%;
+                    width: 150px;
                 }
                 .edit {
                     width: 300px;

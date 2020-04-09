@@ -13,7 +13,7 @@ import Error from 'next/error';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import Carousel from 'components/Carousel/Carousel';
 import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
-// import Link from 'next/link';
+import Link from 'next/link';
 import ReactPlayer from 'react-player';
 
 function Article(props) {
@@ -108,9 +108,13 @@ function Article(props) {
                 <div className={styles.authorModule}>
                     { !props.reviewedBy &&
                     <>
-                        <img src={author.image} />
+                        <Link as={props.author.type === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                            <img className={styles.cursor} src={author.image} />
+                        </Link>
                         <div>
-                            <span>{authorTitle}</span>
+                            <Link as={props.author.type === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                                <span className={styles.cursor} style={{color: "#30373B", textDecoration: 'underline'}}>{authorTitle}</span>
+                            </Link>
                             <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
                         </div>
                     </> }

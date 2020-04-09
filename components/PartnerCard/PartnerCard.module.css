@@ -61,6 +61,11 @@
     padding: 15px;
     color: #222;
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    height: 60px;
+    justify-content: center;
+    margin-bottom: auto;
 }
 
 .name {
