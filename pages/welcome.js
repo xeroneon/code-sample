@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // import PropTypes from 'prop-types';
 // import fetch from 'helpers/fetch';
-// import Tag from 'components/Tag/Tag';
+import Tag from 'components/Tag/Tag';
 import styles from './[tag]/Article.module.css';
 // import moment from 'moment';
 // import ReactMarkdown from 'react-markdown/with-html';
 // import { BLOCKS, MARKS, INLINES } from '@contentful/rich-text-types';
 // import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
+import ActionButton from 'components/ActionButton/ActionButton';
+import { ModalContext } from 'contexts/ModalProvider';
+
 // import { UserContext } from 'contexts/UserProvider';
 // import Error from 'next/error';
 // import ArticleCard from 'components/ArticleCard/ArticleCard';
@@ -45,6 +48,7 @@ import Head from 'next/head';
 
 
 function Article() {
+    const { setOpen, setPage } = useContext(ModalContext);
     // if (props.errorCode) {
     //     return <Error statusCode={props.errorCode} />
     // }
@@ -91,19 +95,23 @@ function Article() {
                 <div className={styles.featuredImage}>
                     <img src="/images/welcome-image.png" />
                 </div>
-                <div className={styles.articleBody}>
+                <div className={styles.articleBody} style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
                     <p className={styles.paragraph}>The Prevention Generation is a new digital experience focused on delivering personalized health and wellness content from holistic and conventional medical professionals. You pick the “health tag” topics that you want to follow, and viola, you will have a personalized feed of vetted health content. You will also have a trending health post feed, which features all of the content in the platform for you to explore and discover.</p>
                     <p className={styles.paragraph}>Our chief medical and holistic officers, Dr. Aister and Dr. Pavlik, serve as the editor-in-chief for each video, article, post, and podcast you find on the site, all of which are provided by the AHWA Foundation. We also offer a unique ability on the Prevention Generation for you to find and follow health professionals and receive their content posts through your feed.</p>
                     <p className={styles.paragraph}>Finally, we bring on suppliers serving the prevention generation (health & wellness companies), delivering exclusive content and solutions that are relevant to the health tags and topics that you follow. What some of our users call the “magic” of our approach is the ability for us to deliver these suppliers to your feed without a bunch of annoying advertising and flashing banners.</p>
+                    <ActionButton className={styles.actionButton} onClick={() => {setPage('signup'); setOpen(true)}}>sign up today to personalize your posts!</ActionButton>
                 </div>
-                {/* <div className={styles.tags}>
-                    { user && user.tags.filter(tag => article.fields.tags.includes(tag) || tag === article.fields.primaryTag).length > 0 && <p style={{margin: '10px 0'}}>Tap for recommended posts on the tags you follow</p> }
+                <div className={styles.tags}>
+                    <Tag link name="Healthy"/>
+                    <Tag link name="Good Life"/>
+                    <Tag link name="Wellness"/>
+                    {/* { user && user.tags.filter(tag => article.fields.tags.includes(tag) || tag === article.fields.primaryTag).length > 0 && <p style={{margin: '10px 0'}}>Tap for recommended posts on the tags you follow</p> }
                     { user && user.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
                     {user && user.tags.filter(tag => article.fields.tags.includes(tag)).map(tag => <Tag link key={tag} name={tag} />)}
                     <p style={{margin: '10px 0'}}>Tap for recommended posts on the tags you don&apos;t follow</p>
                     { !user?.tags.includes(article.fields.primaryTag) && <Tag link name={article.fields.primaryTag} />}
-                    {article.fields.tags.map(tag => <Tag link key={tag} name={tag} />)}
-                </div> */}
+                    {article.fields.tags.map(tag => <Tag link key={tag} name={tag} />)} */}
+                </div>
             </div>
             {/* { props.similarArticles &&
                 props.similarArticles.length !== 0 &&

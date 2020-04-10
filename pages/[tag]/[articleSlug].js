@@ -108,11 +108,11 @@ function Article(props) {
                 <div className={styles.authorModule}>
                     { !props.reviewedBy &&
                     <>
-                        <Link as={props.author.type === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                        <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
                             <img className={styles.cursor} src={author.image} />
                         </Link>
                         <div>
-                            <Link as={props.author.type === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                            <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
                                 <span className={styles.cursor} style={{color: "#30373B", textDecoration: 'underline'}}>{authorTitle}</span>
                             </Link>
                             <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
