@@ -191,6 +191,9 @@
 	top: 0;
 	left: 0;
 }
+.actionButton {
+	align-self: center;
+}
 @media only screen and (max-width:600px){
 	.core {
 		width: 100%;

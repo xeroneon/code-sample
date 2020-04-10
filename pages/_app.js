@@ -11,7 +11,6 @@ import 'public/reset.css';
 import 'cropperjs/dist/cropper.css';
 import './globalStyles.css';
 
-import 'flickity/css/flickity.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 // Contexts
