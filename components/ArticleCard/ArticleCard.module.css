@@ -3,6 +3,11 @@
     height: 450px;
     padding: 20px;
     position: relative;
+    display: inline-block;
+}
+
+.wrapper {
+    display: flex;
 }
 
 .root:hover {

@@ -13,22 +13,23 @@ function ArticleCard(props) {
     return (
         <>
             {/* <Link as={`/${tagLink}/${props.slug}`} href="/[tag]/[articleSlug]"> */}
-            <div className={styles.root} onClick={(e) => {e.stopPropagation(); Router.push(`/${tagLink}/${props.slug}`)}}>
-                <div className={styles.thumbnail}>
-                    <img src={props.featuredImage} className={styles.thumbnailImage}/>
-                </div>
-                { props.type === 'provider' &&
+            <div className={styles.wrapper} onClick={(e) => {e.stopPropagation(); Router.push(`/${tagLink}/${props.slug}`)}}>
+                <div className={styles.root}>
+                    <div className={styles.thumbnail}>
+                        <img src={props.featuredImage} className={styles.thumbnailImage}/>
+                    </div>
+                    { props.type === 'provider' &&
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/provider/${props.authorName}/${props.authorCity}`)}}/>
-                }
-                { props.type === 'supplier' && 
+                    }
+                    { props.type === 'supplier' && 
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/supplier/${props.companyName}`)}}/>
-                }
-                <div className={styles.tags}>
-                    {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
-                    {!sponsor && <Tag link name={props.primaryTag}/>}
-                    {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
-                </div>
-                {sponsor &&
+                    }
+                    <div className={styles.tags}>
+                        {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
+                        {!sponsor && <Tag link name={props.primaryTag}/>}
+                        {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)}
+                    </div>
+                    {sponsor &&
                     <span className={styles.sponsor}>
                         This post is sponsored by&nbsp;
                         
@@ -37,7 +38,8 @@ function ArticleCard(props) {
                         </b>
                         
                     </span>}
-                <h4 className={styles.title}>{props.title}</h4>
+                    <h4 className={styles.title}>{props.title}</h4>
+                </div>
             </div>
             {/* </Link> */}
         </>
