@@ -29,6 +29,7 @@ router.post("/create", async (req, res) => {
                             }
                         })
                         item.update();
+                        item.publish();
                     })
                 res.status(200); res.end();
             })

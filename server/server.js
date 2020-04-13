@@ -1,5 +1,6 @@
 const express = require("express");
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, `.env.${process.env.NODE_DEV}`)});
 const next = require("next");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 3000;

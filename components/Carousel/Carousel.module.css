@@ -4,8 +4,9 @@
     overflow-x: auto;
     display: flex;
     position: relative;
-    top: -100px;
+    top: -130px;
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 .root::-webkit-scrollbar {    display: none;}
@@ -48,6 +49,7 @@
 
 .wrapper {
     width: 100%;
+    /* height: 500px; */
 }
 
 .header {

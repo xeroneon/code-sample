@@ -5,7 +5,8 @@
 
 const webpack = require("webpack");
 // Initialize doteenv library
-require("dotenv").config();
+const path = require('path');
+require("dotenv").config({ path: path.join(__dirname, `.env.${process.env.NODE_DEV}`)});
 
 module.exports = {
     webpack: config => {

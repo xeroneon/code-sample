@@ -12,14 +12,18 @@ import ActionButton from "components/ActionButton/ActionButton";
 // import GreyButton from "components/GreyButton/GreyButton";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
+import { ModalContext } from 'contexts/ModalProvider';
 
 
 function Provider(props) {
 
     const { user, setUser } = useContext(UserContext);
+    const { setOpen, setPage } = useContext(ModalContext);
 
     async function handleFollow() {
         if (!user) {
+            setOpen(true);
+            setPage('signup')
             return;
         }
 
@@ -135,8 +139,8 @@ function Provider(props) {
 
                 </div>
             </div>
-            <div className={styles.header}><h2>{[`Our `, <span key="partners"> Practice&apos;s </span>, <br key="xcnmbv"/>, "specialties" ]}</h2></div>
-            <div className={styles.specialtyWrapper}>
+            <Carousel header={[`My `, <span key="partners"> Practice </span>, <br key="xcnmbv"/>, "specialties" ]}>
+                {/* <div className={styles.specialtyWrapper}> */}
                 {props.specialties.map(specialty => {
                     console.log(specialty)
                     if (specialty.fields.specialtyName === props.provider.specialty.name) {
@@ -151,9 +155,10 @@ function Provider(props) {
                     })
                  
                 })}
-            </div>
+                {/* </div> */}
+            </Carousel>
 
-            <Carousel header={["Our ", <span key="sfdgnhdfgn"> Practice&apos;s </span>, <br key="dkfjvb"/>, "products"]}>
+            <Carousel header={["My ", <span key="sfdgnhdfgn"> Practice&apos;s </span>, <br key="dkfjvb"/>, "products"]}>
                 {props.products.map(product => {
                     const authorName = [props.provider.name, props.provider.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -178,7 +183,7 @@ function Provider(props) {
                 })}
             </Carousel>
 
-            { props.articles.length > 0 && <Carousel header={["Our ", <span key="sfdgnhdfgn"> Health </span>, <br key="dkfjhgb"/>, 'posts']}>
+            { props.articles.length > 0 && <Carousel header={["My ", <span key="sfdgnhdfgn"> Health </span>, <br key="dkfjhgb"/>, 'posts']}>
                 {props.articles.map(article => {
                     const authorName = [props.provider.name, props.provider.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))

@@ -20,6 +20,18 @@ router.get("/search", async (req, res) => {
         results: entries.items
     })
 });
+router.get("/", async (req, res) => {
+    const { specialtyName } = req.query
+    const entries = await client.getEntries({
+        content_type: 'specialty',
+        'sys.revision[gte]': 1,
+        include: 10,
+        'fields.specialtyName': specialtyName
+    })
+    res.send({
+        results: entries.items
+    })
+});
 
 
 

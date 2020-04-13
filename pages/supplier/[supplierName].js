@@ -11,15 +11,19 @@ import Tag from "components/Tag/Tag";
 // import GreyButton from "components/GreyButton/GreyButton";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
+import { ModalContext } from 'contexts/ModalProvider';
 
 
 
 function Supplier(props) {
     const { supplier } = props;
     const { user, setUser } = useContext(UserContext);
+    const { setOpen, setPage } = useContext(ModalContext);
 
     async function handleFollow() {
         if (!user) {
+            setOpen(true);
+            setPage('signup')
             return;
         }
 
@@ -109,7 +113,7 @@ function Supplier(props) {
                 </div>
             </div> */}
 
-            <Carousel header={["Our ", <span key="sfdgnhdfgn"> Health </span>,<br key="woirety"/>, 'products']}>
+            <Carousel header={["Our ", <span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
                 {props.products.map(product => {
                     const authorName = [props.supplier.name, props.supplier.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -134,7 +138,7 @@ function Supplier(props) {
                 })}
             </Carousel>
 
-            { props.articles.length > 0 && <Carousel header={["Our ", <span key="sfdgnhdfgn"> health </span>, <br key="oritu"/>, 'posts']}>
+            { props.articles.length > 0 && <Carousel header={["Our ", <span key="sfdgnhdfgn"> posts </span>, <br key="oritu"/>]}>
                 {props.articles.map(article => {
                     const authorName = [supplier.name, supplier.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
