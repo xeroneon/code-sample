@@ -6,6 +6,16 @@ import ActionButton from 'components/ActionButton/ActionButton'
 import { ModalContext } from 'contexts/ModalProvider';
 import Tag from 'components/Tag/Tag'
 
+function compare( a, b ) {
+    if ( a.name < b.name ){
+        return -1;
+    }
+    if ( a.name > b.name ){
+        return 1;
+    }
+    return 0;
+}
+
 function TagPicker() {
 
     const { form, setForm, setPage } = useContext(ModalContext);
@@ -31,7 +41,7 @@ function TagPicker() {
 
     useEffect(() => {
         fetch('get',`/api/tags/all`).then(res => {
-            setTags(res.data.tags)
+            setTags(res.data.tags.sort(compare))
         });
         fetch('get',`/api/tags/trending`).then(res => {
             setTrending(res.data.tags)

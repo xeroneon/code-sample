@@ -17,6 +17,7 @@ function ArticleCard() {
                         {/* {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
                     {!sponsor && <Tag link name={props.primaryTag}/>}
                     {props.tags.slice(0,sponsor ? 1 : 2).map(tag => <Tag link key={tag} name={tag}/>)} */}
+                        <Tag link name="Awesome"/>
                         <Tag link name="Healthy"/>
                         <Tag link name="Good Life"/>
                         <Tag link name="Wellness"/>

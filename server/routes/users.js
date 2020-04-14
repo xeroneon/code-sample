@@ -4,6 +4,7 @@ const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
 const { managementClient } = contentful;
 const axios = require('axios');
+// const mongoose = require('mongoose');
 
 router.post("/create", async (req, res) => {
     try {
@@ -104,7 +105,7 @@ router.get("/", async (req, res) => {
 });
 router.get("/find", async (req, res) => {
     try {
-        const user = await User.findOne({...req.body}).select("-password");
+        const user = await User.findOne({...req.query}).select("-password");
         return res.status(200).send({
             success: true,
             user
@@ -306,6 +307,58 @@ router.delete('/', async (req, res) => {
         return res.status(500).send({
             success: false,
             message: "Error deleting user",
+            error: e
+        })
+    }
+})
+
+router.post('/contributor', async (req, res) => {
+    const { name, title, tags, longBio, shortBio, website, email } = req.body.fields
+    try {
+        const modelDoc = new User(
+            {
+            // _id: mongoose.Types.ObjectId(req.body.sys.id),
+                name: name['en-US'],
+                email: email['en-US'],
+                title: title['en-US'],
+                tags: tags['en-US'],
+                bio: longBio['en-US'],
+                shortBio: shortBio['en-US'],
+                website: website['en-US'],
+                accountType: 'contributor'
+            }
+        );
+
+        const user = await User.findOneAndUpdate(
+            {email: email['en-US']}, // find a document with that filter
+            modelDoc, // document to insert when nothing was found
+            {upsert: true, new: true, runValidators: true}
+        );
+
+        const environment = await managementClient();
+        const entry = await environment.createEntry('author', {
+            fields: {
+                authorId: {
+                    'en-US': user._id
+                },
+                authorName: {
+                    'en-US': user.name
+                },
+                companyName: {
+                    'en-US': user.name
+                }
+            }
+        });
+        entry.publish();
+        // console.log(user)
+
+        res.status(200).send({
+            user
+        })
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error creating or updating user",
             error: e
         })
     }

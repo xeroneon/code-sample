@@ -6,10 +6,15 @@ import PartnerCard from 'components/PartnerCard/PartnerCard';
 
 
 function Specialty(props) {
+    console.log(props.specialty)
     return (
         <>
             <div className={styles.root}>
-                <div className={styles.header}><h2>{props.specialty}</h2></div><br/>
+                <div className={styles.headerWrapper}>
+                    <div className={styles.header}><h2>{props.specialty.fields.specialtyName}</h2></div><br/>
+                    <img src={`https:${props.specialty.fields.featuredImage.fields.file.url}`} />
+                </div>
+                <p className={styles.description}>As you search for specialties on the Prevention Generation, we are working in the background to optimize your search around your zip code--showing those specialists in your neighborhood.  You can then tap on each profile to learn more about the conventional or holistic providers near you.</p>
                 {console.log(props.providers)}
                 <div className={styles.articleWrapper}>
                     {props.providers.map(partner => {
@@ -38,9 +43,11 @@ Specialty.getInitialProps = async (ctx) => {
     const { specialtyName } = ctx.query;
     const formattedSpecialty = specialtyName.replace(/-/g, ' ').replace(/_/g, '/')
     const res = await fetch('get',`/api/providers/specialty?specialty=${formattedSpecialty}`);
+    const specialty = await fetch('get', `/api/specialties?name=${formattedSpecialty}`)
     return {
         providers: res.data.providers,
-        specialty: formattedSpecialty
+        // specialty: formattedSpecialty,
+        specialty: specialty.data.results[0]
     }
 }
 

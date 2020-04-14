@@ -4,11 +4,19 @@ import fetch from 'helpers/fetch';
 import styles from './TagPage.module.css';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import { UserContext } from 'contexts/UserProvider';
+import { ModalContext } from 'contexts/ModalProvider';
+
 
 
 function Provider(props) {
     const { user, setUser } = useContext(UserContext);
+    const { setOpen, setPage } = useContext(ModalContext);
     async function toggleFollow() {
+        if (!user) {
+            setOpen(true);
+            setPage('signup')
+            return;
+        }
         const body = {
             email: user.email,
             updates: {

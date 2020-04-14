@@ -102,6 +102,7 @@ function Article() {
                     <ActionButton className={styles.actionButton} onClick={() => {setPage('signup'); setOpen(true)}}>sign up today to personalize your posts!</ActionButton>
                 </div>
                 <div className={styles.tags}>
+                    <Tag link name="Awesome"/>
                     <Tag link name="Healthy"/>
                     <Tag link name="Good Life"/>
                     <Tag link name="Wellness"/>

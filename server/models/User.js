@@ -7,7 +7,6 @@ const mongoosePaginate = require('mongoose-paginate');
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true,
         trim: true,
     },
     lastname: {
@@ -16,14 +15,12 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: true,
         trim: true,
         unique: true,
         lowercase: true,
     },
     password: {
         type: String,
-        required: true,
         bcrypt: true,
     },
     image: {
@@ -36,11 +33,9 @@ const UserSchema = new Schema({
     },
     zip: {
         type: String,
-        required: true
     },
     accountType: {
         type: String,
-        required: true
     },
     alerts: {
         type: Boolean,
@@ -48,7 +43,6 @@ const UserSchema = new Schema({
     },
     tags: {
         type: Array,
-        required: true
     },
     goals: {
         type: Array,
@@ -80,7 +74,8 @@ const UserSchema = new Schema({
     phone: String,
     prefix: String,
     suffix: String,
-    shortBio: String
+    shortBio: String,
+    title: String
     
 });
 UserSchema.index({ location: "2dsphere" });

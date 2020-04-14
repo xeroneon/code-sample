@@ -24,7 +24,7 @@ function Article(props) {
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
-
+    // console.log("render", reviewedBy)
     const options = {
         renderMark: {
             [MARKS.BOLD]: text => <b className={styles.bold}>{text}</b>,
@@ -35,6 +35,7 @@ function Article(props) {
         renderNode: {
             [BLOCKS.DOCUMENT]: (node, children) => <div className={styles.articleBody}>{children}</div>,
             [BLOCKS.PARAGRAPH]: (node, children) => {
+                // console.log(node);
                 const nodeType =
               node.content && node.content[1] && node.content[1].nodeType;
                 const uri =
@@ -77,8 +78,14 @@ function Article(props) {
             [BLOCKS.HR]: () => <hr className={styles.hr} />,
             [BLOCKS.EMBEDDED_ASSET]: (node) => <img src={`https:${node.data.target.fields.file.url}`} />,
             [INLINES.EMBEDDED_ENTRY]: (node) => {
-                console.log("NODE", node)
                 return <EmbeddedArticle id={node.data.target.sys.id}/>
+            },
+            [INLINES.HYPERLINK]: (node) => {
+                if (node.data.uri.match(new RegExp(/(preventiongeneration\.com)/))) {
+                    return <a href={node.data.uri}>{node.content[0].value}</a>
+                } else {
+                    return <a href={node.data.uri} target="_blank" rel="noopener noreferrer">{node.content[0].value}</a>
+                }
             }
         },
     };
@@ -106,7 +113,7 @@ function Article(props) {
                     {article.fields.title}
                 </div>
                 <div className={styles.authorModule}>
-                    { !props.reviewedBy &&
+                    { !reviewedBy &&
                     <>
                         <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
                             <img className={styles.cursor} src={author.image} />
@@ -118,7 +125,7 @@ function Article(props) {
                             <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
                         </div>
                     </> }
-                    { reviewedBy &&
+                    { reviewedBy && reviewedBy.name &&
                     <>
                         <a href={`/provider/${[reviewedBy.name, reviewedBy.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${reviewedBy.city}`} target="_blank" rel="noopener noreferrer">
                             <img className={styles.cursor} src={reviewedBy.image} />
@@ -194,19 +201,26 @@ function Article(props) {
 }
 
 Article.getInitialProps = async (ctx) => {
-    const {req} = ctx
-    let protocol = 'https:'
-    let host = req ? req.headers.host : window.location.hostname
-    if (host.indexOf('localhost') > -1) {
-        protocol = 'http:'
-    }
+    // const {req} = ctx
+    // let protocol = 'https:'
+    // let host = req ? req.headers.host : window.location.hostname
+    // if (host.indexOf('localhost') > -1) {
+    //     protocol = 'http:'
+    // }
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-        const reviewedBy = res?.data?.article?.fields?.reviewedBy?.fields?.authorId ? await fetch('get', '/api/users/find', {_id: res?.data?.article?.fields?.reviewedBy?.fields?.authorId}) : null;
+        res.data.article.fields?.reviewedBy?.fields?.authorId
         const errorCode = res.statusCode > 200 ? res.statusCode : false
-        const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
-        return { article: res.data.article, author: res.data.author, hostname: `${protocol}//${host}`, errorCode, similarArticles: similarArticles.data.articles, reviewedBy: reviewedBy?.data?.user };
+        const similarArticles = await fetch('get', `/api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
+        const reviewedBy = await fetch('get', `/api/users/find?_id=${res.data.article.fields?.reviewedBy?.fields?.authorId}`);
+        // console.log("reviewed", reviewedBy.data);
+        return { 
+            article: res.data.article,
+            author: res.data.author,
+            errorCode,
+            similarArticles: similarArticles.data.articles,
+            reviewedBy: reviewedBy.data.user || null };
     } catch(e) {
         return {errorCode: 404}
     }
@@ -216,7 +230,6 @@ Article.propTypes = {
     article: PropTypes.object,
     similarArticles: PropTypes.array,
     author: PropTypes.object,
-    hostname: PropTypes.string,
     errorCode: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.number

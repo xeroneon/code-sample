@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=production node server/server.js",
-    "dev": "NODE_DEV=dev nodemon server/server.js",
+    "dev": "NODE_DEV=dev NODE_ENV=dev nodemon server/server.js",
+    "prod": "NODE_DEV=production NODE_ENV=dev nodemon server/server.js",
     "build": "NODE_PATH=. npx next build"
   },
   "devDependencies": {

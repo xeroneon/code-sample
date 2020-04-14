@@ -18,7 +18,14 @@
 }
 
 
-
+.headerWrapper {
+    display: flex;
+    height: 150px;
+}
+.headerWrapper img {
+    height: 100%;
+    width: auto;
+}
 .header {
     text-transform: uppercase;
     display: inline-block;
@@ -52,9 +59,22 @@
     cursor: pointer;
 }
 
+.description {
+    width: 600px;
+    padding: 30px;
+}
+
 @media only screen and (max-width: 600px) {
     .headerBanner {
         width: 70vw;
+    }
+    .headerWrapper {
+        display: block;
+        height: auto;
+    }
+    .headerWrapper img {
+        height: auto;
+        width: 200px;
     }
     .header {
         max-width: 80vw;
@@ -65,5 +85,9 @@
     .articleWrapper {
         grid-template-columns: repeat(auto-fit, 280px);
         justify-items: center;
+    }
+    .description {
+        width: 100%;
+        box-sizing: border-box;
     }
   }
