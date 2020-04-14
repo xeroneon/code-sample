@@ -213,14 +213,15 @@ Article.getInitialProps = async (ctx) => {
         res.data.article.fields?.reviewedBy?.fields?.authorId
         const errorCode = res.statusCode > 200 ? res.statusCode : false
         const similarArticles = await fetch('get', `/api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
-        const reviewedBy = await fetch('get', `/api/users/find?_id=${res.data.article.fields?.reviewedBy?.fields?.authorId}`);
+        console.log(res.data.article.fields?.reviewedBy?.fields?.authorId)
+        const reviewedBy = res.data.article.fields?.reviewedBy?.fields?.authorId !== undefined ? await fetch('get', `/api/users/find?_id=${res.data.article.fields?.reviewedBy?.fields?.authorId}`) : null;
         // console.log("reviewed", reviewedBy.data);
         return { 
             article: res.data.article,
             author: res.data.author,
             errorCode,
             similarArticles: similarArticles.data.articles,
-            reviewedBy: reviewedBy.data.user || null };
+            reviewedBy: reviewedBy?.data?.user || null };
     } catch(e) {
         return {errorCode: 404}
     }
