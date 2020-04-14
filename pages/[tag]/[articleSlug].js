@@ -24,7 +24,7 @@ function Article(props) {
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
-    console.log("render", reviewedBy)
+    // console.log("render", reviewedBy)
     const options = {
         renderMark: {
             [MARKS.BOLD]: text => <b className={styles.bold}>{text}</b>,
@@ -78,12 +78,9 @@ function Article(props) {
             [BLOCKS.HR]: () => <hr className={styles.hr} />,
             [BLOCKS.EMBEDDED_ASSET]: (node) => <img src={`https:${node.data.target.fields.file.url}`} />,
             [INLINES.EMBEDDED_ENTRY]: (node) => {
-                console.log("NODE", node)
                 return <EmbeddedArticle id={node.data.target.sys.id}/>
             },
             [INLINES.HYPERLINK]: (node) => {
-                console.log(node)
-
                 if (node.data.uri.match(new RegExp(/(preventiongeneration\.com)/))) {
                     return <a href={node.data.uri}>{node.content[0].value}</a>
                 } else {
@@ -116,7 +113,7 @@ function Article(props) {
                     {article.fields.title}
                 </div>
                 <div className={styles.authorModule}>
-                    { !props.reviewedBy &&
+                    { !reviewedBy &&
                     <>
                         <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
                             <img className={styles.cursor} src={author.image} />
@@ -213,11 +210,17 @@ Article.getInitialProps = async (ctx) => {
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
+        res.data.article.fields?.reviewedBy?.fields?.authorId
         const errorCode = res.statusCode > 200 ? res.statusCode : false
-        const reviewedBy = await fetch('get', '/api/users/find', {_id: res.data.article.fields?.reviewedBy?.fields?.authorId});
-        console.log("reviewed", reviewedBy.data);
-        const similarArticles = await fetch('get', `api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
-        return { article: res.data.article, author: res.data.author, errorCode, similarArticles: similarArticles.data.articles, reviewedBy: reviewedBy.data?.user || null };
+        const similarArticles = await fetch('get', `/api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
+        const reviewedBy = await fetch('get', `/api/users/find?_id=${res.data.article.fields?.reviewedBy?.fields?.authorId}`);
+        // console.log("reviewed", reviewedBy.data);
+        return { 
+            article: res.data.article,
+            author: res.data.author,
+            errorCode,
+            similarArticles: similarArticles.data.articles,
+            reviewedBy: reviewedBy.data.user || null };
     } catch(e) {
         return {errorCode: 404}
     }

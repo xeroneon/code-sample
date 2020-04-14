@@ -105,7 +105,7 @@ router.get("/", async (req, res) => {
 });
 router.get("/find", async (req, res) => {
     try {
-        const user = await User.findOne({...req.body}).select("-password");
+        const user = await User.findOne({...req.query}).select("-password");
         return res.status(200).send({
             success: true,
             user
