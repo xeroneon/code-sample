@@ -17,6 +17,7 @@ const cookieParser = require('cookie-parser');
 const basicAuth = require('express-basic-auth');
 const expressSitemapXml = require('express-sitemap-xml');
 const getUrls = require('./routes/sitemap');
+const enforce = require('express-sslify');
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
@@ -102,6 +103,9 @@ nextApp.prepare().then(() => {
     app.use("/api/payments", require("./routes/payments"));
     app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));
     app.use("/api/specialties", require("./routes/specialties"));
+    if (process.env.NODE_ENV === 'production') {
+        app.use(enforce.HTTPS({ trustProtoHeader: true }));
+    }
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });
