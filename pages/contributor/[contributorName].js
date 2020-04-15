@@ -94,7 +94,7 @@ function Contributor(props) {
 
             { props.products.length > 0 && <Carousel header={["My ", <span key="sfdgnhdfgn"> health </span>, <br key="dkfjvb"/>, "products"]}>
                 {props.products.map(product => {
-                    const authorName = props.contributor.name.toLowerCase().replace(/\s/g, "_");
+                    const authorName = props.contributor.name.replace(/\s/g, "_");
                     return (
                         <ProductCard
                             key={product.sys.id}

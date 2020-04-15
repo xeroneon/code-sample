@@ -14,7 +14,7 @@ function TrendingCarousel(props) {
                 { !user && <WelcomeArticle key='welcome' /> }
                 {props.items.map(article => {
                     
-                    const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.toLowerCase().replace(/\s/g, '-');
+                    const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                     return <ArticleCard 
                         key={article.sys.id}
                         id={article.sys.id}

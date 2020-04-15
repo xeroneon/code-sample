@@ -60,7 +60,7 @@ function Article() {
     return (
         <>
             <Head>
-                <title>Welcome to the prevention generation!</title>
+                <title>Welcome to The Prevention Generation!</title>
                 <meta property="og:title" content='Welcome to the prevention generation!' />
                 <meta property="og:url" content={`${process.env.DOMAIN_NAME}/welcome`} />
                 <meta property="og:image" content={`/images/welcome-image.png`} />
