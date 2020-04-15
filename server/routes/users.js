@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
-const { managementClient } = contentful;
+const { client, managementClient } = contentful;
 const axios = require('axios');
 // const mongoose = require('mongoose');
 
@@ -313,8 +313,9 @@ router.delete('/', async (req, res) => {
 })
 
 router.post('/contributor', async (req, res) => {
-    const { name, title, tags, longBio, shortBio, website, email } = req.body.fields
+    const { name, title, tags, longBio, shortBio, website, email, profileImage } = req.body.fields
     try {
+        const image = await client.getAsset(profileImage['en-US'].sys.id)
         const modelDoc = new User(
             {
             // _id: mongoose.Types.ObjectId(req.body.sys.id),
@@ -325,7 +326,8 @@ router.post('/contributor', async (req, res) => {
                 bio: longBio['en-US'],
                 shortBio: shortBio['en-US'],
                 website: website['en-US'],
-                accountType: 'contributor'
+                accountType: 'contributor',
+                image: `https:${image.fields.file.url}`
             }
         );
 

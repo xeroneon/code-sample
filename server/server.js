@@ -99,6 +99,7 @@ nextApp.prepare().then(() => {
     app.use("/api/products", require("./routes/products"));
     app.use("/api/uploads", require("./routes/uploads"));
     app.use("/api/providers", require("./routes/providers"));
+    app.use("/api/contributors", require("./routes/contributors"));
     app.use("/api/suppliers", require("./routes/suppliers"));
     app.use("/api/payments", require("./routes/payments"));
     app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));

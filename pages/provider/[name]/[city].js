@@ -158,7 +158,7 @@ function Provider(props) {
                 {/* </div> */}
             </Carousel>
 
-            <Carousel header={["My ", <span key="sfdgnhdfgn"> Practice&apos;s </span>, <br key="dkfjvb"/>, "products"]}>
+            { props.products.length > 0 && <Carousel header={["My ", <span key="sfdgnhdfgn"> Practice&apos;s </span>, <br key="dkfjvb"/>, "products"]}>
                 {props.products.map(product => {
                     const authorName = [props.provider.name, props.provider.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -181,7 +181,7 @@ function Provider(props) {
                         />
                     );
                 })}
-            </Carousel>
+            </Carousel>}
 
             { props.articles.length > 0 && <Carousel header={["My ", <span key="sfdgnhdfgn"> Health </span>, <br key="dkfjhgb"/>, 'posts']}>
                 {props.articles.map(article => {
