@@ -24,6 +24,9 @@ function ArticleCard(props) {
                         { props.type === 'supplier' && 
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/supplier/${props.companyName}`)}}/>
                         }
+                        { props.type === 'contributor' && 
+                    <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/contributor/${props.authorName}`)}}/>
+                        }
                         <div className={styles.tags}>
                             {sponsor && <Tag sponsored link key={sponsor.sponsoredTag} name={sponsor.sponsoredTag}/>}
                             {!sponsor && <Tag link name={props.primaryTag}/>}

@@ -13,7 +13,8 @@ function TrendingCarousel(props) {
             <Carousel header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
                 { !user && <WelcomeArticle key='welcome' /> }
                 {props.items.map(article => {
-                    const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+                    
+                    const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.toLowerCase().replace(/\s/g, '-');
                     return <ArticleCard 
                         key={article.sys.id}
                         id={article.sys.id}

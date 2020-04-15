@@ -113,7 +113,7 @@ function Supplier(props) {
                 </div>
             </div> */}
 
-            <Carousel header={["Our ", <span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
+            { props.products.length > 0 && <Carousel header={["Our ", <span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
                 {props.products.map(product => {
                     const authorName = [props.supplier.name, props.supplier.lastname]
                         .map(name => name.toLowerCase().replace(/\s/g, "_"))
@@ -136,7 +136,7 @@ function Supplier(props) {
                         />
                     );
                 })}
-            </Carousel>
+            </Carousel>}
 
             { props.articles.length > 0 && <Carousel header={["Our ", <span key="sfdgnhdfgn"> posts </span>, <br key="oritu"/>]}>
                 {props.articles.map(article => {
