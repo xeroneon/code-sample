@@ -25,6 +25,7 @@ function Nav() {
                     return
                 }
                 setUser(res.data.user);
+                localStorage.setItem('loggedIn', true)
             });
         }
     }, [])
@@ -37,6 +38,7 @@ function Nav() {
         const res = await fetch('get', '/api/users/logout')
         if (res.status === 200) {
             setUser(null);
+            localStorage.setItem('loggedIn', false)
             Router.push('/')
         }
     }

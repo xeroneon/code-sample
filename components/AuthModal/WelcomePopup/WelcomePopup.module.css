@@ -1,0 +1,47 @@
+.wrapper {
+    width: 100%;
+    height: auto;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+
+.wrapper form {
+    padding: 30px;
+}
+
+.header {
+    width: 100%;
+    padding: 30px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box; 
+}
+
+.buttons {
+    display: flex;
+    flex-grow: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.guest {
+    color: #143968;
+}
+.guest:hover {
+    cursor: pointer;
+}
+.login>span {
+    color: #143968;
+}
+.login {
+    cursor: pointer;
+}
+.buttons > * {
+    margin-top: 25px;
+}
+
+.error {
+    color: #D34240;
+    padding-left: 20px;
+}

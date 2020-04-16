@@ -73,6 +73,7 @@ function ImageUpload(props) {
             props.setOpen(false);
             setError(null);
             setUser(res.data.user);
+            localStorage.setItem('loggedIn', true)
             setLoading(false);
         })
     }

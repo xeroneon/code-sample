@@ -15,16 +15,39 @@ import Carousel from 'components/Carousel/Carousel';
 import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
+import usePageViews from 'hooks/usePageViews';
 
 function Article(props) {
     if (props.errorCode) {
         return <Error statusCode={props.errorCode} />
     }
+    usePageViews();
     const { user } = useContext(UserContext);
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
     // console.log("render", reviewedBy)
+    const authorAs = () => {
+        switch(author.accountType) {
+        case 'provider':
+            return `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}`;
+        case 'supplier':
+            return `/supplier/${author.companyName}`;
+        case 'contributor':
+            return `/contributor/${author.name.replace(/\s/g, '-')}`;
+        default: return ''
+        }
+    }
+    const authorHref = () => {
+        switch(author.accountType) {
+        case 'provider':
+            return `/provider/[name]/[city]`;
+        case 'supplier':
+            return '/supplier/[supplierName]';
+        case 'contributor': return `/contributor/[contributorName]`;
+        default: return ''
+        }
+    }
     const options = {
         renderMark: {
             [MARKS.BOLD]: text => <b className={styles.bold}>{text}</b>,
@@ -115,11 +138,11 @@ function Article(props) {
                 <div className={styles.authorModule}>
                     { !reviewedBy &&
                     <>
-                        <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                        <Link as={authorAs()} href={authorHref()}>
                             <img className={styles.cursor} src={author.image} />
                         </Link>
                         <div>
-                            <Link as={props.author.accountType === 'provider' ? `/provider/${[author.name, author.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-')}/${author.city}` : `/supplier/${author.companyName}`} href={author.accountType === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+                            <Link as={authorAs()} href={authorHref()}>
                                 <span className={styles.cursor} style={{color: "#30373B", textDecoration: 'underline'}}>{authorTitle}</span>
                             </Link>
                             <span>{moment(article.sys.createdAt).format("MMM DD, YYYY")}</span>
@@ -178,7 +201,7 @@ function Article(props) {
                 props.similarArticles.length !== 0 &&
                 <Carousel header={[`Curated `, <span key="sfdgnhdfgn"> Health </span>, <br key="sdkjfbn"/>, "posts" ]}>
                     {props.similarArticles.filter(item => item.fields.slug !== props.article.fields.slug).map(article => {
-                        const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+                        const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                         return <ArticleCard 
                             key={article.sys.id}
                             id={article.sys.id}
