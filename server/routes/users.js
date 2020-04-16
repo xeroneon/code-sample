@@ -313,7 +313,7 @@ router.delete('/', async (req, res) => {
 })
 
 router.post('/contributor', async (req, res) => {
-    const { name, title, tags, longBio, shortBio, website, email, profileImage } = req.body.fields
+    const { name, title, tags, longBio, shortBio, website, email, profileImage, password } = req.body.fields
     try {
         const image = await client.getAsset(profileImage['en-US'].sys.id)
         const modelDoc = 
@@ -327,36 +327,60 @@ router.post('/contributor', async (req, res) => {
                 shortBio: shortBio['en-US'],
                 website: website['en-US'],
                 accountType: 'contributor',
-                image: `https:${image.fields.file.url}`
+                image: `https:${image.fields.file.url}`,
+                password: password['en-US']
             }
         ;
 
-        const user = await User.findOneAndUpdate(
-            {email: email['en-US']}, // find a document with that filter
-            modelDoc, // document to insert when nothing was found
-            {upsert: true, new: true, runValidators: true}
+        const user = await User.findOne(
+            {email: email['en-US']}
         );
 
-        const environment = await managementClient();
-        const entry = await environment.createEntry('author', {
-            fields: {
-                authorId: {
-                    'en-US': user._id
-                },
-                authorName: {
-                    'en-US': user.name
-                },
-                companyName: {
-                    'en-US': user.name
+        if (user === null) {
+            const newUser = await User.create({...modelDoc});
+            // console.log(newUser)
+            const environment = await managementClient();
+            const entry = await environment.createEntry('author', {
+                fields: {
+                    authorId: {
+                        'en-US': newUser._id
+                    },
+                    authorName: {
+                        'en-US': newUser.name
+                    },
+                    companyName: {
+                        'en-US': newUser.name
+                    }
                 }
-            }
-        });
-        entry.publish();
+            });
+            entry.publish();
+            return res.status(200).send({
+                user: newUser._doc
+            })
+        } else {
+            await User.update({email: email['en-US']}, {...modelDoc});
+            const updatedUser = await User.findOne({email: email['en-US']}).select('-password');
+            const environment = await managementClient();
+            const authors = await environment.getEntries({
+                content_type: 'author',
+                // 'sys.revision[gte]': 1,
+                include: 10,
+                'fields.authorId': updatedUser._id
+            })
+            authors.items[0].fields.companyName['en-US'] = updatedUser.name
+            authors.items[0].fields.authorName['en-US'] = updatedUser.name
+            await authors.items[0].update();
+            const entry = await environment.getEntry(authors.items[0].sys.id);
+            await entry.publish();
+
+            return res.status(200).send({
+                user: updatedUser
+            })
+        }
+
         // console.log(user)
 
-        res.status(200).send({
-            user
-        })
+
     } catch(e) {
         return res.status(500).send({
             success: false,
