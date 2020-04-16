@@ -35,6 +35,7 @@ function Login(props) {
                 return setError(res.data.message)
             } else {
                 setUser(res.data.user);
+                localStorage.setItem('loggedIn', true)
                 props.setOpen(false);
             }
         })

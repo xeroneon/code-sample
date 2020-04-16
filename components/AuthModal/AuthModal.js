@@ -7,6 +7,7 @@ import ImageUpload from './ImageUpload/ImageUpload';
 import TagPicker from './TagPicker/TagPicker';
 import SelectTier from './SelectTier/SelectTier';
 import Payment from './Payment/Payment';
+import WelcomePopup from './WelcomePopup/WelcomePopup';
 import styles from 'AuthModal.module.css';
 
 Modal.defaultStyles.overlay.backgroundColor = 'rgba(0,0,0,.5)';
@@ -33,6 +34,7 @@ function AuthModal() {
                 { page === 'image-upload' && <ImageUpload setOpen={setOpen}/> }
                 { page === 'select-tier' && <SelectTier setOpen={setOpen}/> }
                 { page === 'payment' && <Payment setOpen={setOpen}/> }
+                { page === 'welcome' && <WelcomePopup setOpen={setOpen}/> }
             </Modal>
         </>
     )

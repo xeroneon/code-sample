@@ -5,8 +5,8 @@ import ReactTooltip from 'react-tooltip'
 export const ModalContext = createContext()
 
 export function ModalProvider(props) {
-    const [ open, setOpen ] = useState(false);
-    const [ page, setPage ] = useState('signup')
+    const [ open, setOpen ] = useState(true);
+    const [ page, setPage ] = useState('welcome')
     const [ form, setForm ] = useState({tags: []})
 
     useEffect(() => {
