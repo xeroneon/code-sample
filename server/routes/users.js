@@ -316,7 +316,7 @@ router.post('/contributor', async (req, res) => {
     const { name, title, tags, longBio, shortBio, website, email, profileImage } = req.body.fields
     try {
         const image = await client.getAsset(profileImage['en-US'].sys.id)
-        const modelDoc = new User(
+        const modelDoc = 
             {
             // _id: mongoose.Types.ObjectId(req.body.sys.id),
                 name: name['en-US'],
@@ -329,7 +329,7 @@ router.post('/contributor', async (req, res) => {
                 accountType: 'contributor',
                 image: `https:${image.fields.file.url}`
             }
-        );
+        ;
 
         const user = await User.findOneAndUpdate(
             {email: email['en-US']}, // find a document with that filter
