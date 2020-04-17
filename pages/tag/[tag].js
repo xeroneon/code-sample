@@ -41,7 +41,7 @@ function Provider(props) {
                 { user && user.tags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
                 <div className={styles.articleWrapper}>
                     {props.articles.map(article => {
-                        const authorName = [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-');
+                        const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                         return <ArticleCard 
                             key={article.sys.id}
                             id={article.sys.id}
