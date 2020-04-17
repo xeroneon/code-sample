@@ -12,6 +12,8 @@ function SubmitContent(props) {
     const [ form, setForm ] = useState({
         tags: []
     });
+    const [ submitted, setSubmitted ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
     const { user } = useContext(UserContext);
 
 
@@ -24,6 +26,7 @@ function SubmitContent(props) {
     }
 
     async function submit() {
+        setLoading(true);
         try {
             const body = {
                 ...form,
@@ -35,7 +38,11 @@ function SubmitContent(props) {
                 setForm({
                     tags: []
                 })
+                setSubmitted(true);
+
+                // setTimeout( setSubmitted(false), 2000)
             }
+            setLoading(false);
         } catch(e) {
             console.log(e)
         }
@@ -57,23 +64,36 @@ function SubmitContent(props) {
             }))
         }
     }
+    function togglePrimaryTag(e, tag) {
+        e.persist();
+        setForm(state => ({
+            ...state,
+            primaryTag: tag
+        }))
+    }
 
     return (
         <>
             <div className='root'>
                 <form>
                     <Input type="text" name="title" value={form?.title} placeholder="Title*" onChange={handleChange} />
-                    <Input type="text" name="slug" value={form?.slug} placeholder="Slug*" onChange={handleChange} />
-                    <Input type="text" name="featuredImageCaption" value={form?.featuredImageCaption} placeholder="Featured Image Caption" onChange={handleChange} />
+                    {/* <Input type="text" name="slug" value={form?.slug} placeholder="Slug*" onChange={handleChange} /> */}
+                    {/* <Input type="text" name="featuredImageCaption" value={form?.featuredImageCaption} placeholder="Featured Image Caption" onChange={handleChange} /> */}
                     {/* <Input type="text" name="body" value={form?.body} placeholder="Body (Rich Text)" onChange={handleChange} /> */}
-                    <Input type="text" name="markdown" value={form?.markdown} placeholder="Markdown" onChange={handleChange} />
-                    <Input type="text" name="metaDescription" value={form?.metaDescription} placeholder="Meta Description" onChange={handleChange} />
-                    <Input type="text" name="primaryTag" value={form?.primaryTag} placeholder="Primary Tag*" onChange={handleChange} />
+                    <Input type="text" name="markdown" value={form?.markdown} placeholder="Body* (enter article content here)" onChange={handleChange} />
+                    {/* <Input type="text" name="metaDescription" value={form?.metaDescription} placeholder="Meta Description" onChange={handleChange} /> */}
+                    {/* <Input type="text" name="primaryTag" value={form?.primaryTag} placeholder="Primary Tag*" onChange={handleChange} /> */}
+                    <Input type="text" name="notes" value={form?.notes} placeholder="Notes* (notes to the editor)" onChange={handleChange} />
                     {/* <input type='checkbox' name='tags' value='a tag'>A Tag </input> */}
-                    <h4>Tags</h4>
+                    <h4>Choose primary tag</h4>
+                    {props.tags.map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
+                    <h4>Choose secondary tags</h4>
                     {props.tags.map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
                     <div className='submit'>
-                        <ActionButton onClick={submit}>Submit</ActionButton>
+                        <ActionButton onClick={submit}>{`${loading ? 'Loading...' : 'Submit'}`}</ActionButton>
+                    </div>
+                    <div className='submit'>
+                        <p id="submitted" className={`${submitted ? 'null' : 'hide'}`}>post has been submitted</p>
                     </div>
 
                 </form>
@@ -90,6 +110,12 @@ function SubmitContent(props) {
                 }
                 h4 {
                     margin-top: 30px;
+                }
+                #submitted {
+                    color: #64ae64;
+                }
+                .hide {
+                    display: none;
                 }
             `}</style>
         </>

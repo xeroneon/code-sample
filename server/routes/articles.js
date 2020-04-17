@@ -261,9 +261,6 @@ router.post("/create", async (req, res) => {
                 title: {
                     'en-US': req.body.title
                 },
-                slug: {
-                    'en-US': req.body.slug
-                },
                 featuredImageCaption: {
                     'en-US': req.body.featuredImageCaption
                 },
@@ -276,14 +273,8 @@ router.post("/create", async (req, res) => {
                         }
                     }
                 },
-                body: {
-                    'en-US': req.body.body
-                },
                 markdown: {
                     'en-US': req.body.markdown
-                },
-                metaDescription: {
-                    'en-US': req.body.metaDescription
                 },
                 primaryTag: {
                     'en-US': req.body.primaryTag
@@ -300,7 +291,12 @@ router.post("/create", async (req, res) => {
             from: process.env.EMAIL_FROM, // sender address
             to: process.env.EMAIL_TO, // list of receivers
             subject: `${authors.items[0].fields.companyName} has submitted a post`, // Subject line
-            html: `<p>View post <a target="_blank" href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/dev/entries/${entry.sys.id}">here</a></p>`// plain text body
+            html: `<p>View post <a target="_blank" href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/dev/entries/${entry.sys.id}">here</a></p>
+                
+            <br/>
+            <br/>
+            <p>${req.body.notes}</p>
+            `// plain text body
         };
 
         transporter.sendMail(mailOptions, function (err, info) {

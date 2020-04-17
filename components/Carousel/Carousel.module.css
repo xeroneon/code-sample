@@ -47,6 +47,10 @@
 
 }
 
+.disableArrow {
+    opacity: .5;
+}
+
 .wrapper {
     width: 100%;
     /* height: 500px; */
