@@ -86,6 +86,7 @@
     width: 100%;
     align-items: center;
     height: 50px;
+    margin: 10px 0;
 }
 
 .partner:hover {
@@ -95,7 +96,7 @@
 .partner img {
     height: 100%;
     width: auto;
-    border-radius: 2px;
+    border-radius: 500px;
     margin-right: 10px;
 }
 
