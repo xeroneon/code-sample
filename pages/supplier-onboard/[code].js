@@ -142,19 +142,27 @@ function Onboard(props) {
                     </div>
                 </div>
 
-                <Input type="text" name="companyName" value={form?.companyName} placeholder="Company Name*" onChange={handleChange} />
-                <textarea rows="5" placeholder='Company Overview'></textarea>
-                <Input type="text" name="email" value={form?.email} placeholder="Log In Email Address*" onChange={handleChange} />
-                <Input type="text" name="password" value={form?.password} placeholder="Log In Password*" onChange={handleChange} />
-                <Input type="text" name="website" value={form?.website} placeholder="Your Website to be Linked from Prevention Generation*" onChange={handleChange} />
-                <Input type="text" name="phone" value={form?.phone} placeholder="Your Company Phone Number" onChange={handleChange} />
+                <h4>Company Name*</h4>
+                <Input type="text" name="companyName" value={form?.companyName} placeholder="" onChange={handleChange} />
+                <h4>Company Overview</h4>
+                <textarea rows="5" placeholder=''></textarea>
+                <h4>Log In Email Address*</h4>
+                <Input type="text" name="email" value={form?.email} placeholder="" onChange={handleChange} />
+                <h4>Log In Password*</h4>
+                <Input type="text" name="password" value={form?.password} placeholder="" onChange={handleChange} />
+                <h4>Your Website to be Linked from Prevention Generation*</h4>
+                <Input type="text" name="website" value={form?.website} placeholder="" onChange={handleChange} />
+                <h4>Your Company Phone Number</h4>
+                <Input type="text" name="phone" value={form?.phone} placeholder="" onChange={handleChange} />
                 <h3>Applicable Health Tags</h3>
                 <div >
                     {props.tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
                 <h3>Contact Information</h3>
-                <Input type="text" name="name" value={form?.name} placeholder="First Name*" onChange={handleChange} />
-                <Input type="text" name="lastname" value={form?.lastname} placeholder="Last Name*" onChange={handleChange} />
+                <h4>First Name*</h4>
+                <Input type="text" name="name" value={form?.name} placeholder="" onChange={handleChange} />
+                <h4>Last Name*</h4>
+                <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
                 <span className='actionButton'>
                     <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
                 </span>
@@ -170,6 +178,9 @@ function Onboard(props) {
                 }
                 h1 {
                     margin-bottom: 20px;
+                }
+                h4 {
+                    margin-top: 30px;
                 }
 
                 textarea {
