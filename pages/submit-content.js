@@ -80,7 +80,8 @@ function SubmitContent(props) {
                     {/* <Input type="text" name="slug" value={form?.slug} placeholder="Slug*" onChange={handleChange} /> */}
                     {/* <Input type="text" name="featuredImageCaption" value={form?.featuredImageCaption} placeholder="Featured Image Caption" onChange={handleChange} /> */}
                     {/* <Input type="text" name="body" value={form?.body} placeholder="Body (Rich Text)" onChange={handleChange} /> */}
-                    <Input type="text" name="markdown" value={form?.markdown} placeholder="Body* (enter article content here)" onChange={handleChange} />
+                    {/* <Input type="text" name="markdown" value={form?.markdown} placeholder="Body* (enter article content here)" onChange={handleChange} /> */}
+                    <textarea col='10' placeholder='Body* (enter article content here)'></textarea>
                     {/* <Input type="text" name="metaDescription" value={form?.metaDescription} placeholder="Meta Description" onChange={handleChange} /> */}
                     {/* <Input type="text" name="primaryTag" value={form?.primaryTag} placeholder="Primary Tag*" onChange={handleChange} /> */}
                     <Input type="text" name="notes" value={form?.notes} placeholder="Notes* (notes to the editor)" onChange={handleChange} />
@@ -102,6 +103,7 @@ function SubmitContent(props) {
                 .root {
                     max-width: 1440px;
                     padding: 30px;
+                    margin: 0 auto;
                 }
                 .submit {
                     display: flex;
@@ -116,6 +118,25 @@ function SubmitContent(props) {
                 }
                 .hide {
                     display: none;
+                }
+                textarea {
+                    width: 100%;
+                    box-sizing: border-box;
+                    margin: 15px 0;
+                    font-size: 16px;
+                    line-height: 1.2em;
+                    color: #333;
+                    font-family: CircularStd;
+                    font-weight: 100;
+                    border: 1px solid lightgrey;
+                    padding: 10px 20px;
+                }
+                textarea:focus {
+                    border: 1px solid #225B91;
+                }
+                textarea::placeholder {
+                    font-size: 16px;
+                    color: #959595;
                 }
             `}</style>
         </>
