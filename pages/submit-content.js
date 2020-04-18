@@ -14,6 +14,7 @@ function SubmitContent(props) {
     });
     const [ submitted, setSubmitted ] = useState(false);
     const [ loading, setLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
     const { user } = useContext(UserContext);
 
 
@@ -27,6 +28,10 @@ function SubmitContent(props) {
 
     async function submit() {
         setLoading(true);
+        if (form.markdown.length < 1500 ) {
+            setLoading(false)
+            return setError('Body must be at least 1,500 characters')
+        }
         try {
             const body = {
                 ...form,
@@ -76,16 +81,12 @@ function SubmitContent(props) {
         <>
             <div className='root'>
                 <form>
-                    <Input type="text" name="title" value={form?.title} placeholder="Title*" onChange={handleChange} />
-                    {/* <Input type="text" name="slug" value={form?.slug} placeholder="Slug*" onChange={handleChange} /> */}
-                    {/* <Input type="text" name="featuredImageCaption" value={form?.featuredImageCaption} placeholder="Featured Image Caption" onChange={handleChange} /> */}
-                    {/* <Input type="text" name="body" value={form?.body} placeholder="Body (Rich Text)" onChange={handleChange} /> */}
-                    {/* <Input type="text" name="markdown" value={form?.markdown} placeholder="Body* (enter article content here)" onChange={handleChange} /> */}
-                    <textarea col='10' placeholder='Body* (enter article content here)'></textarea>
-                    {/* <Input type="text" name="metaDescription" value={form?.metaDescription} placeholder="Meta Description" onChange={handleChange} /> */}
-                    {/* <Input type="text" name="primaryTag" value={form?.primaryTag} placeholder="Primary Tag*" onChange={handleChange} /> */}
-                    <Input type="text" name="notes" value={form?.notes} placeholder="Notes* (notes to the editor)" onChange={handleChange} />
-                    {/* <input type='checkbox' name='tags' value='a tag'>A Tag </input> */}
+                    <h4>Title*</h4>
+                    <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
+                    <h4>Body* (enter article content here)   {form?.markdown?.length || 0}/12000</h4>
+                    <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea>
+                    <h4>Notes* (notes to the editor)</h4>
+                    <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
                     <h4>Choose primary tag</h4>
                     {props.tags.map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
                     <h4>Choose secondary tags</h4>
@@ -95,6 +96,9 @@ function SubmitContent(props) {
                     </div>
                     <div className='submit'>
                         <p id="submitted" className={`${submitted ? 'null' : 'hide'}`}>post has been submitted</p>
+                    </div>
+                    <div className='error'>
+                        <p id="error" className={`${error ? 'null' : 'hide'}`}>{error}</p>
                     </div>
 
                 </form>
@@ -122,6 +126,7 @@ function SubmitContent(props) {
                 textarea {
                     width: 100%;
                     box-sizing: border-box;
+                    min-height: 400px;
                     margin: 15px 0;
                     font-size: 16px;
                     line-height: 1.2em;
@@ -137,6 +142,10 @@ function SubmitContent(props) {
                 textarea::placeholder {
                     font-size: 16px;
                     color: #959595;
+                }
+                #error {
+                    color: #D34240;
+                    text-align: center;
                 }
             `}</style>
         </>
