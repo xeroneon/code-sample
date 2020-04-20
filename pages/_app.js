@@ -12,6 +12,7 @@ import 'cropperjs/dist/cropper.css';
 import './globalStyles.css';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 // Contexts
 import { UserProvider } from 'contexts/UserProvider';
