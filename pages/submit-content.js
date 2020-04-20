@@ -5,13 +5,22 @@ import ActionButton from 'components/ActionButton/ActionButton';
 import fetch from 'helpers/fetch';
 import Tag from 'components/Tag/Tag';
 import { UserContext } from 'contexts/UserProvider';
+import ReactMde from "react-mde";
+import * as Showdown from "showdown";
 
 
+const converter = new Showdown.Converter({
+    tables: true,
+    simplifiedAutoLink: true,
+    strikethrough: true,
+    tasklists: true
+});
 
 function SubmitContent(props) {
     const [ form, setForm ] = useState({
         tags: []
     });
+    const [selectedTab, setSelectedTab] = useState("write");
     const [ submitted, setSubmitted ] = useState(false);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
@@ -23,6 +32,13 @@ function SubmitContent(props) {
         setForm(state => ({
             ...state,
             [e.target.name]: e.target.value
+        }))
+    }
+
+    function handleMarkdownChange(value) {
+        setForm(state => ({
+            ...state,
+            markdown: value
         }))
     }
 
@@ -84,7 +100,16 @@ function SubmitContent(props) {
                     <h4>Title*</h4>
                     <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
                     <h4>Body* (enter article content here)   {form?.markdown?.length || 0}/12000</h4>
-                    <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea>
+                    {/* <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea> */}
+                    <ReactMde
+                        value={form?.markdown}
+                        onChange={handleMarkdownChange}
+                        selectedTab={selectedTab}
+                        onTabChange={setSelectedTab}
+                        generateMarkdownPreview={markdown =>
+                            Promise.resolve(converter.makeHtml(markdown))
+                        }
+                    />
                     <h4>Notes* (notes to the editor)</h4>
                     <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
                     <h4>Choose primary tag</h4>
@@ -116,6 +141,7 @@ function SubmitContent(props) {
                 }
                 h4 {
                     margin-top: 30px;
+                    margin-bottom: 10px;
                 }
                 #submitted {
                     color: #64ae64;
