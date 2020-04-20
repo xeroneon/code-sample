@@ -285,13 +285,13 @@ router.post("/create", async (req, res) => {
             }
         });
 
-        console.log(process.env.EMAIL_FROM)
+        // console.log(process.env.EMAIL_FROM)
 
         const mailOptions = {
             from: process.env.EMAIL_FROM, // sender address
             to: process.env.EMAIL_TO, // list of receivers
             subject: `${authors.items[0].fields.companyName} has submitted a post`, // Subject line
-            html: `<p>View post <a target="_blank" href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/dev/entries/${entry.sys.id}">here</a></p>
+            html: `<p>View post <a target="_blank" href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/${process.env.CONTENTFUL_DEV_ENVIRONMENT}/entries/${entry.sys.id}">here</a></p>
                 
             <br/>
             <br/>
