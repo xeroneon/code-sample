@@ -110,7 +110,7 @@ function SubmitContent(props) {
                             Promise.resolve(converter.makeHtml(markdown))
                         }
                     />
-                    <h4>Notes* (notes to the editor)</h4>
+                    <h4>Notes (notes to the editor)</h4>
                     <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
                     <h4>Choose primary tag</h4>
                     {props.tags.map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}

@@ -26,7 +26,8 @@ const upload = multer({
 
 router.post("/create", upload.single('image'), async (req, res) => {
     res.send({
-        imagePath: req.file.location
+        imagePath: req.file.location,
+        type: req.file.mimetype
     });
 });
 

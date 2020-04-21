@@ -1,6 +1,6 @@
 .root {
     width: 250px;
-    height: 315px;
+    height: 365px;
     padding: 20px;
     position: relative;
 }
@@ -17,7 +17,7 @@
 }
 
 .thumbnail {
-    height:190px;
+    height:250px;
     width: 100%;
     /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
 }

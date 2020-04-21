@@ -56,7 +56,8 @@ router.post("/create", async (req, res) => {
                 error: err
             }); }
             res.json({
-                user: {...user._doc, password: null}
+                user: {...user._doc, password: null},
+                success: true
             });
         });
     } catch (e) {
