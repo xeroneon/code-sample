@@ -48,6 +48,7 @@ function Onboard(props) {
     const [ productArray, setProductArray ] = useState([]);
     const [ productSrc, setProductSrc] = useState(undefined);
     const [ productTags, setProductTags ] = useState([]);
+    const [ newProduct, setNewProduct ] = useState(false);
     const productCropperRef = useRef(null);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
@@ -97,6 +98,7 @@ function Onboard(props) {
                     productLink: ''
                 }))
                 setProductSrc(undefined);
+                setNewProduct(false);
 
             } catch(e) {
                 return setError(true);
@@ -183,12 +185,12 @@ function Onboard(props) {
         fetch('post', "/api/users/create", body).then(res => {
             if (res.data.success) {
                 setUser(res.data.user);
+                setError(null);
+                localStorage.setItem('loggedIn', true)
+                setLoading(false);
+                Router.push('/');
                 fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
                     console.log(res);
-                    setError(null);
-                    localStorage.setItem('loggedIn', true)
-                    setLoading(false);
-                    Router.push('/');
                 })
             }
 
@@ -247,8 +249,26 @@ function Onboard(props) {
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
                 <h3>Add Products</h3>
+                <div className='product-wrapper'>
+                    {productArray.length > 0 && <h3>Products</h3>}
+                    {productArray.map(product => {
+                        return <div key={product.image} className='product-item'>
+                            <div className='product-item-info'>
+                                <img src={product.image} />
+                                <div>
+                                    <p>{product.productName}</p>
+                                    <br/>
+                                    <p>{product.productLink}</p>
+                                </div>
+                                <span style={{marginRight: '20px'}} onClick={() => removeProduct(product.productName)}><i className='material-icons-outlined'>close</i></span>
+                            </div>
+                            <div>{product.tags.map(tag => <Tag key={tag} name={tag}/>)}</div>
+                        </div>
+                        
+                    })}
+                </div>
                 <div className='product-dropzone-wrapper'>
-                    <Dropzone onDrop={acceptedFiles => {productDrop(acceptedFiles)}}>
+                    { newProduct && <Dropzone onDrop={acceptedFiles => {productDrop(acceptedFiles)}}>
                         {({getRootProps, getInputProps}) => (
                             <div {...getRootProps()} className='product-dropzone'>
                                 <input {...getInputProps()} />
@@ -259,7 +279,8 @@ function Onboard(props) {
                                 }
                             </div>
                         )}
-                    </Dropzone>
+                    </Dropzone> }
+                    { !newProduct && <div onClick={() => setNewProduct(true)} style={{marginTop: '10px'}} className='selectButton addButton'><i className='material-icons-outlined'>add_circle</i> &nbsp;Add Product</div>}
                     { productSrc && 
                     <>
                         <Cropper
@@ -279,24 +300,6 @@ function Onboard(props) {
                         <br/>
                         <div style={{margin: '0 auto'}} className='selectButton' onClick={productCrop}>Save</div>
                     </>}
-                    <div className='product-wrapper'>
-                        {productArray.length > 0 && <h3>Products</h3>}
-                        {productArray.map(product => {
-                            return <div key={product.image} className='product-item'>
-                                <div className='product-item-info'>
-                                    <img src={product.image} />
-                                    <div>
-                                        <p>{product.productName}</p>
-                                        <br/>
-                                        <p>{product.productLink}</p>
-                                    </div>
-                                    <span style={{marginRight: '20px'}} onClick={() => removeProduct(product.productName)}><i className='material-icons-outlined'>close</i></span>
-                                </div>
-                                <div>{product.tags.map(tag => <Tag key={tag} name={tag}/>)}</div>
-                            </div>
-                        
-                        })}
-                    </div>
                     {/* <div className='product-wrapper'>
                         <div className='product-item'>
                             <img src="https://via.placeholder.com/150" />
@@ -408,6 +411,12 @@ function Onboard(props) {
                     /* align-self: center; */
                     display: inline;
                     text-transform: uppercase;
+                    
+                }
+                .addButton {
+                    line-height: 15px;
+                    display: flex;
+                    align-items:center;
                 }
 
                 .selectButton:hover {
@@ -438,6 +447,9 @@ function Onboard(props) {
                     min-height: 100px;
                     align-items: center;
                     justify-content: space-between;
+                }
+                .product-item-info>span:hover {
+                    cursor: pointer;
                 }
                 .product-item>div>img {
                     height: 100%;
