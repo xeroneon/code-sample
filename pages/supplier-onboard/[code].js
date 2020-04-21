@@ -4,7 +4,7 @@ import Input from 'components/Input/Input';
 import fetch from 'helpers/fetch';
 import Tag from 'components/Tag/Tag';
 import { UserContext } from 'contexts/UserProvider';
-import { useDropzone } from 'react-dropzone';
+import Dropzone, {  useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import Cropper from 'react-cropper';
 import md5 from 'md5';
@@ -31,12 +31,24 @@ function compare( a, b ) {
 }
 
 function Onboard(props) {
+    // useEffect(() => {
+    //     if (props.code !== 'ZVK8KKYS'.toLowerCase()) Router.push('/')
+    // }, [])
+
+    // if (props.code !== 'ZVK8KKYS'.toLowerCase()) {
+    //     return Router.push('/');
+    // }
 
     const [ form, setForm ] = useState({
-        tags: []
+        tags: [],
+        accountType: 'supplier',
     });
     const { setUser } = useContext(UserContext);
     const [ src, setSrc ] = useState(undefined);
+    const [ productArray, setProductArray ] = useState([]);
+    const [ productSrc, setProductSrc] = useState(undefined);
+    const [ productTags, setProductTags ] = useState([]);
+    const productCropperRef = useRef(null);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
     const cropperRef = useRef(null);
@@ -48,6 +60,55 @@ function Onboard(props) {
         }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
+
+    const productDrop = useCallback(acceptedFiles => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            setProductSrc(e.target.result);
+        }
+        reader.readAsDataURL(acceptedFiles[0]);
+    }, [])
+
+    async function productCrop() {
+        const formData = new FormData();
+        if(productCropperRef && productCropperRef.current) {
+            const dataUri = productCropperRef.current.getCroppedCanvas().toDataURL()
+            const blob = dataURLtoBlob(dataUri)
+            formData.append('image', blob)
+            try {
+                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
+                    username: 'admin',
+                    password: process.env.BASIC_AUTH_PASS
+                }});
+                setProductArray(state => ([
+                    ...state,
+                    {
+                        image: res.data.imagePath,
+                        contentType: res.data.type,
+                        productName: form?.productName,
+                        productLink: form?.productLink,
+                        tags: productTags
+                    }
+                ]))
+                setProductTags([]);
+                setForm(state => ({
+                    ...state,
+                    productName: '',
+                    productLink: ''
+                }))
+                setProductSrc(undefined);
+
+            } catch(e) {
+                return setError(true);
+            }
+        }
+    }
+
+    function removeProduct(productName) {
+        const newArray = productArray.filter(item => item.productName !== productName);
+        setProductArray(newArray);
+    }
+
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, multiple: false})
 
     function handleChange(e) {
@@ -72,6 +133,22 @@ function Onboard(props) {
                 ...state,
                 tags: [...form.tags, tag]
             }))
+        }
+    }
+    function toggleProductTag(e, tag) {
+        e.persist();
+        const i = productTags.indexOf(tag);
+        if (i > -1 ) {
+            return setProductTags(state => ([
+                ...state,
+                tag
+            ]))
+
+        } else {
+            return setProductTags(state => ([
+                ...state,
+                tag
+            ]))
         }
     }
 
@@ -100,22 +177,28 @@ function Onboard(props) {
         const body = {
             ...form,
             image,
-            subActive: true
+            subActive: true,
+            accountType: 'supplier'
         }
         fetch('post', "/api/users/create", body).then(res => {
-            // if (form.accountType !== 'personal') {
-            //     setLoading(false);
-            //     setUser(res.data.user);
-            //     return setPage('select-tier');
-            // }
-            setError(null);
-            setUser(res.data.user);
-            localStorage.setItem('loggedIn', true)
-            setLoading(false);
-            Router.push('/');
+            if (res.data.success) {
+                setUser(res.data.user);
+                fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
+                    console.log(res);
+                    setError(null);
+                    localStorage.setItem('loggedIn', true)
+                    setLoading(false);
+                    Router.push('/');
+                })
+            }
+
         })
     }
 
+
+
+    
+    
     return (
         <>
             <div className='root'>
@@ -163,6 +246,71 @@ function Onboard(props) {
                 <Input type="text" name="name" value={form?.name} placeholder="" onChange={handleChange} />
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
+                <h3>Add Products</h3>
+                <div className='product-dropzone-wrapper'>
+                    <Dropzone onDrop={acceptedFiles => {productDrop(acceptedFiles)}}>
+                        {({getRootProps, getInputProps}) => (
+                            <div {...getRootProps()} className='product-dropzone'>
+                                <input {...getInputProps()} />
+                                {
+                                    isDragActive ?
+                                        <p>Drop the files here ...</p> :
+                                        <p>Drag and drop product image here or <br/><br/><div style={{marginTop: '10px'}} className='selectButton'>Select file</div></p>
+                                }
+                            </div>
+                        )}
+                    </Dropzone>
+                    { productSrc && 
+                    <>
+                        <Cropper
+                            src={productSrc}
+                            aspectRatio={1 / 1}
+                            ref={productCropperRef}
+                            zoomable={false}
+                            responsive={true}
+                            viewMode={1}
+                            style={{height: '30vh', width: '100%', marginBottom: '10px'}}
+                        />
+                        <Input type="text" name="productName" value={form?.productName} placeholder="Product Name*" onChange={handleChange} />
+                        <Input type="text" name="productLink" value={form?.productLink} placeholder="Product Link*" onChange={handleChange} />
+                        <div >
+                            {props.tags.map(tag => <Tag key={tag.name} active={productTags.includes(tag.name)} name={tag.name} onClick={(e) => toggleProductTag(e, tag.name)}/>)}
+                        </div>
+                        <br/>
+                        <div style={{margin: '0 auto'}} className='selectButton' onClick={productCrop}>Save</div>
+                    </>}
+                    <div className='product-wrapper'>
+                        {productArray.length > 0 && <h3>Products</h3>}
+                        {productArray.map(product => {
+                            return <div key={product.image} className='product-item'>
+                                <div className='product-item-info'>
+                                    <img src={product.image} />
+                                    <div>
+                                        <p>{product.productName}</p>
+                                        <br/>
+                                        <p>{product.productLink}</p>
+                                    </div>
+                                    <span style={{marginRight: '20px'}} onClick={() => removeProduct(product.productName)}><i className='material-icons-outlined'>close</i></span>
+                                </div>
+                                <div>{product.tags.map(tag => <Tag key={tag} name={tag}/>)}</div>
+                            </div>
+                        
+                        })}
+                    </div>
+                    {/* <div className='product-wrapper'>
+                        <div className='product-item'>
+                            <img src="https://via.placeholder.com/150" />
+                            <div>
+                                <p>product name</p>
+                                <br/>
+                                <p>product link</p>
+                            </div>
+                            <span style={{marginRight: '10px'}}><i className='material-icons-outlined'>close</i></span>
+                        </div>
+                    </div> */}
+                    
+
+                </div>
                 <span className='actionButton'>
                     <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
                 </span>
@@ -234,6 +382,25 @@ function Onboard(props) {
                     line-height: 1.2em;
                     text-align: center;
                 }
+                .product-dropzone {
+                    border: #eee 2px dashed;
+                    /* background: #FAFAFA; */
+                    color: #BDBDBD;
+                    height: 100px;
+                    width: 100%;
+                    margin: 20px auto;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+                .product-dropzone-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
                 .selectButton {
                     padding: 10px 20px;
                     color: #143968;
@@ -253,18 +420,49 @@ function Onboard(props) {
                     width: 100%;
                     padding: 20px 0;
                 }
+                .product-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%
+                }
+                .product-item {
+                    border: 1px solid lightgrey;
+                    margin: 10px 0;
+                }
+                .product-item>div {
+                    margin: 10px;
+                }
+                .product-item-info {
+                    display: flex;
+                    width: 100%;
+                    min-height: 100px;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                .product-item>div>img {
+                    height: 100%;
+                    max-height: 100px;
+                    width: auto;
+                }
+                .product-item>div>div {
+                    margin: 10px;
+                    box-sizing: border-box;
+                    font-size: 1.2em;
+                }
             `}</style>
         </>
     )
 }
 
 Onboard.propTypes = {
-    tags: PropTypes.array
+    tags: PropTypes.array,
+    code: PropTypes.string
 }
 
-Onboard.getInitialProps = async () => {
+Onboard.getInitialProps = async (ctx) => {
+    const { code } = ctx.query;
     const tags = await fetch('get',`/api/tags/all`)
-    return { tags: tags.data.tags.sort(compare)}
+    return {code, tags: tags.data.tags.sort(compare)}
 }
 
 export default Onboard;
