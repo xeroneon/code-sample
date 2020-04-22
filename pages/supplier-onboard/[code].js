@@ -7,7 +7,7 @@ import { UserContext } from 'contexts/UserProvider';
 import Dropzone, {  useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import Cropper from 'react-cropper';
-import md5 from 'md5';
+// import md5 from 'md5';
 import ActionButton from 'components/ActionButton/ActionButton';
 import Router from 'next/router';
 
@@ -31,13 +31,6 @@ function compare( a, b ) {
 }
 
 function Onboard(props) {
-    // useEffect(() => {
-    //     if (props.code !== 'ZVK8KKYS'.toLowerCase()) Router.push('/')
-    // }, [])
-
-    // if (props.code !== 'ZVK8KKYS'.toLowerCase()) {
-    //     return Router.push('/');
-    // }
 
     const [ form, setForm ] = useState({
         tags: [],
@@ -53,6 +46,11 @@ function Onboard(props) {
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
     const cropperRef = useRef(null);
+    const [ profileImage, setProfileImage ] = useState(null);
+    const [ productImage, setProductImage ] = useState(null);
+    const [ productType, setProductType ] = useState(null);
+    const [ emailError, setEmailError] = useState(null);
+    const [ cropLoading, setCropLoading ] = useState(false);
 
     const onDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
@@ -70,40 +68,26 @@ function Onboard(props) {
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
 
-    async function productCrop() {
-        const formData = new FormData();
-        if(productCropperRef && productCropperRef.current) {
-            const dataUri = productCropperRef.current.getCroppedCanvas().toDataURL()
-            const blob = dataURLtoBlob(dataUri)
-            formData.append('image', blob)
-            try {
-                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
-                    username: 'admin',
-                    password: process.env.BASIC_AUTH_PASS
-                }});
-                setProductArray(state => ([
-                    ...state,
-                    {
-                        image: res.data.imagePath,
-                        contentType: res.data.type,
-                        productName: form?.productName,
-                        productLink: form?.productLink,
-                        tags: productTags
-                    }
-                ]))
-                setProductTags([]);
-                setForm(state => ({
-                    ...state,
-                    productName: '',
-                    productLink: ''
-                }))
-                setProductSrc(undefined);
-                setNewProduct(false);
-
-            } catch(e) {
-                return setError(true);
+    async function saveProduct() {
+        setProductArray(state => ([
+            ...state,
+            {
+                image: productImage,
+                contentType: productType,
+                productName: form?.productName,
+                productLink: form?.productLink,
+                tags: productTags
             }
-        }
+        ]))
+        setProductTags([]);
+        setForm(state => ({
+            ...state,
+            productName: '',
+            productLink: ''
+        }))
+        setProductSrc(undefined);
+        setNewProduct(false);
+        setProductImage(undefined)
     }
 
     function removeProduct(productName) {
@@ -119,6 +103,16 @@ function Onboard(props) {
             ...state,
             [e.target.name]: e.target.value
         }))
+
+        if(e.target.name === 'email') {
+            fetch('get', `/api/users/check-email?email=${e.target.value}`).then(res => {
+                if (res.data.success === false) {
+                    setEmailError(res.data.message)
+                } else {
+                    setEmailError(null)
+                }
+            });
+        }
     }
 
     function toggleTag(e, tag) {
@@ -154,11 +148,10 @@ function Onboard(props) {
         }
     }
 
-    async function submit(e) {
+    async function cropProfileImage(e) {
         e.preventDefault();
-        setLoading(true);
         const formData = new FormData();
-        let image = `https://www.gravatar.com/avatar/${md5(form.email.toLowerCase())}?d=identicon`;
+        // let image = `https://www.gravatar.com/avatar/${md5(form.email.toLowerCase())}?d=identicon`;
         if(cropperRef && cropperRef.current) {
             const dataUri = cropperRef.current.getCroppedCanvas().toDataURL()
             const blob = dataURLtoBlob(dataUri)
@@ -169,32 +162,70 @@ function Onboard(props) {
                     password: process.env.BASIC_AUTH_PASS
                 }});
                 console.log(res)
-                image = res.data.imagePath
+                setProfileImage(res.data.imagePath);
+                setSrc(undefined);
 
             } catch(e) {
                 setLoading(false);
                 return setError(true);
             }
         }
+    }
+    async function cropProductImage(e) {
+        e.preventDefault();
+        setCropLoading(true)
+        setError(null);
+        const formData = new FormData();
+        if(productCropperRef && productCropperRef.current) {
+            const dataUri = productCropperRef.current.getCroppedCanvas().toDataURL()
+            const blob = dataURLtoBlob(dataUri)
+            formData.append('image', blob)
+            try {
+                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
+                    username: 'admin',
+                    password: process.env.BASIC_AUTH_PASS
+                }});
+                console.log(res)
+                setProductImage(res.data.imagePath);
+                setProductSrc(undefined);
+                setProductType(res.data.type);
+                setCropLoading(false);
+            } catch(e) {
+                setCropLoading(false);
+                return setError('cropError');
+            }
+        }
+    }
+
+    async function submit(e) {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
         const body = {
             ...form,
-            image,
+            image: profileImage,
             subActive: true,
             accountType: 'supplier'
         }
-        fetch('post', "/api/users/create", body).then(res => {
-            if (res.data.success) {
-                setUser(res.data.user);
-                setError(null);
-                localStorage.setItem('loggedIn', true)
-                setLoading(false);
-                Router.push('/');
-                fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
-                    console.log(res);
-                })
-            }
+        try {
+            fetch('post', "/api/users/create", body).then(res => {
+                console.log(res);
+                if (res.data.success) {
+                    setUser(res.data.user);
+                    localStorage.setItem('loggedIn', true)
+                    setLoading(false);
+                    fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
+                        console.log(res);
+                    })
+                    Router.push('/');
+                }
+    
+            })
 
-        })
+        } catch (e) {
+            setError('createError');
+            setLoading(false);
+        }
     }
 
 
@@ -207,7 +238,7 @@ function Onboard(props) {
                 <h1>Prevention Generation</h1>
                 <p style={{marginBottom: '30px'}}>We are so excited that you have chosen to partner with The Prevention Generation! Please provide the below information so we can build your health partner supplier page! If you have any questions, please do not hesitate to reach out to us at <a href="mailto:hello@ahwa.com" target="_blank" rel="noopener noreferrer">hello@ahwa.com</a></p>
                 <div className='imageWrapper'>
-                    {!src && <div className='imagePlaceholder'>&nbsp;</div>}
+                    { !src && <div className='imagePlaceholder'>&nbsp;{ profileImage && <img src={profileImage} /> }</div> }
                     { src && <Cropper
                         src={src}
                         aspectRatio={1 / 1}
@@ -216,6 +247,7 @@ function Onboard(props) {
                         responsive={true}
                         viewMode={1}
                         style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
+                    {src && <div onClick={cropProfileImage} className='selectButton'>Crop Image</div>}
                     <div {...getRootProps()} className='dropzone'>
                         <input {...getInputProps()} />
                         {
@@ -233,6 +265,7 @@ function Onboard(props) {
                 <textarea rows="5" placeholder=''></textarea>
                 <h4>Log In Email Address*</h4>
                 <Input type="text" name="email" value={form?.email} placeholder="" onChange={handleChange} />
+                {emailError && <span style={{color: "#D34240", padding: '5px'}}>{emailError}</span>}
                 <h4>Log In Password*</h4>
                 <Input type="text" name="password" value={form?.password} placeholder="" onChange={handleChange} />
                 <h4>Your Website to be Linked from Prevention Generation*</h4>
@@ -280,8 +313,10 @@ function Onboard(props) {
                             </div>
                         )}
                     </Dropzone> }
-                    { !newProduct && <div onClick={() => setNewProduct(true)} style={{marginTop: '10px'}} className='selectButton addButton'><i className='material-icons-outlined'>add_circle</i> &nbsp;Add Product</div>}
-                    { productSrc && 
+                    { !productSrc && productImage && <div className='productPlaceholder'>&nbsp;{ productImage && <img src={productImage} /> }</div> }
+
+                    { !newProduct && !productSrc && <div onClick={() => setNewProduct(true)} style={{marginTop: '10px'}} className='selectButton addButton'><i className='material-icons-outlined'>add_circle</i> &nbsp;Add{productArray.length > 0 && ' Another'} Product</div>}
+                    { productSrc && !productImage &&
                     <>
                         <Cropper
                             src={productSrc}
@@ -292,32 +327,26 @@ function Onboard(props) {
                             viewMode={1}
                             style={{height: '30vh', width: '100%', marginBottom: '10px'}}
                         />
+                        {productSrc && <div onClick={cropProductImage} className='selectButton'>{ cropLoading ? 'Loading...' : 'Crop'}</div>}
+                        { error ==='cropError' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
+                    </>}
+                    {newProduct && <>
                         <Input type="text" name="productName" value={form?.productName} placeholder="Product Name*" onChange={handleChange} />
                         <Input type="text" name="productLink" value={form?.productLink} placeholder="Product Link*" onChange={handleChange} />
                         <div >
                             {props.tags.map(tag => <Tag key={tag.name} active={productTags.includes(tag.name)} name={tag.name} onClick={(e) => toggleProductTag(e, tag.name)}/>)}
                         </div>
                         <br/>
-                        <div style={{margin: '0 auto'}} className='selectButton' onClick={productCrop}>Save</div>
+                        <div style={{margin: '0 auto'}} className='selectButton' onClick={saveProduct}>Save</div>
+                        { error === 'saveProduct' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
                     </>}
-                    {/* <div className='product-wrapper'>
-                        <div className='product-item'>
-                            <img src="https://via.placeholder.com/150" />
-                            <div>
-                                <p>product name</p>
-                                <br/>
-                                <p>product link</p>
-                            </div>
-                            <span style={{marginRight: '10px'}}><i className='material-icons-outlined'>close</i></span>
-                        </div>
-                    </div> */}
                     
 
                 </div>
                 <span className='actionButton'>
-                    <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Finish'}</ActionButton>
+                    <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Create Account'}</ActionButton>
                 </span>
-                { error && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
+                { error === 'createError' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
             </div>
 
             <style jsx>{`
@@ -357,6 +386,12 @@ function Onboard(props) {
                     margin: 20px 0;
                 }
 
+                .imageWrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
                 .imagePlaceholder {
                     width: 200px;
                     height: 200px;
@@ -364,6 +399,38 @@ function Onboard(props) {
                     border: 2px solid #143968;
                     background: #eee;
                     margin: 0 auto;
+                    position: relative;
+                    padding: 0;
+                }
+
+                .imagePlaceholder>img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 100px;
+                    object-fit: cover;
+                    overflow: hidden;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                }
+                .productPlaceholder {
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 2px;
+                    background: #eee;
+                    margin: 0 auto;
+                    position: relative;
+                    padding: 0;
+                }
+
+                .productPlaceholder>img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    overflow: hidden;
+                    position: absolute;
+                    top:0;
+                    left: 0;
                 }
 
                 .dropzone {
