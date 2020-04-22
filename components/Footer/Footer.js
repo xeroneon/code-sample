@@ -48,7 +48,9 @@ function Footer() {
                 </div>
                 <div className={styles.connect}>
                     <p>Interested in sponsoring?</p>
-                    <ActionButton type="submit" className={styles.ActionButton}>Let&apos;s connect</ActionButton>
+                    <a href="mailto:info@preventiongeneration.com" target="_blank" rel="noopener noreferrer">
+                        <ActionButton type="submit" className={styles.ActionButton}>Let&apos;s connect</ActionButton>
+                    </a>
                     <span>
                         <a href="https://www.facebook.com/preventiongeneration/" target="_blank" rel="noopener noreferrer">
                             <img src="/images/facebook.png" width="30px"/>
