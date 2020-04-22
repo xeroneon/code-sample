@@ -76,6 +76,7 @@ function EditProfile() {
         alerts: user?.alerts || ''
     })
     const cropperRef = useRef(null);
+    const [ profileImage, setProfileImage ] = useState(null);
 
     useEffect(() => {
         if (Cookies.get('connect.sid') === undefined) {
@@ -114,10 +115,17 @@ function EditProfile() {
             password: process.env.BASIC_AUTH_PASS
         }});
         console.log(image)
-        const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
-        setUser(updatedUser.data.user)
+        // const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
+        setProfileImage(image.data.imagePath);
+        // setUser(updatedUser.data.user)
         setLoading(false);
         setSrc(null);
+    }
+
+    async function uploadImage() {
+        const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: profileImage}});
+        setUser(updatedUser.data.user);
+        setProfileImage(null);
     }
 
     const onDrop = useCallback(acceptedFiles => {
@@ -165,16 +173,6 @@ function EditProfile() {
     return (
         <>
             <div className="profileCard">
-
-                { !src && <div {...getRootProps()} className='dropzone'>
-                    <input {...getInputProps()} />
-                    {
-                        isDragActive ?
-                            <p>Drop the files here ...</p> :
-                            <UploadIcon width="20%" stroke="#B8CEDF"/>
-                    }
-                </div> }
-                { !src && <p>Drag and drop a photo here, or tap to search for an image</p> }
                 { src && <Cropper
                     src={src}
                     aspectRatio={1 / 1}
@@ -183,7 +181,19 @@ function EditProfile() {
                     responsive={true}
                     viewMode={1}
                     style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
-                { src && <ActionButton onClick={crop}>{ loading ? 'Loading...' : 'Upload'}</ActionButton> }
+                { !src && profileImage && <div className='imagePlaceholder'>&nbsp;{ profileImage && <img src={profileImage} /> }</div> }
+                { !src && !profileImage && <div {...getRootProps()} className='dropzone'>
+                    <input {...getInputProps()} />
+                    {
+                        isDragActive ?
+                            <p>Drop the files here ...</p> :
+                            <UploadIcon width="20%" stroke="#B8CEDF"/>
+                    }
+                </div> }
+                { !src && !profileImage && <p>Drag and drop a photo here, or tap to search for an image</p> }
+                { src && <ActionButton onClick={crop}>{ loading ? 'Loading...' : 'Crop'}</ActionButton> }
+                { profileImage && <ActionButton onClick={uploadImage}>{ loading ? 'Loading...' : 'That looks good!'}</ActionButton> }
+                { profileImage && <p id="remove-image" onClick={(() => setProfileImage(null))}>Remove Photo</p> }
                 <br></br>
                 <ul className='errors'>
                     {errors.map(error => <li key={error}>* {error}</li>)}
@@ -199,14 +209,14 @@ function EditProfile() {
                     {user?.accountType !== 'personal' && 
                         <>
                             <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />
-                            <Input type="text" name="bio" value={form.bio || ''} placeholder="Bio" onChange={handleChange} />
+                            <textarea rows="5" placeholder='Bio'></textarea>
                             <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />
                             <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />
                             <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />
                         </>
                     }
-                    <Select name="alerts" value={form.alerts} placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/>
-                    <Select name="deals" value={form.deals} placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} />
+                    {/* <Select name="alerts" value={form.alerts} placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/> */}
+                    {/* <Select name="deals" value={form.deals} placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} /> */}
                 </form>
                 <div className="tags">
                     <h4>Health Tags</h4>
@@ -259,12 +269,32 @@ function EditProfile() {
                     margin: 10px;
                 }
 
+                textarea {
+                    width: 100%;
+                    box-sizing: border-box;
+                    margin: 15px 0;
+                    font-size: 16px;
+                    line-height: 1.2em;
+                    color: #333;
+                    font-family: CircularStd;
+                    font-weight: 100;
+                    border: 1px solid lightgrey;
+                    padding: 10px 20px;
+                }
+                textarea:focus {
+                    border: 1px solid #225B91;
+                }
+                textarea::placeholder {
+                    font-size: 16px;
+                    color: #959595;
+                }
+
                 .dropzone {
                     border: #eee 2px dashed;
                     background: #FAFAFA;
                     color: #BDBDBD;
                     height: 150px;
-                    width 150px;
+                    width: 150px;
                     border-radius: 20vw;
                     margin: 20px auto;
                     align-items: center;
@@ -286,6 +316,34 @@ function EditProfile() {
                     /* This is important */
                     width: 100%;
                   }
+                  .imagePlaceholder {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 200px;
+                    border: 2px solid #143968;
+                    background: #eee;
+                    margin: 20px auto;
+                    position: relative;
+                    padding: 0;
+                }
+
+                .imagePlaceholder>img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 100px;
+                    object-fit: cover;
+                    overflow: hidden;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                }
+                #remove-image {
+                    margin: 5px;
+                    font-size: 1em;
+                }
+                #remove-image:hover {
+                    cursor: pointer;
+                }
             `}</style>
         </>
     )
