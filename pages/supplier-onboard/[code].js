@@ -11,6 +11,18 @@ import Cropper from 'react-cropper';
 import ActionButton from 'components/ActionButton/ActionButton';
 import Router from 'next/router';
 
+const normalizeInput = (value, previousValue) => {
+    if (!value) return value;
+    const currentValue = value.replace(/[^\d]/g, '');
+    const cvLength = currentValue.length;
+    
+    if (!previousValue || value.length > previousValue.length) {
+        if (cvLength < 4) return currentValue;
+        if (cvLength < 7) return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`;
+        return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`;
+    }
+};
+
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -99,6 +111,12 @@ function Onboard(props) {
 
     function handleChange(e) {
         e.persist();
+        if(e.target.name === 'phone') {
+            return setForm(state => ({
+                ...state,
+                phone: normalizeInput(e.target.value, state.phone)
+            }))
+        }
         setForm(state => ({
             ...state,
             [e.target.name]: e.target.value
@@ -113,6 +131,8 @@ function Onboard(props) {
                 }
             });
         }
+
+
     }
 
     function toggleTag(e, tag) {
@@ -261,8 +281,10 @@ function Onboard(props) {
 
                 <h4>Company Name*</h4>
                 <Input type="text" name="companyName" value={form?.companyName} placeholder="" onChange={handleChange} />
-                <h4>Company Overview</h4>
-                <textarea rows="5" placeholder=''></textarea>
+                <h4>Company Overview*</h4>
+                <textarea rows="5" placeholder='' onChange={handleChange} value={form?.bio} name='bio'></textarea>
+                <h4>Company Summary*</h4>
+                <Input type="text" name="shortBio" value={form?.shortBio} placeholder="" onChange={handleChange} />
                 <h4>Log In Email Address*</h4>
                 <Input type="text" name="email" value={form?.email} placeholder="" onChange={handleChange} />
                 {emailError && <span style={{color: "#D34240", padding: '5px'}}>{emailError}</span>}
