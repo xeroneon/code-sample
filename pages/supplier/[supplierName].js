@@ -72,10 +72,10 @@ function Supplier(props) {
                     {user?._id !== supplier._id && user && user.following.includes(props.supplier._id) && <div className={`${styles.unfollow} ${styles.follow}`} onClick={handleUnfollow}>- Unfollow</div> }
                 </div>
                 <div className={styles.tagWrapper}>
-                    <div className={styles.sponsor}>
+                    {props.supplier.sponsoredTag && <div className={styles.sponsor}>
                         <p>Official sponsor of</p>
-                        <Tag link name="Back Pain" sponsored/>
-                    </div>
+                        <Tag link name={props.supplier.sponsoredTag} sponsored/>
+                    </div> }
                     <div className={styles.tags}>
                         {supplier.tags.map(tag => (
                             <Tag link key={tag} name={tag} />
