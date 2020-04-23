@@ -130,6 +130,7 @@ function Article(props) {
                 <meta name="twitter:title" content={article.fields.title} />
                 <meta name="twitter:description" content={article.fields.metaDescription} />
                 <meta name="twitter:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
+                {article.fields.noIndex === true && <meta name='robots' content='noindex' /> }
             </Head>
             <div className={styles.core}>
                 <div className={styles.title}>

@@ -75,7 +75,9 @@ const UserSchema = new Schema({
     prefix: String,
     suffix: String,
     shortBio: String,
-    title: String
+    title: String,
+    isAdmin: Boolean,
+    coverPhoto: String
     
 });
 UserSchema.index({ location: "2dsphere" });

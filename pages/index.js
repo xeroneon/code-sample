@@ -78,6 +78,7 @@ function Index(props) {
                         name={partner.name}
                         lastname={partner.lastname}
                         tags={partner.tags}
+                        sponsoredTag={partner?.sponsoredTag}
                         city={partner.city}
                         lat={partner.lat}
                         lng={partner.lng}

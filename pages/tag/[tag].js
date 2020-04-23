@@ -5,6 +5,8 @@ import styles from './TagPage.module.css';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
+import Carousel from 'components/Carousel/Carousel';
+import ProductCard from 'components/ProductCard/ProductCard';
 
 
 
@@ -39,6 +41,29 @@ function Provider(props) {
                 <div className={styles.header}><h2>{props.tag}</h2></div><br/>
                 { user && !user.tags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Follow</div>}
                 { user && user.tags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
+                { props.products.length > 0 && <Carousel header={[<span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
+                    {props.products.map(product => {
+                        const authorName = product.author.accountType === 'provider' ? [product.author.name, product.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : product.author.name.replace(/\s/g, '-');
+
+                        return (
+                            <ProductCard
+                                key={product.sys.id}
+                                id={product.sys.id}
+                                authorImage={product.author.image}
+                                title={product.fields.productName}
+                                featuredImage={`https:${product.fields.featuredImage.fields.file.url}`}
+                                slug={product.fields.slug}
+                                // primaryTag={product.fields.primaryTag}
+                                tags={product.fields.tags}
+                                authorName={authorName}
+                                authorCity={product.author.city}
+                                // accountType={product.author.accountType}
+                                companyName={product.author.companyName}
+                                link={product.fields.productUrl}
+                            />
+                        );
+                    })}
+                </Carousel>}
                 <div className={styles.articleWrapper}>
                     {props.articles.map(article => {
                         const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
@@ -68,9 +93,11 @@ Provider.getInitialProps = async (ctx) => {
     const { tag } = ctx.query;
     const formattedTag = tag.replace(/-/g, ' ').replace(/_/g, '/')
     const articles = await fetch('get',`/api/articles/tag?tag=${formattedTag}`);
-    // console.log(articles.data.articles)
+    const products = await fetch('get',`/api/products/tag?tag=${formattedTag}`);
+    console.log(products.data.products)
     return {
         articles: articles.data.articles,
+        products: products.data.products,
         tag: formattedTag
     }
 }
@@ -78,6 +105,7 @@ Provider.getInitialProps = async (ctx) => {
 Provider.propTypes = {
     provider: PropTypes.object,
     articles: PropTypes.array,
+    products: PropTypes.array,
     tag: PropTypes.string
 }
 
