@@ -48,6 +48,10 @@ function SubmitContent(props) {
             setLoading(false)
             return setError('Body must be at least 1,500 characters')
         }
+        if (form?.markdown.length > 10000) {
+            setLoading(false);
+            return setError('Body must not exceed 10,000 characters')
+        }
         try {
             const body = {
                 ...form,
@@ -99,7 +103,7 @@ function SubmitContent(props) {
                 <form>
                     <h4>Title*</h4>
                     <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
-                    <h4>Body* (enter article content here)   {form?.markdown?.length || 0}/12000</h4>
+                    <h4>Body* (enter article content here)   {form?.markdown?.length || 0}/10000</h4>
                     {/* <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea> */}
                     <ReactMde
                         value={form?.markdown}

@@ -14,11 +14,13 @@
     height: 100%;
     object-fit: cover;
     overflow: hidden;
+    box-shadow: rgba(67, 69, 78, 0.16) 0px 2px 9px;
+    border-radius: 2px;
 }
 
 .thumbnail {
     height:250px;
-    width: 100%;
+    width: 250px;
     /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
 }
 
@@ -32,6 +34,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical; 
     overflow: hidden;
+    color: #333;
     /* display: block; */
     /* height: 2.4em; */
 }

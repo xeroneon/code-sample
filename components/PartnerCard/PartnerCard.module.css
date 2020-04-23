@@ -11,7 +11,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    border: .5px solid #143968;
+    /* border: .5px solid #143968; */
+    box-shadow: rgba(67, 69, 78, 0.16) 0px 2px 9px;
     border-radius: 2px;
     background: #FFF;
     /* justify-content: space-evenly; */

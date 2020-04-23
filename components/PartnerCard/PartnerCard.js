@@ -24,8 +24,9 @@ function PartnerCard(props) {
                         {props.type === 'supplier' && <h4 className={styles.name}>{props.companyName}</h4>}
                         <p className={styles.address}>{props.address}</p>
                         { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
+                        { props.sponsoredTag && <Tag style={{marginBottom: '0'}} name={props.sponsoredTag} link sponsored />  }
                         { props.primaryCategory && <p className={styles.specialty}>{props.primaryCategory}</p> }
-                        { !props.specialty && !props.primaryCategory && <p className={styles.specialty}>&nbsp;</p>}
+                        { !props.specialty && !props.primaryCategory && !props.sponsoredTag && <p className={styles.specialty}>&nbsp;</p>}
                         <div className={styles.bio}>
                             <p>
                                 {props.bio}
@@ -56,7 +57,8 @@ PartnerCard.propTypes = {
     address: PropTypes.string,
     primaryCategory: PropTypes.string,
     prefix: PropTypes.string,
-    suffix: PropTypes.string
+    suffix: PropTypes.string,
+    sponsoredTag: PropTypes.string
 }
 
 export default PartnerCard;

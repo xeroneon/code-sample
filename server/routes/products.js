@@ -124,6 +124,35 @@ router.post("/create-products", async (req, res) => {
 
 })
 
+router.get("/tag", async (req, res) => {
+    console.log(req.query.tag);
+    try {
+
+        const entries = await client.getEntries({
+            content_type: 'product',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.tags[all]': req.query.tag.replace(/-/g, ' ').replace(/_/g, '/')
+        })
+        let productsWithAuthor = []
+        if(entries.items.length > 0 ) {
+            productsWithAuthor = await Promise.all(entries.items.map(async article => {
+                const user = await User.findById(article.fields.author.fields.authorId);
+                return { ... article, author: {...user._doc }}
+            }))
+
+        }
+
+        console.log("ENTRIES", entries);
+        res.send({
+            products: productsWithAuthor
+        });
+    } catch(e) {
+        console.error(e)
+    }
+
+})
+
 
 
 

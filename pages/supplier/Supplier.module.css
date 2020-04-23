@@ -70,7 +70,7 @@
 .sponsor {
 	border: 1px solid #143968;
 	width: 100%;
-	height: 150px;
+	height: 180px;
 	padding: 40px;
 	box-sizing: border-box;
 	display: flex;
@@ -136,5 +136,8 @@
 	}
 	.contactWrapper {
 		margin-bottom: 10px;
+	}
+	.sponsor {
+		padding: 20px;
 	}
 }
