@@ -51,7 +51,7 @@ function Supplier(props) {
             <Head>
                 <title>{supplier.companyName}</title>
             </Head>
-            <div className={styles.hero}></div>
+            <div className={styles.hero}>{ supplier.coverPhoto && <img src={supplier.coverPhoto} />}</div>
             <div className={styles.supplierInfo}>
                 <div className={styles.supplierCard}>
                     <img src={supplier.image} className={styles.supplierImage} />
