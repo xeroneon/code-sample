@@ -28,5 +28,20 @@ router.get("/", async (req, res) => {
     }
 })
 
+router.get("/all", async (req, res) => {
+
+    try{
+        const contributors = await User.find({accountType: 'contributor'}).select('-password')
+
+        // console.log(providers)
+        res.send({
+            contributors
+        })
+    } catch(e) {
+        res.status(400).send({message: "Couldnt find providers"})
+    }
+})
+
+
 
 module.exports = router;

@@ -6,14 +6,38 @@ import Link from 'next/link';
 // import {haversineDistance} from 'helpers/calculateDistance';
 
 function PartnerCard(props) {
-    const partnerName = [props.name, props.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-');
+    // const partnerName = [props.name, props.lastname].map(name => name?.toLowerCase().replace(/\s/g, '_')).join('-');
+    const partnerName = props.type === 'provider' ? [props.name, props.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : props.name.replace(/\s/g, '-');
+
     // const [ setDistance ] = useState();
     // useEffect(() => {
     //     setDistance(haversineDistance([props.lat, props.lng], [window.localStorage.getItem('lat'), window.localStorage.getItem('lon')], true))
     // },[])
+
+    function getAs(type) {
+        switch(type) {
+        case 'provider': 
+            return `/provider/${partnerName}/${props.city}`
+        case 'supplier': 
+            return `/supplier/${props.companyName}`
+        case 'contributor':
+            return `/contributor/${partnerName}`
+        }
+    }
+
+    function getHref(type) {
+        switch(type) {
+        case 'provider': 
+            return `/provider/[name]/[city]`
+        case 'supplier': 
+            return '/supplier/[supplierName]'
+        case 'contributor':
+            return `/contributor/[contributorName]`
+        }
+    }
     return (
         <>
-            <Link as={props.type === 'provider' ? `/provider/${partnerName}/${props.city}` : `/supplier/${props.companyName}`} href={props.type === 'provider' ? `/provider/[name]/[city]` : '/supplier/[supplierName]'}>
+            <Link as={getAs(props.type)} href={getHref(props.type)}>
                 <div className={styles.wrapper}>
                     <div className={styles.root}>
                         <div className={styles.image}>
@@ -21,12 +45,14 @@ function PartnerCard(props) {
                             {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
                         </div>
                         {props.type === 'provider' && <h4 className={styles.name}>{props.prefix} {props.name} {props.lastname} {props.suffix}</h4>}
+                        {props.type === 'contributor' && <h4 className={styles.name}>{props.name}</h4>}
                         {props.type === 'supplier' && <h4 className={styles.name}>{props.companyName}</h4>}
                         <p className={styles.address}>{props.address}</p>
                         { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
+                        { props.title && <p className={styles.specialty}>{props.title}</p> }
                         { props.sponsoredTag && <Tag style={{marginBottom: '0'}} name={props.sponsoredTag} link sponsored />  }
                         { props.primaryCategory && <p className={styles.specialty}>{props.primaryCategory}</p> }
-                        { !props.specialty && !props.primaryCategory && !props.sponsoredTag && <p className={styles.specialty}>&nbsp;</p>}
+                        { !props.specialty && !props.primaryCategory && !props.sponsoredTag && !props.title && <p className={styles.specialty}>&nbsp;</p>}
                         <div className={styles.bio}>
                             <p>
                                 {props.bio}
@@ -58,7 +84,8 @@ PartnerCard.propTypes = {
     primaryCategory: PropTypes.string,
     prefix: PropTypes.string,
     suffix: PropTypes.string,
-    sponsoredTag: PropTypes.string
+    sponsoredTag: PropTypes.string,
+    title: PropTypes.string
 }
 
 export default PartnerCard;
