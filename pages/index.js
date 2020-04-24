@@ -9,19 +9,75 @@ import ArticleCard from 'components/ArticleCard/ArticleCard';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
 
 
-function mergePartners(providers, suppliers) {
-    let mainArray = providers.length > suppliers.length ? providers : suppliers
-    let secondaryArray = providers.length > suppliers.length ? suppliers : providers
-    let newArray = [];
-    let secondaryIndex = 0;
-    for (let i = 0; i < mainArray.length; i++) {
-        newArray.push(mainArray[i]);
-        if ( i % 2 === 0 && secondaryArray[secondaryIndex] !== undefined) {
-            newArray.push(secondaryArray[secondaryIndex])
-            secondaryIndex += 1
+function mergePartners(providers, suppliers, contributors) {
+    const combinedArray = [...providers, ...suppliers, ...contributors];
+    let providersArr = [...providers];
+    let suppliersArr = [...suppliers];
+    let contributorsArr = [...contributors];
+
+    const finalArray = [];
+
+    for (let i = 0; i < combinedArray.length; i++) {
+        if (i % 2 === 0) {
+
+            //push contents to array
+            if (providersArr.length > 0) {
+                finalArray.push(providersArr[0])
+            }
+            if (providersArr.length > 1) {
+                finalArray.push(providersArr[1])
+            }
+            if(suppliersArr.length > 0) {
+                finalArray.push(suppliersArr[0])
+            }
+            if(contributorsArr.length > 0) {
+                finalArray.push(contributorsArr[0])
+            }
+
+            //remove the pushed content from the arrays
+            if (providersArr.length > 1) {
+                providersArr = providersArr.slice(2);
+            } else if (providersArr.length > 0) {
+                providersArr = providersArr.slice(1);
+            }
+            if (suppliersArr.length > 0) {
+                suppliersArr = suppliersArr.slice(1)
+            }
+            if (contributorsArr.length > 0) {
+                contributorsArr = contributorsArr.slice(1)
+            }
+        } else {
+            //push contents to array
+            if (providersArr.length > 0) {
+                finalArray.push(providersArr[0])
+            }
+            if (providersArr.length > 1) {
+                finalArray.push(providersArr[1])
+            }
+
+            //remove the pushed content from the arrays
+            if (providersArr.length > 1) {
+                providersArr = providersArr.slice(2);
+            } else if (providersArr.length > 0) {
+                providersArr = providersArr.slice(1);
+            }
         }
     }
-    return newArray;
+    return finalArray;
+    // let mainArray = providers.length > suppliers.length ? providers : suppliers
+    // let secondaryArray = providers.length > suppliers.length ? suppliers : providers
+    // let newArray = [];
+    // let secondaryIndex = 0;
+    // for (let i = 0; i < mainArray.length; i++) {
+    //     newArray.push(mainArray[i]);
+    //     if ( i % 2 === 0 && secondaryArray[secondaryIndex] !== undefined) {
+    //         newArray.push(secondaryArray[secondaryIndex])
+    //         secondaryIndex += 1
+    //     }
+    // }
+    // return newArray;
+
+
 }
 
 function Index(props) {
@@ -71,7 +127,7 @@ function Index(props) {
             </Carousel> }
             <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
-                {mergePartners(props.providers, props.suppliers).map(partner => {
+                {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
                         image={partner.image}
@@ -89,6 +145,7 @@ function Index(props) {
                         primaryCategory={partner?.primaryCategory}
                         suffix={partner?.suffix}
                         prefix={partner?.prefix}
+                        title={partner?.title}
                     />
                 })}
             </Carousel>
@@ -122,9 +179,10 @@ Index.getInitialProps = async () => {
         const trending = await fetch('get',`/api/articles/trending`);
         const providers = await fetch('get',`/api/providers/all`);
         const suppliers = await fetch('get',`/api/suppliers/all`);
+        const contributors = await fetch('get',`/api/contributors/all`);
     
         // console.log(providers.data)
-        return { trending: trending.data, providers: providers.data.providers, suppliers: suppliers.data.suppliers };
+        return { trending: trending.data, providers: providers.data.providers, suppliers: suppliers.data.suppliers, contributors: contributors.data.contributors };
     } catch(e) {
         return { trending: [], providers: [], suppliers: []}
     }
@@ -134,6 +192,7 @@ Index.propTypes = {
     trending: PropTypes.array,
     providers: PropTypes.array,
     suppliers: PropTypes.array,
+    contributors: PropTypes.array,
 
 }
 
