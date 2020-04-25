@@ -132,7 +132,7 @@ router.get("/user", async (req, res) => {
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            'fields.tags[in]': req.user.tags.toString(),
+            'fields.tags[in]': req.user.personalTags.toString(),
         })
         const authorEntries = await client.getEntries({
             content_type: 'article',

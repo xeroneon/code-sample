@@ -24,17 +24,17 @@ function TagPicker() {
 
     function toggleTag(e, tag) {
         e.persist();
-        const i = form.tags.indexOf(tag);
+        const i = form.personalTags.indexOf(tag);
         if (i > -1 ) {
             return setForm(state => ({
                 ...state,
-                tags: form.tags.filter(item => item !== tag)
+                personalTags: form.personalTags.filter(item => item !== tag)
             }))
 
         } else {
             return setForm(state => ({
                 ...state,
-                tags: [...form.tags, tag]
+                personalTags: [...form.personalTags, tag]
             }))
         }
     }
@@ -57,11 +57,11 @@ function TagPicker() {
                 </div>
                 <h4 style={{justifySelf: 'start', marginLeft: '20px'}}>top trending health tags</h4>
                 <div className={styles.tagWrapper}>
-                    {trending.map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
+                    {trending.map(tag => <Tag key={tag} active={form.personalTags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
                 </div>
                 <h4 style={{justifySelf: 'start', marginLeft: '20px'}}>other health tags</h4>
                 <div className={styles.tagWrapper}>
-                    {tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
+                    {tags.map(tag => <Tag key={tag.name} active={form.personalTags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
                 <ActionButton className={styles.button} onClick={() => setPage('image-upload')}>Continue</ActionButton>
             </div>

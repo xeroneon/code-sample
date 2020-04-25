@@ -225,7 +225,8 @@ function Onboard(props) {
             ...form,
             image: profileImage,
             subActive: true,
-            accountType: 'supplier'
+            accountType: 'supplier',
+            personalTags: [...form.tags]
         }
         try {
             fetch('post', "/api/users/create", body).then(res => {
@@ -248,10 +249,6 @@ function Onboard(props) {
         }
     }
 
-
-
-    
-    
     return (
         <>
             <div className='root'>
