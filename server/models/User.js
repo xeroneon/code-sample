@@ -44,6 +44,9 @@ const UserSchema = new Schema({
     tags: {
         type: Array,
     },
+    personalTags: {
+        type: Array,
+    },
     goals: {
         type: Array,
     },

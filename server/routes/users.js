@@ -390,6 +390,28 @@ router.post('/contributor', async (req, res) => {
         })
     }
 })
+
+router.get('/migrate-tags', async (req, res) => {
+    try {
+        const users = await User.find();
+        // console.log(users);
+        Promise.all(users.map(async user => {
+            console.log("user", user)
+            await User.updateOne({ email: user.email }, { personalTags: [...user.tags] })
+        }))
+        const updatedUsers = await User.find();
+        console.log(updatedUsers);
+        res.send({
+            users
+        });
+    } catch(e) {
+        return res.status(500).send({
+            success: false,
+            message: "Error deleting user",
+            error: e
+        })
+    }
+})
 // example contentful request
 // router.get("/test", async (req, res) => {
 //     const entry = await client.getEntry("5KJLrGSWs9kBWEYZUNvdXA");

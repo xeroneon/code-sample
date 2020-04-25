@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
 import styles from './TagPage.module.css';
@@ -22,25 +22,25 @@ function Provider(props) {
         const body = {
             email: user.email,
             updates: {
-                tags: user.tags.includes(props.tag) ? [...user.tags.filter(tag => tag !== props.tag)] : [...user.tags, props.tag]
+                personalTags: user.personalTags.includes(props.tag) ? [...user.personalTags.filter(tag => tag !== props.tag)] : [...user.personalTags, props.tag]
             }
         }
         const res = await fetch('put', '/api/users/update', body)
-        // console.log(res)
+        console.log(res)
         if (res.data.success) {
             setUser(res.data.user)
         }
     }
 
-    useEffect(() => {
-        console.log(user)
-    }, [user])
+    // useEffect(() => {
+    //     console.log(user)
+    // }, [user])
     return (
         <>
             <div className={styles.root}>
                 <div className={styles.header}><h2>{props.tag}</h2></div><br/>
-                { user && !user.tags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Follow</div>}
-                { user && user.tags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
+                { user && !user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Follow</div>}
+                { user && user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
                 { props.products.length > 0 && <Carousel header={[<span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
                     {props.products.map(product => {
                         const authorName = product.author.accountType === 'provider' ? [product.author.name, product.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : product.author.name.replace(/\s/g, '-');
