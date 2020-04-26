@@ -17,7 +17,7 @@ import Link from 'next/link';
 import ReactPlayer from 'react-player';
 import usePageViews from 'hooks/usePageViews';
 import { ModalContext } from 'contexts/ModalProvider';
-
+import ReactTooltip from "react-tooltip";
 function Article(props) {
     if (props.errorCode) {
         return <Error statusCode={props.errorCode} />
@@ -139,6 +139,7 @@ function Article(props) {
             <Head>
                 <title>{article.fields.title}</title>
                 <meta property="og:title" content={article.fields.title} />
+                <meta name="keywords" content={`Prevention Generation,${article.fields.tags.map(tag => ` ${tag}`)}`} />
                 <meta property="og:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag}/${article.fields.slug}`} />
                 <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="og:image:secure_url" content={`https:${article.fields.featuredImage.fields.file.url}`} />
@@ -186,8 +187,8 @@ function Article(props) {
                     </> }
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
-                    { user && !user.favorites.includes(article.sys.id) && <img id='favorite' src='/images/favorite.png' onClick={toggleFavorite}/> }
-                    { user && user.favorites.includes(article.sys.id) && <img id='favorite' src='/images/unfavorite.png' onClick={toggleFavorite}/> }
+                    { user && !user.favorites.includes(article.sys.id) && <img className='favorite' src='/images/favorite.png' onClick={toggleFavorite} data-tip="Save to your favorites"/> }
+                    { user && user.favorites.includes(article.sys.id) && <img className='favorite' src='/images/unfavorite.png' onClick={toggleFavorite} data-tip="Remove from your favorites"/> }
                     <div className="fb-share-button" data-href={`${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
                     <a className="twitter-share-button"
                         href={`https://twitter.com/intent/tweet?url=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`}
@@ -243,14 +244,17 @@ function Article(props) {
                         />
                     })}
                 </Carousel> }
+            <ReactTooltip effect='solid' />
 
             <style jsx>{`
-                #favorite {
+                .favorite {
                     height: 27px;
-                    margin: 0 5px
+                    margin: 0 5px;
+                    -webkit-filter: drop-shadow(5px 5px 5px #222);
+                    filter: drop-shadow(5px 5px 5px #222);
                 }
 
-                #favorite:hover {
+                .favorite:hover {
                     cursor: pointer;
                 }
             `}</style>

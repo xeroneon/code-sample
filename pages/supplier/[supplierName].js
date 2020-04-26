@@ -50,6 +50,7 @@ function Supplier(props) {
         <>
             <Head>
                 <title>{supplier.companyName}</title>
+                <meta name="keywords" content={`${supplier.companyName}`} />
             </Head>
             <div className={styles.hero}>{ supplier.coverPhoto && <img src={supplier.coverPhoto} />}</div>
             <div className={styles.supplierInfo}>
