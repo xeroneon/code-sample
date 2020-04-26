@@ -18,9 +18,23 @@ function Carousel(props) {
     useEffect(() => {
         setMaxScroll(carousel.current.scrollWidth - carousel.current.clientWidth)
     }, [carousel])
+
+    function scroll(e) {
+        if (e.target.scrollLeft > e.target.scrollWidth - e.target.clientWidth - 1) {
+            props.onScrollEnd()
+        }
+    }
+    
+    useEffect(() => {
+        if (props.onScrollEnd) {
+            carousel.current.addEventListener("scroll", scroll, {passive: true})
+            return () => {
+                carousel.current.removeEventListener("scroll", scroll, {passive: true})
+            }
+        }
+    }, [props.onScrollEnd])
     return (
         <div className={styles.wrapper}>
-            {/* <div className={styles.headerBanner}> </div> */}
             <div className={styles.header}><h2>{props.header}</h2></div>
             <div className={styles.arrowContainer}>
                 <div className={`${styles.arrow} ${scrollPosition < 100 ? styles.disableArrow : null}`} onClick={scrollLeft}><i className="material-icons-outlined">chevron_left</i></div>
@@ -35,7 +49,8 @@ function Carousel(props) {
 
 Carousel.propTypes = {
     children: PropTypes.any,
-    header: PropTypes.any
+    header: PropTypes.any,
+    onScrollEnd: PropTypes.func
 }
 
 export default Carousel;
