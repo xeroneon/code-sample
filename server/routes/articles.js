@@ -322,8 +322,37 @@ router.post("/create", async (req, res) => {
             e
         });
     }
-
 })
 
+router.get("/favorites", async (req, res) => {
+    try {
+
+        const user = await User.findOne({email: req.query.email});
+
+        const entries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'sys.id[in]': [...user.favorites].toString()
+        })
+        let articlesWithAuthor = []
+        if(entries.items.length > 0 ) {
+            articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+                const user = await User.findById(article.fields.author.fields.authorId);
+                const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
+                return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+            }))
+
+        }
+
+        // console.log("ENTRIES", entries);
+        res.send({
+            articles: articlesWithAuthor
+        });
+    } catch(e) {
+        console.error(e)
+    }
+
+})
 
 module.exports = router;
