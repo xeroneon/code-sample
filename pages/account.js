@@ -5,20 +5,29 @@ import Tag from 'components/Tag/Tag';
 import Carousel from 'components/Carousel/Carousel';
 import fetch from 'helpers/fetch';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
+import ArticleCard from 'components/ArticleCard/ArticleCard';
 
 
 function Account() {
     const { user } = useContext(UserContext);
     const [ following, setFollowing ] = useState([])
+    const [ favorites, setFavorites ] = useState([])
     useEffect(() => {
         if(user) {
             getPartners();
+            getFavorites();
         }
     }, [user])
     
     function getPartners() {
         fetch('get', `/api/users/following?email=${user.email}`).then(res => {
             setFollowing(res.data.following)
+        }).catch(e => console.log(e))
+    }
+    function getFavorites() {
+        fetch('get', `/api/articles/favorites?email=${user.email}`).then(res => {
+            setFavorites(res.data.articles);
+            console.log(res.data.articles)
         }).catch(e => console.log(e))
     }
     return (
@@ -38,6 +47,28 @@ function Account() {
                     { user?.tags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
+
+            { user && favorites.length > 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Favorites </span>,<br key="cn"/> ]}>
+                {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
+                {favorites.map(article => {
+                    const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
+                    return <ArticleCard 
+                        key={article.sys.id}
+                        id={article.sys.id}
+                        authorImage={article.author.image}
+                        title={article.fields.title}
+                        featuredImage={`https:${article.fields.featuredImage.fields.file.url}`}
+                        slug={article.fields.slug}
+                        primaryTag={article.fields.primaryTag}
+                        tags={article.fields.tags}
+                        authorName={authorName}
+                        authorCity={article.author.city}
+                        sponsor={article.sponsor}
+                        type={article.author.accountType}
+                        companyName={article.author.companyName}
+                    />
+                })}
+            </Carousel> }
 
             {following.length > 0 && <Carousel header={[`${user.name}'s `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {following.map(partner => {

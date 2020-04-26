@@ -16,13 +16,15 @@ import EmbeddedArticle from 'components/EmbeddedArticle/EmbeddedArticle';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
 import usePageViews from 'hooks/usePageViews';
+import { ModalContext } from 'contexts/ModalProvider';
 
 function Article(props) {
     if (props.errorCode) {
         return <Error statusCode={props.errorCode} />
     }
+    const { setOpen, setPage } = useContext(ModalContext);
     usePageViews();
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const { article, author, reviewedBy } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
@@ -46,6 +48,25 @@ function Article(props) {
             return '/supplier/[supplierName]';
         case 'contributor': return `/contributor/[contributorName]`;
         default: return ''
+        }
+    }
+
+    async function toggleFavorite() {
+        if (!user) {
+            setOpen(true);
+            setPage('welcome')
+            return;
+        }
+        const body = {
+            email: user.email,
+            updates: {
+                favorites: user.favorites.includes(article.sys.id) ? [...user.favorites.filter(id => id !== article.sys.id)] : [...user.favorites, article.sys.id]
+            }
+        }
+        const res = await fetch('put', '/api/users/update', body)
+        console.log(res)
+        if (res.data.success) {
+            setUser(res.data.user)
         }
     }
     const options = {
@@ -165,6 +186,8 @@ function Article(props) {
                     </> }
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
+                    { user && !user.favorites.includes(article.sys.id) && <img id='favorite' src='/images/favorite.png' onClick={toggleFavorite}/> }
+                    { user && user.favorites.includes(article.sys.id) && <img id='favorite' src='/images/unfavorite.png' onClick={toggleFavorite}/> }
                     <div className="fb-share-button" data-href={`${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
                     <a className="twitter-share-button"
                         href={`https://twitter.com/intent/tweet?url=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`}
@@ -220,6 +243,17 @@ function Article(props) {
                         />
                     })}
                 </Carousel> }
+
+            <style jsx>{`
+                #favorite {
+                    height: 27px;
+                    margin: 0 5px
+                }
+
+                #favorite:hover {
+                    cursor: pointer;
+                }
+            `}</style>
         </>
     )
 }
