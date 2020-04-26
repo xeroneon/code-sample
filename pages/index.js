@@ -83,7 +83,7 @@ function mergePartners(providers, suppliers, contributors) {
 function Index(props) {
 
     const { user } = useContext(UserContext);
-    const [ userArticles, setUserArticles ] = useState([]);
+    const [ userArticles, setUserArticles ] = useState(null);
     // const [ providers, setProviders ] = useState([]);
 
     useEffect(() => {
@@ -101,8 +101,8 @@ function Index(props) {
                     <h5>lifestyle health & wellness guidance personalized to you</h5>
                 </div>
             </div>
-            { user && userArticles.length > 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
-                {/* {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>} */}
+            { user && userArticles && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
+                {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>}
                 {userArticles.map(article => {
                     const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                     return <ArticleCard 
@@ -122,9 +122,9 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
+            {/* { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
-            </Carousel> }
+            </Carousel> } */}
             <TrendingCarousel items={props.trending} />
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {

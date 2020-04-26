@@ -49,6 +49,7 @@ function Provider(props) {
         <>
             <Head>
                 <title>{props.provider.prefix} {props.provider.name} {props.provider.lastname} {props.provider.suffix} - {props.provider.city}, {props.provider.state} - {props.provider.specialty.name}</title>
+                <meta name="keywords" content={`${props.provider.prefix}, ${props.provider.name}, ${props.provider.lastname}, ${props.provider.suffix}, ${props.provider.city}, ${props.provider.state}`} />
                 <meta property="og:description" content={`Information on ${props.provider.specialty.name} ${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix} of ${props.provider.city}, ${props.provider.state} including practice phone and address information, specialties, products and more.`} />
             </Head>
             {/* <div className={styles.hero}></div> */}
