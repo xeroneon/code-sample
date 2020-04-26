@@ -8,15 +8,12 @@ import { UserContext } from 'contexts/UserProvider';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
 
-
 function mergePartners(providers, suppliers, contributors) {
     const combinedArray = [...providers, ...suppliers, ...contributors];
     let providersArr = [...providers];
     let suppliersArr = [...suppliers];
     let contributorsArr = [...contributors];
-
     const finalArray = [];
-
     for (let i = 0; i < combinedArray.length; i++) {
         if (i % 2 === 0) {
 
@@ -64,26 +61,14 @@ function mergePartners(providers, suppliers, contributors) {
         }
     }
     return finalArray;
-    // let mainArray = providers.length > suppliers.length ? providers : suppliers
-    // let secondaryArray = providers.length > suppliers.length ? suppliers : providers
-    // let newArray = [];
-    // let secondaryIndex = 0;
-    // for (let i = 0; i < mainArray.length; i++) {
-    //     newArray.push(mainArray[i]);
-    //     if ( i % 2 === 0 && secondaryArray[secondaryIndex] !== undefined) {
-    //         newArray.push(secondaryArray[secondaryIndex])
-    //         secondaryIndex += 1
-    //     }
-    // }
-    // return newArray;
-
-
 }
 
 function Index(props) {
 
     const { user } = useContext(UserContext);
     const [ userArticles, setUserArticles ] = useState(null);
+    const [ trending, setTrending ] = useState(props.trending);
+    const [ trendingLoading, setTrendingLoading ] = useState(false);
     // const [ providers, setProviders ] = useState([]);
 
     useEffect(() => {
@@ -92,6 +77,21 @@ function Index(props) {
             // fetch('get',`/api/providers/all?lat=${window.localStorage.getItem('lat')}&lng=${window.localStorage.getItem('lon')}`).then(res => setProviders(res.data.providers)).catch(e => console.log(e));
         }
     }, [user])
+
+    // useEffect(() => {
+
+    // }, trending)
+
+    async function loadMoreTrending() {
+        setTrendingLoading(true)
+        const res = await fetch('get',`/api/articles/trending?skip=${trending.length}`);
+        // setTrendingSkip(state => state + 15)
+        setTrendingLoading(false)
+        setTrending(state => ([
+            ...state,
+            ...res.data
+        ]))
+    }
 
     return (
         <>
@@ -125,7 +125,7 @@ function Index(props) {
             {/* { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
                 <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
             </Carousel> } */}
-            <TrendingCarousel items={props.trending} />
+            <TrendingCarousel items={trending} loading={trendingLoading} onScrollEnd={loadMoreTrending}/>
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {
                     return <PartnerCard 

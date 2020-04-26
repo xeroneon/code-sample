@@ -28,8 +28,7 @@ router.post("/create", async (req, res) => {
                                 field.items.validations[0].in = [...field.items.validations[0].in, name['en-US']].sort();
                             }
                         })
-                        item.update();
-                        item.publish();
+                        item.update().then(entry => entry.publish());
                     })
                 res.status(200); res.end();
             })

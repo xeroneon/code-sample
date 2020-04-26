@@ -30,7 +30,7 @@ router.get("/trending", async (req, res) => {
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            limit: 40,
+            limit: 15,
             skip: skip || 0
         })
         // console.log(articles.items)
