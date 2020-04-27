@@ -36,6 +36,7 @@ function Nav() {
 
     async function logout() {
         const res = await fetch('get', '/api/users/logout')
+        // console.log('logout')
         if (res.status === 200) {
             setUser(null);
             localStorage.setItem('loggedIn', false)
