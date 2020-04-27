@@ -250,8 +250,6 @@ function Article(props) {
                 .favorite {
                     height: 27px;
                     margin: 0 5px;
-                    -webkit-filter: drop-shadow(5px 5px 5px #222);
-                    filter: drop-shadow(5px 5px 5px #222);
                 }
 
                 .favorite:hover {

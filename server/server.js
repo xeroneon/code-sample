@@ -70,20 +70,7 @@ nextApp.prepare().then(() => {
 
     
     app.use(cors({credentials: true, origin: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
-    // app.use(function(req, res, next) {
-    //     res.header('Access-Control-Allow-Credentials', true);
-    //     res.header('Access-Control-Allow-Origin', req.headers.origin);
-    //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    //     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    //     if ('OPTIONS' == req.method) {
-    //         res.send(200);
-    //     } else {
-    //         next();
-    //     }
-    // });
-    app.use(cookieParser());
-    // app.options('/api/users', cors({credentials: true, origins: ['https://www.preventiongeneration.com', 'https://www.prevention-generation.herokuapp.com']}));
-      
+    app.use(cookieParser());  
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(bodyParser.json());
@@ -104,6 +91,7 @@ nextApp.prepare().then(() => {
     app.use("/api/payments", require("./routes/payments"));
     app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));
     app.use("/api/specialties", require("./routes/specialties"));
+    app.use("/api/codes", require("./routes/codes"));
     if (process.env.NODE_ENV === 'production') {
         app.use(enforce.HTTPS({ trustProtoHeader: true }));
     }
