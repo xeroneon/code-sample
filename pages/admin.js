@@ -55,6 +55,7 @@ function Admin() {
 
 Admin.getInitialProps = async ctx => {
     const { res, req } = ctx
+    console.log("req", req)
     if (res) {
         if (req.user) {
             console.log(req.user.isAdmin)
