@@ -31,9 +31,7 @@ const formSchema = yup.object({
     lastname: yup.string(),
     email: yup.string()
         .email('Email must be a valid email'),
-    password: yup.string(),
     zip: yup.string()
-        .required('Zip Code is a required field')
         .test('zip', 'Must be a valid zip', function(value) {
             const regex = /^\d{5}$|^\d{5}-\d{4}$/;
             return regex.test(value) ? true : false
@@ -59,22 +57,7 @@ function EditProfile() {
     const [ loading, setLoading ] = useState(false);
     const [ errors, setErrors ] = useState([]);
     const [ src, setSrc ] = useState();
-    const [ form, setForm ] = useState({
-        name: user?.name || '',
-        lastname: user?.lastname || '',
-        email: user?.email || '',
-        bio: user?.bio || '',
-        tags: user?.tags || [],
-        image: user?.image || '',
-        address: user?.address || '',
-        zip: user?.zip || '',
-        city: user?.city || '',
-        state: user?.state || '',
-        companyName: user?.companyName || '',
-        deals: user?.deals || '',
-        password: user?.password || '',
-        alerts: user?.alerts || ''
-    })
+    const [ form, setForm ] = useState({personalTags: []})
     const cropperRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
 
@@ -86,21 +69,22 @@ function EditProfile() {
     }, []);
 
     useEffect(() => {
+        if (Cookies.get('connect.sid') === undefined) {
+            Router.push('/')
+        }
         setForm({
             name: user?.name || '',
             lastname: user?.lastname || '',
             email: user?.email || '',
             bio: user?.bio || '',
+            personalTags: user?.personalTags || [],
             tags: user?.tags || [],
             image: user?.image || '',
             address: user?.address || '',
-            password: user?.password || '',
             zip: user?.zip || '',
             city: user?.city || '',
             state: user?.state || '',
             companyName: user?.companyName || '',
-            deals: user?.deals || '',
-            alerts: user?.alerts || ''
         })
     }, [user])
 
@@ -159,7 +143,7 @@ function EditProfile() {
             if (user?.accountType !== 'personal') {
                 await partnerSchema.validate(form, {abortEarly: false})
             }
-            const updatedUser = await fetch('put', 'api/users/update', {_id: user._id, updates: form});
+            const updatedUser = await fetch('put', '/api/users/update', {email: user.email, updates: form});
             setUser(updatedUser.data.user)
             setLoading(false);
         } catch (error) {
@@ -220,7 +204,8 @@ function EditProfile() {
                 </form>
                 <div className="tags">
                     <h4>Health Tags</h4>
-                    {form.tags.map(tag => <Tag key={tag} name={tag} />)}
+                    {user && user.accountType === 'personal' && form?.personalTags?.map(tag => <Tag key={tag} name={tag} />)}
+                    {user && user.accountType !== 'personal' && form?.tags?.map(tag => <Tag key={tag} name={tag} />)}
                 </div>
                 <ActionButton onClick={updateUser}>{ loading ? 'Loading...' : 'Save'}</ActionButton>
             </div>
