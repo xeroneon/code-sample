@@ -27,6 +27,7 @@ function Carousel(props) {
     
     useEffect(() => {
         if (props.onScrollEnd) {
+            setMaxScroll(carousel.current.scrollWidth - carousel.current.clientWidth)
             carousel.current.addEventListener("scroll", scroll, {passive: true})
             return () => {
                 carousel.current.removeEventListener("scroll", scroll, {passive: true})

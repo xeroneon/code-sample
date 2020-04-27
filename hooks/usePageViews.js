@@ -17,8 +17,8 @@ function usePageViews() {
                     setPage('welcome')
                     setOpen(true);
                 }
+                localStorage.setItem('views', parseInt(localStorage.getItem('views')) + 1);
             }
-            localStorage.setItem('views', parseInt(localStorage.getItem('views')) + 1);
         }
     }, [])
 }
