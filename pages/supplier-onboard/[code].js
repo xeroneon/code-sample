@@ -238,6 +238,8 @@ function Onboard(props) {
                     fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
                         console.log(res);
                     })
+                    fetch('delete', `/api/codes?uid=${props.code}`);
+
                     Router.push('/');
                 }
     
@@ -559,6 +561,13 @@ Onboard.propTypes = {
 
 Onboard.getInitialProps = async (ctx) => {
     const { code } = ctx.query;
+    const { res } = ctx;
+    const codeRes = await fetch('get', `/api/codes?uid=${code}`);
+    if (res) {
+        if (!codeRes.data.success) {
+            res.redirect('/')
+        }
+    }
     const tags = await fetch('get',`/api/tags/all`)
     return {code, tags: tags.data.tags.sort(compare)}
 }
