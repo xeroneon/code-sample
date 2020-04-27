@@ -4,7 +4,16 @@ import React from 'react';
 function Admin() {
     return (
         <>
-            something
+            <div className='wrapper'>
+                &nbsp;
+            </div>
+
+            <style jsx>{`
+                .wrapper {
+                    height: 70vh;
+
+                }    
+            `}</style>
         </>
     )
 }
