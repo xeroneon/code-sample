@@ -44,7 +44,7 @@ function Account() {
                     </Link>
                 </div>
                 <div style={{maxWidth: '300px', display: 'flex', justifyContent: 'center', flexWrap:'wrap', marginBottom: '30px'}}>
-                    { user?.tags.map(tag => <Tag link key={tag} name={tag} />)}
+                    { user?.personalTags.map(tag => <Tag link key={tag} name={tag} />)}
                 </div>
             </div>
 
