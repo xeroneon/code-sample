@@ -56,11 +56,12 @@ function Admin() {
 Admin.getInitialProps = async ctx => {
     const { res, req } = ctx
     console.log("req", req)
+    console.log("req user", req.user)
     if (res) {
         if (req.user) {
             console.log(req.user.isAdmin)
         }
-        if (!req.user.isAdmin) {
+        if (req && req.user && !req.user.isAdmin) {
             res.redirect('/')
         }
     }
