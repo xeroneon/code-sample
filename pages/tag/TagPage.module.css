@@ -50,6 +50,27 @@
     cursor: pointer;
 }
 
+.sponsorWrapper {
+	display: flex;
+	align-items: center;
+	width: 100%;
+    color: #333;
+    margin: 30px;
+}
+.sponsorWrapper:hover {
+	cursor: pointer;
+}
+
+.sponsorWrapper>img {
+	width: 60px;
+	height: 60px;
+	border-radius: 1000px;
+}
+.sponsorWrapper>p {
+	font-size: .85em;
+	margin-left: 10px;
+}
+
 @media only screen and (max-width: 600px) {
     .headerBanner {
         width: 70vw;

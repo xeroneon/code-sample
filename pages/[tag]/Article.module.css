@@ -74,6 +74,7 @@
 	color: #30373B;
 	font-size: 2.6rem;
 	font-weight: 100;
+	align-self: flex-start;
 }
 .authorModule {
 	/* grid-area: 2 / 2 / 3 / 3; */
@@ -193,6 +194,25 @@
 }
 .actionButton {
 	align-self: center;
+}
+.sponsorWrapper {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	color: #333;
+}
+.sponsorWrapper:hover {
+	cursor: pointer;
+}
+
+.sponsorWrapper>img {
+	width: 60px;
+	height: 60px;
+	border-radius: 1000px;
+}
+.sponsorWrapper>p {
+	font-size: .85em;
+	margin-left: 10px;
 }
 @media only screen and (max-width:600px){
 	.core {

@@ -34,11 +34,17 @@ function ArticleCard(props) {
                         </div>
                         {sponsor &&
                     <span className={styles.sponsor}>
-                        This post is sponsored by&nbsp;
+                        This post is underwritten by&nbsp;
                         
-                        <b onClick={(e) => {e.stopPropagation(); Router.push(`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`)}}>
+                        { sponsor.accountType === 'provider' && <b onClick={(e) => {e.stopPropagation(); Router.push(`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`)}}>
                             {sponsor.companyName}
-                        </b>
+                        </b>}
+                        { sponsor.accountType === 'supplier' && <b onClick={(e) => {e.stopPropagation(); Router.push(`/${sponsor.accountType}/${sponsor.companyName}`)}}>
+                            {sponsor.companyName}
+                        </b>}
+                        { sponsor.accountType === 'contributor' && <b onClick={(e) => {e.stopPropagation(); Router.push(`/${sponsor.accountType}/${sponsor.name.replace(/\s/g, '-')}`)}}>
+                            {sponsor.name}
+                        </b>}
                         
                     </span>}
                         <h4 className={styles.title}>{props.title}</h4>

@@ -56,6 +56,16 @@ router.get("/", async (req, res) => {
     });
 });
 
+router.get("/sponsor", async (req, res) => {
+    const { tag } = req.query;
+
+    const sponsor = await User.findOne({sponsoredTag: tag});
+
+    res.send({
+        sponsor
+    })
+});
+
 router.get("/all", async (req, res) => {
 
     const tags = await Tag.find();

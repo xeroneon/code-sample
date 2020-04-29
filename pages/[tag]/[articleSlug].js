@@ -25,7 +25,7 @@ function Article(props) {
     const { setOpen, setPage } = useContext(ModalContext);
     usePageViews();
     const { user, setUser } = useContext(UserContext);
-    const { article, author, reviewedBy } = props;
+    const { article, author, reviewedBy, sponsor } = props;
     const tagLink = article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_');
     const authorTitle = author.accountType === 'provider' ? `${author.prefix || ''} ${author.name} ${author.lastname} ${author.suffix || ''}` : author.companyName
     // console.log("render", reviewedBy)
@@ -186,9 +186,38 @@ function Article(props) {
                         </div>
                     </> }
                 </div>
+                {props.sponsor && props.sponsor.accountType === 'provider' &&
+                <Link as={`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`} href='/provider/[name]/[city]'>
+                    <div className={styles.sponsorWrapper}>
+                        <img src={props.sponsor.image} />
+                        <p>This post is underwritten by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                    </div>
+                </Link>
+                }
+                {props.sponsor && props.sponsor.accountType === 'supplier' &&
+                <Link as={`/${sponsor.accountType}/${sponsor.companyName}`} href='/supplier/[supplierName]'>
+                    <div className={styles.sponsorWrapper}>
+                        <img src={props.sponsor.image} />
+                        <p>This post is underwritten by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                    </div>
+                </Link>
+                }
+                {props.sponsor && props.sponsor.accountType === 'contributor' &&
+                <Link as={`/${sponsor.accountType}/${sponsor.name.replace(/\s/g, '-')}`} href='/contributor/[contributorName]'>
+                    <div className={styles.sponsorWrapper}>
+                        <img src={props.sponsor.image} />
+                        <p>This post is underwritten by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                    </div>
+                </Link>
+                }
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'flex-end', margin: '5px 0'}}>
                     { user && !user.favorites.includes(article.sys.id) && <img className='favorite' src='/images/favorite.png' onClick={toggleFavorite} data-tip="Save to your favorites"/> }
                     { user && user.favorites.includes(article.sys.id) && <img className='favorite' src='/images/unfavorite.png' onClick={toggleFavorite} data-tip="Remove from your favorites"/> }
+                    <a 
+                        href={`mailto:?subject=${article.fields.title}&body=https://preventiongeneration.com/${article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${article.fields.slug}`}
+                        target="_blank" rel="noopener noreferrer">
+                        <img className='favorite' src='/images/mail.png' data-tip="Share through email"/>
+                    </a>
                     <div className="fb-share-button" data-href={`${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} data-layout="button" data-size="small" style={{display: 'inline-block'}}><a target="_blank" rel="noopener noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`} className="fb-xfbml-parse-ignore"><img src="/images/facebook.png" width="30px" style={{display: 'inline-block'}} alt="share to facebook"/></a></div>
                     <a className="twitter-share-button"
                         href={`https://twitter.com/intent/tweet?url=${process.env.DOMAIN_NAME}/${tagLink}/${article.fields.slug}`}
@@ -270,15 +299,14 @@ Article.getInitialProps = async (ctx) => {
     try {
         const { articleSlug } = ctx.query;
         const res = await fetch('get', `/api/articles/?slug=${articleSlug}`);
-        res.data.article.fields?.reviewedBy?.fields?.authorId
         const errorCode = res.statusCode > 200 ? res.statusCode : false
         const similarArticles = await fetch('get', `/api/articles/tag-array?tags=${res?.data?.article?.fields.tags}`)
-        console.log(res.data.article.fields?.reviewedBy?.fields?.authorId)
         const reviewedBy = res.data.article.fields?.reviewedBy?.fields?.authorId !== undefined ? await fetch('get', `/api/users/find?_id=${res.data.article.fields?.reviewedBy?.fields?.authorId}`) : null;
-        // console.log("reviewed", reviewedBy.data);
+
         return { 
             article: res.data.article,
             author: res.data.author,
+            sponsor: res.data.sponsor,
             errorCode,
             similarArticles: similarArticles.data.articles,
             reviewedBy: reviewedBy?.data?.user || null };
@@ -291,6 +319,7 @@ Article.propTypes = {
     article: PropTypes.object,
     similarArticles: PropTypes.array,
     author: PropTypes.object,
+    sponsor: PropTypes.object,
     errorCode: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.number
