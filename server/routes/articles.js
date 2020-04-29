@@ -68,10 +68,12 @@ router.get("/", async (req, res) => {
         // console.log(entries)
     
         const author = await User.findById(entries.items[0].fields.author.fields.authorId)
-    
+        const sponsor = await User.findOne({sponsoredTag: entries.items[0].fields.primaryTag});
+        console.log(sponsor)
         return res.json({
             article: entries.items[0],
-            author: { ...author._doc, password: null }
+            author: { ...author._doc, password: null },
+            sponsor
         })
     } catch (e) {
         return res.status(404).end();

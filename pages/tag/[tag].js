@@ -7,10 +7,11 @@ import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
 import Carousel from 'components/Carousel/Carousel';
 import ProductCard from 'components/ProductCard/ProductCard';
-
+import Link from 'next/link';
 
 
 function Provider(props) {
+    const { sponsor } = props;
     const { user, setUser } = useContext(UserContext);
     const { setOpen, setPage } = useContext(ModalContext);
     async function toggleFollow() {
@@ -39,8 +40,35 @@ function Provider(props) {
         <>
             <div className={styles.root}>
                 <div className={styles.header}><h2>{props.tag}</h2></div><br/>
-                { user && !user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Follow</div>}
-                { user && user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
+                <div style={{display: "flex"}}>
+
+                    { user && !user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Follow</div>}
+                    { user && user.personalTags.includes(props.tag) && <div onClick={toggleFollow} className={styles.followButton}>Unfollow</div>}
+                    {props.sponsor && props.sponsor.accountType === 'provider' &&
+                    <Link as={`/${sponsor.accountType}/${[sponsor.name, sponsor.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-')}/${sponsor.city}`} href='/provider/[name]/[city]'>
+                        <div className={styles.sponsorWrapper}>
+                            <img src={props.sponsor.image} />
+                            <p>This tag is sponsored by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                        </div>
+                    </Link>
+                    }
+                    {props.sponsor && props.sponsor.accountType === 'supplier' &&
+                    <Link as={`/${sponsor.accountType}/${sponsor.companyName}`} href='/supplier/[supplierName]'>
+                        <div className={styles.sponsorWrapper}>
+                            <img src={props.sponsor.image} />
+                            <p>This tag is sponsored by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                        </div>
+                    </Link>
+                    }
+                    {props.sponsor && props.sponsor.accountType === 'contributor' &&
+                    <Link as={`/${sponsor.accountType}/${sponsor.name.replace(/\s/g, '-')}`} href='/contributor/[contributorName]'>
+                        <div className={styles.sponsorWrapper}>
+                            <img src={props.sponsor.image} />
+                            <p>This tag is sponsored by <span style={{fontWeight: 'bold'}}>{props.sponsor.companyName}</span></p>
+                        </div>
+                    </Link>
+                    }
+                </div>
                 { props.products.length > 0 && <Carousel header={[<span key="sfdgnhdfgn"> products </span>,<br key="woirety"/>]}>
                     {props.products.map(product => {
                         const authorName = product.author.accountType === 'provider' ? [product.author.name, product.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : product.author.name.replace(/\s/g, '-');
@@ -94,16 +122,19 @@ Provider.getInitialProps = async (ctx) => {
     const formattedTag = tag.replace(/-/g, ' ').replace(/_/g, '/')
     const articles = await fetch('get',`/api/articles/tag?tag=${formattedTag}`);
     const products = await fetch('get',`/api/products/tag?tag=${formattedTag}`);
-    console.log(products.data.products)
+    const sponsor = await fetch('get',`/api/tags/sponsor?tag=${formattedTag}`);
+    // console.log(products.data.products)
     return {
         articles: articles.data.articles,
         products: products.data.products,
-        tag: formattedTag
+        tag: formattedTag,
+        sponsor: sponsor.data.sponsor
     }
 }
 
 Provider.propTypes = {
     provider: PropTypes.object,
+    sponsor: PropTypes.object,
     articles: PropTypes.array,
     products: PropTypes.array,
     tag: PropTypes.string
