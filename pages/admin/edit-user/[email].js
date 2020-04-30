@@ -1,0 +1,224 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import fetch from 'helpers/fetch';
+import TextField from '@material-ui/core/TextField';
+import ActionButton from 'components/ActionButton/ActionButton';
+
+function EditUser(props) {
+
+    const { email, name, lastname, companyName, accountType, zip, city, state, address, image, sponsoredTag, bio, shortBio, website, phone } = props.user
+
+    const [ form, setForm ] = useState({
+        email,
+        name,
+        lastname,
+        companyName,
+        accountType,
+        zip,
+        city,
+        state,
+        address,
+        image,
+        sponsoredTag,
+        bio,
+        shortBio,
+        website,
+        phone
+    });
+
+    function handleChange(e) {
+        e.persist();
+        setForm(state => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    async function submit() {
+        const body = {
+            email: form.email,
+            updates: {...form}
+        }
+        try {
+            const res = await fetch('put', '/api/users/update', body);
+            console.log(res.data);
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
+    return (
+        <>
+            <form>
+                <div id='simpleInputs'>
+                    <TextField
+                        name="name"
+                        placeholder="Name"
+                        label="Name"
+                        value={form?.name}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="lastname"
+                        placeholder="Last Name"
+                        label="Last Name"
+                        value={form?.lastname}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="accountType"
+                        placeholder="Account Type"
+                        label="Account Type"
+                        value={form?.accountType}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="companyName"
+                        placeholder="Company Name"
+                        label="Company Name"
+                        value={form?.companyName}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="zip"
+                        placeholder="Zip Code"
+                        label="Zip Code"
+                        value={form?.zip}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="city"
+                        placeholder="City"
+                        label="City"
+                        value={form?.city}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="state"
+                        placeholder="State"
+                        label="State"
+                        value={form?.state}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="address"
+                        placeholder="Adress"
+                        label="Adress"
+                        value={form?.address}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="image"
+                        placeholder="Image Url"
+                        label="Image Url"
+                        value={form?.image}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="sponsoredTag"
+                        placeholder="Sponsored Tag"
+                        label="Sponsored Tag"
+                        value={form?.sponsoredTag}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="website"
+                        placeholder="Website"
+                        label="Website"
+                        value={form?.website}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="phone"
+                        placeholder="Phone"
+                        label="Phone"
+                        value={form?.phone}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                </div>
+                <div id='textAreas'>
+
+                    <TextField
+                        multiline
+                        rows={4}
+                        name="bio"
+                        placeholder="Bio"
+                        label="Bio"
+                        value={form?.bio}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                
+                    <TextField
+                        multiline
+                        rows={4}
+                        name="shortBio"
+                        placeholder="Short Bio"
+                        label="Short Bio"
+                        value={form?.shortBio}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                </div>
+                <ActionButton onClick={submit} className='actionButton'>Save</ActionButton>
+
+            </form>
+
+            <style jsx>{`
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px 10px;
+                    width: 100%;
+                    min-height: 80vh;
+                    padding: 30px;
+                    box-sizing: border-box;
+                }
+                #simpleInputs {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, 300px);
+                    gap: 10px 10px;
+                    width: 100%;
+                    margin-bottom: 10px;
+                    justify-content: center;
+                }
+                #textAreas {
+                    display: grid;
+                    width: 100%;
+                    grid-template-columns: repeat(auto-fit, 1fr);
+                    gap: 10px 10px;
+                    margin-bottom: 20px;
+                }
+                .input {
+                    margin: 50px;
+                }
+            `}</style>
+        </>
+    )
+}
+
+EditUser.getInitialProps = async (ctx) => {
+
+    const { email } = ctx.query;
+    const user = await fetch('get', `/api/users/find?email=${email}`);
+    return {user: user.data.user}
+}
+
+EditUser.propTypes = {
+    user: PropTypes.object
+}
+
+export default EditUser;

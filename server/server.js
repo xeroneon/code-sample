@@ -108,6 +108,15 @@ nextApp.prepare().then(() => {
     if (process.env.NODE_ENV === 'production') {
         app.use(enforce.HTTPS({ trustProtoHeader: true }));
     }
+    app.get(/^\/admin/, (req,res) => {
+        if (!req.user) {
+            return res.redirect('/')
+        }
+        if(!req.user.isAdmin) {
+            return res.redirect('/')
+        }
+        return handle(req,res); // for all the react stuff
+    });
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
     });

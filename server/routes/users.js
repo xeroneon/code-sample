@@ -104,6 +104,10 @@ router.get("/", async (req, res) => {
     }
     res.send({user: {...req.user._doc, password: null}, success: true})
 });
+router.get("/all", async (req, res) => {
+    const users = await User.find({ accountType: { $ne: 'provider' } });
+    res.send({users, success: true})
+});
 router.get("/find", async (req, res) => {
     try {
         const user = await User.findOne({...req.query}).select("-password");
