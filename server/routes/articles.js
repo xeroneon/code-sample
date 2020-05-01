@@ -134,7 +134,13 @@ router.get("/user", async (req, res) => {
             content_type: 'article',
             'sys.revision[gte]': 1,
             include: 10,
-            'fields.tags[in]': req.user.personalTags.toString(),
+            'fields.tags[in]': req.user.personalTags.toString()
+        })
+        const entriesPrimaryTag = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.primaryTag[in]': req.user.personalTags.toString()
         })
         const authorEntries = await client.getEntries({
             content_type: 'article',
@@ -143,7 +149,7 @@ router.get("/user", async (req, res) => {
             'fields.author.sys.contentType.sys.id': 'author',
             'fields.author.fields.authorId[in]': user.following.toString()
         })
-        const allEntries = [...entries.items, ...authorEntries.items]
+        const allEntries = [...entries.items, ...authorEntries.items, ...entriesPrimaryTag.items]
         
         const allEntriesSorted = allEntries.filter((object,index) => index === allEntries.findIndex(obj => JSON.stringify(obj) === JSON.stringify(object))).sort(function(a, b) {
             a = a.sys.updatedAt
