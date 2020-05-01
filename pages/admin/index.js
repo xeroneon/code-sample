@@ -46,7 +46,7 @@ function Admin(props) {
     async function generateURL() {
         const res = await fetch('post', '/api/codes', {uid: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)});
         if (res.data.success) {
-            setUrl(`https://preventiongeneration.com/supplier-onboard/${res.data.code.uid}`)
+            setUrl(`https://www.preventiongeneration.com/supplier-onboard/${res.data.code.uid}`)
         }
     }
 
