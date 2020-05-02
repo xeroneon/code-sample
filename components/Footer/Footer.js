@@ -1,51 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Footer.module.css';
 import ActionButton from 'components/ActionButton/ActionButton'
+import TextField from '@material-ui/core/TextField';
+import fetch from 'helpers/fetch';
 
 function Footer() {
+
+    const [ email, setEmail ] = useState('');
+
+    function addEmail() {
+        try {
+            fetch('post', '/api/emails', {email});
+            setEmail('');
+        } catch(e) {
+            console.log(e)
+            setEmail('');
+        }
+    }
     return (
         <>
             <div className={styles.root}>
-                {/* <div className={styles.image}>
-                    <img src="/images/pg-logo.png" />
-                </div>
-                <div className={styles.email}>
-                    <p>Get emails with all of the latest holistic medicine, preventative care news and media coverage</p>
-                    <input type="email" placeholder="Email Address" className={styles.emailInput}/>
-                    <ActionButton type="submit" className={styles.ActionButton}>Join Our Newsletter</ActionButton>
-                </div>
-                <div className={styles.about}>
-                    <span className={styles.link}>About Us</span>
-                </div>
-                <div className={styles.terms}>
-                    <span className={styles.link}>Terms of service</span>
-                </div>
-                <div className={styles.contact}>
-                    <span className={styles.link}>Contact</span>
-                </div>
-                <div className={styles.privacy}>
-                    <span className={styles.link}>Privacy Policy</span>
-                </div>
-                <div className={styles.info}>
-                    <p>info@preventiongeneration.com - 1 (800) NEW-CARE (654-4389)</p>
-                </div> */}
+
                 <div className={styles.image}>
                     <p>Content Provided By AHWA Foundation</p>
                     <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
                         <img src="/images/AHWA_Foundation.png" />
                     </a>
                 </div>
-                <div className={styles.links}>
-                    <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
-                        <span className={styles.link}>About Us | </span>
-                    </a>
-                    <span className={styles.link}>Terms of service | </span>
-                    <a href="mailto:info@preventiongeneration.com">
-                        <span className={styles.link}>Contact | </span>
-                    </a>
-                    <span className={styles.link}>Privacy Policy</span>
-                    <p>© {new Date().getFullYear()} AHWA LLC All rights reserved. | Reproduction in whole or part is prohibited.</p>
+
+                <div className={styles.middle}>
+                    <div className={styles.newsletter}>
+                        <h4>Get our prevention daily newsletter</h4>
+                        <TextField id="standard-basic" label="Enter Your Email" onChange={e => setEmail(e.target.value)} value={email} />
+                        <br/>
+                        <ActionButton onClick={addEmail}>Subscribe</ActionButton>
+                        <p>Your privacy is important to us</p>
+                    </div>
+                    <div className={styles.links}>
+                        <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
+                            <span className={styles.link}>About Us | </span>
+                        </a>
+                        <span className={styles.link}>Terms of service | </span>
+                        <a href="mailto:info@preventiongeneration.com">
+                            <span className={styles.link}>Contact | </span>
+                        </a>
+                        <span className={styles.link}>Privacy Policy</span>
+                        <p>© {new Date().getFullYear()} AHWA LLC All rights reserved. | Reproduction in whole or part is prohibited.</p>
+                    </div>
                 </div>
+
                 <div className={styles.connect}>
                     <p>Interested in sponsoring?</p>
                     <a href="mailto:info@preventiongeneration.com" target="_blank" rel="noopener noreferrer">
@@ -66,6 +69,7 @@ function Footer() {
                         </a>
                     </span>
                 </div>
+
             </div>
         </>
     )

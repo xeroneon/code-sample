@@ -122,10 +122,10 @@ function Index(props) {
                     />
                 })}
             </Carousel> }
-            {/* { user && userArticles.length === 0 && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cbn"/>, "Feed" ]}>
-                <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>
-            </Carousel> } */}
+
             <TrendingCarousel items={trending} loading={trendingLoading} onScrollEnd={loadMoreTrending}/>
+
+
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {
                     return <PartnerCard 
@@ -146,6 +146,7 @@ function Index(props) {
                         suffix={partner?.suffix}
                         prefix={partner?.prefix}
                         title={partner?.title}
+                        isReviewBoard={partner?.isReviewBoard}
                     />
                 })}
             </Carousel>

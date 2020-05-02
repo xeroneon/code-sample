@@ -40,6 +40,11 @@
     overflow: hidden;
     box-sizing: border-box;
 }
+.imageContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* height: 50px; */
+}
 
 .bio {
     position: relative;

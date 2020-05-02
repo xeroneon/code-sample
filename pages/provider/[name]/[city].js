@@ -92,9 +92,14 @@ function Provider(props) {
                 </div>
                 <div className={styles.right}>
                     <div>
-                        <h1 className={`${styles.name} ${styles.hideOnMobile}`} style={{marginTop: '0'}}>{props.provider?.prefix} {props.provider.name} {props.provider.lastname} {props.provider?.suffix}</h1>
-                        <h1 className={styles.hideOnDesktop} style={{marginTop: '0'}}>{props.provider.companyName}</h1>
-                        <h5 style={{color: '#143968', fontWeight: 'bold'}}>{props?.provider?.specialty?.name}</h5>
+                        <div className={styles.titleContainer}>
+                            <span>
+                                <h1 className={`${styles.name} ${styles.hideOnMobile}`} style={{marginTop: '0'}}>{props.provider?.prefix} {props.provider.name} {props.provider.lastname} {props.provider?.suffix}</h1>
+                                <h1 className={styles.hideOnDesktop} style={{marginTop: '0'}}>{props.provider.companyName}</h1>
+                                <h5 style={{color: '#143968', fontWeight: 'bold', alignSelf: 'end'}}>{props?.provider?.specialty?.name}</h5>
+                            </span>
+                            { props.provider.isReviewBoard && <img src='/images/review-board.png' /> }
+                        </div>
                         <div className={styles.tags}>
                             {props.provider.tags.map(tag => (
                                 <Tag link key={tag} name={tag} />

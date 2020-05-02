@@ -54,6 +54,25 @@
 	margin: 30px 0;
 }
 
+.titleContainer {
+	display: flex;
+	align-items: center;
+	height: 100px;
+}
+.titleContainer>img {
+	height: 100%;
+	margin-left: 20px;
+}
+.titleContainer>span>* {
+	/* margin: 20px 0; */
+}
+.titleContainer>span {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	align-content: space-between;
+	height: 100%;
+}
+
 .image {
 	border-radius: 1000px;
 	width: 180px;

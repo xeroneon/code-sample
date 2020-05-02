@@ -105,6 +105,7 @@ nextApp.prepare().then(() => {
     app.use("/api/update-fuzzy", require("./routes/updateFuzzy"));
     app.use("/api/specialties", require("./routes/specialties"));
     app.use("/api/codes", require("./routes/codes"));
+    app.use("/api/emails", require("./routes/emails"));
     if (process.env.NODE_ENV === 'production') {
         app.use(enforce.HTTPS({ trustProtoHeader: true }));
     }
