@@ -29,8 +29,24 @@
 .image>a>img {
 	width: 200px;
 }
-
+.middle {
+	display: grid;
+	grid-template-rows: 2fr 1fr;
+	height: 100%;
+}
+.newsletter {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.newsletter>p {
+	font-weight: 100;
+	font-size: .8em;
+	margin-top: 10px;
+	color: #555;
+}
 .links {
+	align-self: end;
 	text-align: center;
 }
 .link {

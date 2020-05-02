@@ -40,9 +40,15 @@ function PartnerCard(props) {
             <Link as={getAs(props.type)} href={getHref(props.type)}>
                 <div className={styles.wrapper}>
                     <div className={styles.root}>
-                        <div className={styles.image}>
-                            <img src={props.image} />
-                            {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
+                        <div className={styles.imageContainer}>
+                            <div style={{height: '75px', alignSelf: 'center'}}>
+                                {props.isReviewBoard && <img src='/images/review-board.png' style={{height: '80%'}} />}
+                            </div>
+                            <div className={styles.image}>
+                                <img src={props.image} />
+                                {/* {props.type === 'provider' && <div className={styles.distance}><p>{Math.round(distance * 10) / 10} Miles</p></div> } */}
+                            </div>
+                            <div>&nbsp;</div>
                         </div>
                         {props.type === 'provider' && <h4 className={styles.name}>{props.prefix} {props.name} {props.lastname} {props.suffix}</h4>}
                         {props.type === 'contributor' && <h4 className={styles.name}>{props.name}</h4>}
@@ -85,7 +91,8 @@ PartnerCard.propTypes = {
     prefix: PropTypes.string,
     suffix: PropTypes.string,
     sponsoredTag: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    isReviewBoard: PropTypes.bool
 }
 
 export default PartnerCard;
