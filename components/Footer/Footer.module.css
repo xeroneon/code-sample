@@ -39,6 +39,9 @@
 	flex-direction: column;
 	align-items: center;
 }
+.newsletter>h4 {
+	color: #143968;
+}
 .newsletter>p {
 	font-weight: 100;
 	font-size: .8em;
