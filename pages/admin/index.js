@@ -15,6 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
 
 function createTagData(name, description) {
     return { name, description };
@@ -32,6 +34,10 @@ function Admin(props) {
     const usersRows = users.map(user => createUsersData(user.email, user?.companyName, `${user.name} ${user?.lastname ? user.lastname : ''}`, user.accountType))
     const tagEmptyRows = 10 - Math.min(10, tagRows.length - tagPage * 10);
     const usersEmptyRows = 10 - Math.min(10, tagRows.length - tagPage * 10);
+    const [ tagName, setTagName ] = useState('')
+    const [ tagDesc, setTagDesc ] = useState('')
+    const [ snackbar, setSnackbar ] = useState(false);
+    const [ snackMessage, setSnackMessage ] = useState('');
     const handleChangeTagPage = (event, newPage) => {
         setTagPage(newPage);
     };
@@ -50,6 +56,30 @@ function Admin(props) {
         }
     }
 
+    async function createTag(e) {
+        e.preventDefault();
+        try {
+            await fetch('post', '/api/tags/create', {
+                fields: {
+                    name: {
+                        'en-US': tagName
+                    },
+                    description: {
+                        'en-US': tagDesc
+                    }
+                }
+            })
+            setSnackMessage('Tag Created Successfully')
+            setSnackbar(true);
+            setTagDesc('')
+            setTagName('')
+        } catch (e) {
+            setSnackMessage('Tag could not be created, try again')
+            setSnackbar(true);
+            console.log(e)
+        }
+    }
+
     return (
         <>
             <div className='wrapper'>
@@ -61,6 +91,29 @@ function Admin(props) {
                     </div>
                     <div className="tagWrapper">
                         <h3>Tags</h3>
+                        <div className='create-tag'>
+                            <TextField
+                                name="tagName"
+                                placeholder="Tag Name"
+                                // label="Tag Name"
+                                value={tagName}
+                                variant="outlined"
+                                onChange={e => setTagName(e.target.value)}
+                            />
+                            <br/>
+                            <br/>
+                            <TextField
+                                name="tagDesc"
+                                placeholder="Tag Description"
+                                // label="Tag Description"
+                                value={tagDesc}
+                                variant="outlined"
+                                onChange={e => setTagDesc(e.target.value)}
+                            />
+                            <br/>
+                            <br/>
+                            <ActionButton onClick={createTag}>Create Tag</ActionButton>
+                        </div>
                         <TableContainer component={Paper}>
                             <Table aria-label="simple table">
                                 <TableHead>
@@ -161,6 +214,16 @@ function Admin(props) {
                     </div>
                 </div>
             </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                open={snackbar}
+                autoHideDuration={6000}
+                message={snackMessage}
+                onClose={() => setSnackbar(false)}
+            />
 
             <style jsx>{`
                 .wrapper {
@@ -198,6 +261,9 @@ function Admin(props) {
 
                 h3 {
                     margin: 10px;
+                }
+                .create-tag {
+                    margin: 10px 0;
                 }
             `}</style>
         </>
