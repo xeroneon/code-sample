@@ -1,7 +1,7 @@
 .root {
     width: 360px;
     height: 450px;
-    padding: 20px;
+    /* margin: 20px; */
     position: relative;
     display: inline-block;
 }
@@ -12,6 +12,7 @@
 
 .wrapper {
     display: flex;
+    margin: 20px;
 }
 
 .root:hover {
