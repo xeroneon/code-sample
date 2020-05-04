@@ -176,7 +176,7 @@ function EditProfile() {
                 </div> }
                 { !src && !profileImage && <p>Drag and drop a photo here, or tap to search for an image</p> }
                 { src && <ActionButton onClick={crop}>{ loading ? 'Loading...' : 'Crop'}</ActionButton> }
-                { profileImage && <ActionButton onClick={uploadImage}>{ loading ? 'Loading...' : 'That looks good!'}</ActionButton> }
+                { profileImage && <ActionButton onClick={uploadImage}>{ loading ? 'Loading...' : 'Save... That looks Great!'}</ActionButton> }
                 { profileImage && <p id="remove-image" onClick={(() => setProfileImage(null))}>Remove Photo</p> }
                 <br></br>
                 <ul className='errors'>

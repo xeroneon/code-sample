@@ -33,13 +33,10 @@ router.get("/trending", async (req, res) => {
             limit: 15,
             skip: skip || 0
         })
-        // console.log(articles.items)
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
-            // console.log(article.fields.primaryTag)
             const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
-            // console.log(sponsor)
             return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
         }))
     
@@ -64,12 +61,9 @@ router.get("/", async (req, res) => {
         if (entries.items.length === 0) {
             return res.status(404).end();
         }
-
-        // console.log(entries)
     
         const author = await User.findById(entries.items[0].fields.author.fields.authorId)
         const sponsor = await User.findOne({sponsoredTag: entries.items[0].fields.primaryTag});
-        console.log(sponsor)
         return res.json({
             article: entries.items[0],
             author: { ...author._doc, password: null },
@@ -85,7 +79,6 @@ router.get("/id", async (req, res) => {
     try {
         const entry = await client.getEntry(req.query.id)
         const authorEntry = await client.getEntry(entry.fields.author.sys.id)
-        // console.log("ENTRY", authorEntry)
 
         if (!entry) {
             return res.status(404).end();
@@ -163,8 +156,6 @@ router.get("/user", async (req, res) => {
         }))
 
         shuffle(articlesWithAuthor)
-
-        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor.slice(0, 40)
         });
@@ -175,7 +166,6 @@ router.get("/user", async (req, res) => {
 })
 
 router.get("/tag", async (req, res) => {
-    console.log(req.query.tag);
     try {
 
         const entries = await client.getEntries({
@@ -206,8 +196,6 @@ router.get("/tag", async (req, res) => {
             }))
 
         }
-
-        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor
         });
@@ -218,7 +206,6 @@ router.get("/tag", async (req, res) => {
 })
 
 router.get("/tag-array", async (req, res) => {
-    console.log(req.query.tags);
     try {
 
         const entries = await client.getEntries({
@@ -227,7 +214,6 @@ router.get("/tag-array", async (req, res) => {
             include: 10,
             'fields.tags[in]': req.query.tags.toString()
         })
-        console.log(entries)
         let articlesWithAuthor
         if(entries.items.length > 0 ) {
             articlesWithAuthor = await Promise.all(entries.items.map(async article => {
@@ -237,8 +223,6 @@ router.get("/tag-array", async (req, res) => {
             }))
 
         }
-
-        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor
         });
@@ -250,7 +234,6 @@ router.get("/tag-array", async (req, res) => {
 })
 
 router.post("/create", async (req, res) => {
-    // console.log(req.query.tags);
     try {
         const authors = await client.getEntries({
             content_type: 'author',
@@ -292,8 +275,6 @@ router.post("/create", async (req, res) => {
                 }
             }
         });
-
-        // console.log(process.env.EMAIL_FROM)
 
         const mailOptions = {
             from: process.env.EMAIL_FROM, // sender address
@@ -352,13 +333,37 @@ router.get("/favorites", async (req, res) => {
             }))
 
         }
-
-        // console.log("ENTRIES", entries);
         res.send({
             articles: articlesWithAuthor
         });
     } catch(e) {
         console.error(e)
+    }
+
+})
+
+router.get("/series", async (req, res) => {
+    const { name } = req.query;
+    try {
+
+        const entries = await client.getEntries({
+            content_type: 'article',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.series.sys.contentType.sys.id': 'series',
+            'fields.series.fields.name[match]': name
+        })
+        const articlesWithAuthor = await Promise.all(entries.items.map(async article => {
+            const user = await User.findById(article.fields.author.fields.authorId);
+            const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
+            return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
+        }))
+        res.send({
+            articles: articlesWithAuthor
+        });
+    } catch(e) {
+        console.error(e)
+        res.end();
     }
 
 })
