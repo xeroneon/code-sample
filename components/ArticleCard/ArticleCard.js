@@ -18,13 +18,16 @@ function ArticleCard(props) {
                         <div className={styles.thumbnail}>
                             <img src={props.featuredImage} className={styles.thumbnailImage}/>
                         </div>
-                        { props.type === 'provider' &&
+                        { props.series &&
+                    <img src={props.series.fields.seriesImage.fields.file.url} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/series/${props.series.fields.name}`)}}/>
+                        }
+                        { props.type === 'provider' && !props.series &&
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/provider/${props.authorName}/${props.authorCity}`)}}/>
                         }
-                        { props.type === 'supplier' && 
+                        { props.type === 'supplier' && !props.series &&
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/supplier/${props.companyName}`)}}/>
                         }
-                        { props.type === 'contributor' && 
+                        { props.type === 'contributor' && !props.series &&
                     <img src={props.authorImage} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/contributor/${props.authorName}`)}}/>
                         }
                         <div className={styles.tags}>
@@ -68,7 +71,8 @@ ArticleCard.propTypes = {
     authorCity: PropTypes.string,
     sponsor: PropTypes.object,
     type: PropTypes.string,
-    companyName: PropTypes.string
+    companyName: PropTypes.string,
+    series: PropTypes.object
 }
 
 export default ArticleCard;

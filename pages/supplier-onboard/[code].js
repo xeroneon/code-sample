@@ -255,7 +255,7 @@ function Onboard(props) {
         <>
             <div className='root'>
                 <h1>Prevention Generation</h1>
-                <p style={{marginBottom: '30px'}}>We are so excited that you have chosen to partner with The Prevention Generation! Please provide the below information so we can build your health partner supplier page! If you have any questions, please do not hesitate to reach out to us at <a href="mailto:hello@ahwa.com" target="_blank" rel="noopener noreferrer">hello@ahwa.com</a></p>
+                <p style={{marginBottom: '30px'}}>We are so excited that you have chosen to partner with The Prevention Generation! Please provide the below information so we can build your health partner supplier page! If you have any questions, please do not hesitate to reach out to us at <a href="mailto:hello@ahwa.com" target="_blank" rel="noopener noreferrer" style={{color: '#3778b7'}}>hello@ahwa.com</a></p>
                 <div className='imageWrapper'>
                     { !src && <div className='imagePlaceholder'>&nbsp;{ profileImage && <img src={profileImage} /> }</div> }
                     { src && <Cropper
@@ -266,7 +266,7 @@ function Onboard(props) {
                         responsive={true}
                         viewMode={1}
                         style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
-                    {src && <div onClick={cropProfileImage} className='selectButton'>Crop Image</div>}
+                    {src && <div onClick={cropProfileImage} className='selectButton'>Save, Cropped Image</div>}
                     <div {...getRootProps()} className='dropzone'>
                         <input {...getInputProps()} />
                         {

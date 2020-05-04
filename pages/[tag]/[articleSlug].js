@@ -155,6 +155,18 @@ function Article(props) {
                 {article.fields.noIndex === true && <meta name='robots' content='noindex' /> }
             </Head>
             <div className={styles.core}>
+                { article.fields?.series && <Link as={`/series/${article.fields.series.fields.name}`} href='/series/[seriesName]'>
+                    <div className={styles.seriesWrapper}>
+                        <div>
+                            <img src={article.fields.series.fields.seriesImage.fields.file.url} />
+                        </div>
+                        <span>
+                            <p>This post is apart of the series</p>
+                            <br/>
+                            <h2>{article.fields.series.fields.name}</h2>
+                        </span>
+                    </div>
+                </Link> }
                 <div className={styles.title}>
                     {article.fields.title}
                 </div>
@@ -270,6 +282,7 @@ function Article(props) {
                             sponsor={article.sponsor}
                             type={article.author.accountType}
                             companyName={article.author.companyName}
+                            series={article.fields?.series}
                         />
                     })}
                 </Carousel> }

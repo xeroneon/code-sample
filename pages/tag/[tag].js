@@ -109,6 +109,7 @@ function Provider(props) {
                             sponsor={article.sponsor}
                             type={article.author.accountType}
                             companyName={article.author.companyName}
+                            series={article.fields?.series}
                         />
                     })}
                 </div>
