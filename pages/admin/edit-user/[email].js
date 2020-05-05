@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
 import TextField from '@material-ui/core/TextField';
 import ActionButton from 'components/ActionButton/ActionButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import Router from 'next/router';
 
 function EditUser(props) {
+
+    const [ snackbar, setSnackbar ] = useState(false);
+    const [ snackMessage, setSnackMessage ] = useState('');
 
     const { email, name, lastname, companyName, accountType, zip, city, state, address, image, sponsoredTag, bio, shortBio, website, phone } = props.user
 
@@ -44,6 +49,21 @@ function EditUser(props) {
             console.log(res.data);
         }catch (e) {
             console.log(e)
+        }
+    }
+
+    async function deleteUser(e) {
+        e.preventDefault();
+        try {
+            await fetch('delete', `/api/users?email=${email}`);
+
+            setSnackbar(true);
+            setSnackMessage('User has been deleted, redirecting...')
+            Router.push('/admin');
+        } catch (e) {
+            setSnackbar(true);
+            setSnackMessage('There was an error deleting the user, try again')
+
         }
     }
 
@@ -173,8 +193,21 @@ function EditUser(props) {
                     />
                 </div>
                 <ActionButton onClick={submit} className='actionButton'>Save</ActionButton>
+                <br/>
+                <input type='submit' onClick={deleteUser} className='delete' value='Delete User'/>
 
             </form>
+
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                open={snackbar}
+                autoHideDuration={6000}
+                message={snackMessage}
+                onClose={() => setSnackbar(false)}
+            />
 
             <style jsx>{`
                 form {
@@ -204,6 +237,17 @@ function EditUser(props) {
                 }
                 .input {
                     margin: 50px;
+                }
+                .delete {
+                    background: #D34240;
+                    padding: 15px 30px;
+                    display: flex;
+                    align-items: center;
+                    border: none;
+                    border-radius: 1000px;
+                    color: white;
+                    font-weight: bold;
+                    margin-top: 50px;
                 }
             `}</style>
         </>

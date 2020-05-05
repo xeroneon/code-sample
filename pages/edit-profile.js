@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useCallback, useRef } from 'rea
 // import fetch from 'helpers/fetch';
 import Router from 'next/router';
 import Cookies from 'js-cookie';
-import { useDropzone } from 'react-dropzone';
+import Dropzone, {  useDropzone } from 'react-dropzone';
 import UploadIcon from 'components/Icons/UploadIcon';
 import Input from 'components/Input/Input';
 import Select from 'components/Select/Select';
@@ -57,9 +57,12 @@ function EditProfile() {
     const [ loading, setLoading ] = useState(false);
     const [ errors, setErrors ] = useState([]);
     const [ src, setSrc ] = useState();
+    const [ coverSrc, setCoverSrc ] = useState();
     const [ form, setForm ] = useState({personalTags: []})
     const cropperRef = useRef(null);
+    const cropperCoverRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
+    const [ coverPhoto, setCoverPhoto ] = useState(null);
 
     useEffect(() => {
         if (Cookies.get('connect.sid') === undefined) {
@@ -105,11 +108,33 @@ function EditProfile() {
         setLoading(false);
         setSrc(null);
     }
+    async function cropCover() {
+        setLoading(true);
+        const dataUri = cropperCoverRef.current.getCroppedCanvas().toDataURL()
+        const blob = dataURLtoBlob(dataUri)
+        const formData = new FormData();
+        formData.append('image', blob)
+        const image = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'},         auth: {
+            username: 'admin',
+            password: process.env.BASIC_AUTH_PASS
+        }});
+        console.log(image)
+        // const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: image.data.imagePath}});
+        setCoverPhoto(image.data.imagePath);
+        // setUser(updatedUser.data.user)
+        setLoading(false);
+        setCoverSrc(null);
+    }
 
     async function uploadImage() {
         const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {image: profileImage}});
         setUser(updatedUser.data.user);
         setProfileImage(null);
+    }
+    async function uploadCover() {
+        const updatedUser = await fetch('put', 'api/users/update', {email: user.email, updates: {coverPhoto: coverPhoto}});
+        setUser(updatedUser.data.user);
+        setCoverPhoto(null);
     }
 
     const onDrop = useCallback(acceptedFiles => {
@@ -135,6 +160,14 @@ function EditProfile() {
         }))
     }
 
+    const coverDrop = useCallback(acceptedFiles => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            setCoverSrc(e.target.result);
+        }
+        reader.readAsDataURL(acceptedFiles[0]);
+    }, [])
+
     async function updateUser() {
         setLoading(true);
         try {
@@ -157,6 +190,34 @@ function EditProfile() {
     return (
         <>
             <div className="profileCard">
+                {/* profile image */}
+                { coverSrc && <Cropper
+                    src={coverSrc}
+                    // aspectRatio={1 / 1}
+                    ref={cropperCoverRef}
+                    zoomable={false}
+                    responsive={true}
+                    viewMode={1}
+                    style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
+                { !coverSrc && coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
+                { !coverSrc && !coverPhoto && 
+                <Dropzone onDrop={acceptedFiles => {coverDrop(acceptedFiles)}}>
+                    {({getRootProps, getInputProps}) => (
+                        <div {...getRootProps()} className='coverDropzone'>
+                            <input {...getInputProps()} />
+                            {
+                                isDragActive ?
+                                    <p>Drop the files here ...</p> :
+                                    <UploadIcon height="20%" stroke="#B8CEDF"/>
+                            }
+                        </div>
+                    )}
+                </Dropzone>}
+                { !coverSrc && !coverPhoto && <p>Drag and drop a cover photo here, or tap to search for an image</p> }
+                { coverSrc && <ActionButton onClick={cropCover}>{ loading ? 'Loading...' : 'Crop'}</ActionButton> }
+                { coverPhoto && <ActionButton onClick={uploadCover}>{ loading ? 'Loading...' : 'Save... That looks Great!'}</ActionButton> }
+                { coverPhoto && <p id="remove-image" onClick={(() => setCoverPhoto(null))}>Remove Photo</p> }
+                {/* start cover photo */}
                 { src && <Cropper
                     src={src}
                     aspectRatio={1 / 1}
@@ -174,10 +235,11 @@ function EditProfile() {
                             <UploadIcon width="20%" stroke="#B8CEDF"/>
                     }
                 </div> }
-                { !src && !profileImage && <p>Drag and drop a photo here, or tap to search for an image</p> }
+                { !src && !profileImage && <p>Drag and drop a profile photo here, or tap to search for an image</p> }
                 { src && <ActionButton onClick={crop}>{ loading ? 'Loading...' : 'Crop'}</ActionButton> }
                 { profileImage && <ActionButton onClick={uploadImage}>{ loading ? 'Loading...' : 'Save... That looks Great!'}</ActionButton> }
                 { profileImage && <p id="remove-image" onClick={(() => setProfileImage(null))}>Remove Photo</p> }
+                {/* end cover photo */}
                 <br></br>
                 <ul className='errors'>
                     {errors.map(error => <li key={error}>* {error}</li>)}
@@ -291,6 +353,23 @@ function EditProfile() {
                 .dropzone p {
                     width: 100%;
                 }
+                .coverDropzone {
+                    border: #eee 2px dashed;
+                    background: #FAFAFA;
+                    color: #BDBDBD;
+                    height: 150px;
+                    width: 90%;
+                    border-radius: 2px;
+                    margin: 20px auto;
+                    align-items: center;
+                    text-align: center;
+                    display: grid;
+                    place-items: center;
+                }
+                
+                .coverDropzone p {
+                    width: 100%;
+                }
 
                 .img-container {
                     /* Never limit the container height here */
@@ -316,6 +395,27 @@ function EditProfile() {
                     width: 100%;
                     height: 100%;
                     border-radius: 100px;
+                    object-fit: cover;
+                    overflow: hidden;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                }
+                  .coverPlaceholder {
+                    width: 90%;
+                    height: 150px;
+                    border-radius: 2px;
+                    border: 2px solid #143968;
+                    background: #eee;
+                    margin: 20px auto;
+                    position: relative;
+                    padding: 0;
+                }
+
+                .coverPlaceholder>img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 2px;
                     object-fit: cover;
                     overflow: hidden;
                     position: absolute;

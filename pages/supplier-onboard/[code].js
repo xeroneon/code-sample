@@ -52,13 +52,16 @@ function Onboard(props) {
     const [ src, setSrc ] = useState(undefined);
     const [ productArray, setProductArray ] = useState([]);
     const [ productSrc, setProductSrc] = useState(undefined);
+    const [ coverSrc, setCoverSrc] = useState(undefined);
     const [ productTags, setProductTags ] = useState([]);
     const [ newProduct, setNewProduct ] = useState(false);
     const productCropperRef = useRef(null);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
     const cropperRef = useRef(null);
+    const cropperCoverRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
+    const [ coverPhoto, setCoverPhoto ] = useState(null);
     const [ productImage, setProductImage ] = useState(null);
     const [ productType, setProductType ] = useState(null);
     const [ emailError, setEmailError] = useState(null);
@@ -76,6 +79,13 @@ function Onboard(props) {
         const reader = new FileReader();
         reader.onload = function(e) {
             setProductSrc(e.target.result);
+        }
+        reader.readAsDataURL(acceptedFiles[0]);
+    }, [])
+    const coverDrop = useCallback(acceptedFiles => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            setCoverSrc(e.target.result);
         }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
@@ -191,6 +201,29 @@ function Onboard(props) {
             }
         }
     }
+    async function cropCoverPhoto(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        // let image = `https://www.gravatar.com/avatar/${md5(form.email.toLowerCase())}?d=identicon`;
+        if(cropperCoverRef && cropperCoverRef.current) {
+            const dataUri = cropperCoverRef.current.getCroppedCanvas().toDataURL()
+            const blob = dataURLtoBlob(dataUri)
+            formData.append('image', blob)
+            try {
+                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
+                    username: 'admin',
+                    password: process.env.BASIC_AUTH_PASS
+                }});
+                console.log(res)
+                setCoverPhoto(res.data.imagePath);
+                setCoverSrc(undefined);
+
+            } catch(e) {
+                setLoading(false);
+                return setError(true);
+            }
+        }
+    }
     async function cropProductImage(e) {
         e.preventDefault();
         setCropLoading(true)
@@ -226,7 +259,8 @@ function Onboard(props) {
             image: profileImage,
             subActive: true,
             accountType: 'supplier',
-            personalTags: [...form.tags]
+            personalTags: [...form.tags],
+            coverPhoto: coverPhoto
         }
         try {
             fetch('post', "/api/users/create", body).then(res => {
@@ -276,6 +310,39 @@ function Onboard(props) {
                             Or <br/><br/> <div className='selectButton'>Select file</div></p>
                         }
                     </div>
+                </div>
+                <div className='imageWrapper'>
+                    { !coverSrc && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
+                    { coverSrc && <Cropper
+                        src={coverSrc}
+                        // aspectRatio={1 / 1}
+                        ref={cropperCoverRef}
+                        zoomable={false}
+                        responsive={true}
+                        viewMode={1}
+                        style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
+                    {coverSrc && <div onClick={cropCoverPhoto} className='selectButton'>Save, Cropped Image</div>}
+                    {/* <div {...getRootProps()} className='dropzone'>
+                        <input {...getInputProps()} />
+                        {
+                            isDragActive ?
+                                <p>Drop the files here ...</p> :
+                                <p>Drag and drop profile picture here<br/><br/>
+                            Or <br/><br/> <div className='selectButton'>Select file</div></p>
+                        }
+                    </div> */}
+                    <Dropzone onDrop={acceptedFiles => {coverDrop(acceptedFiles)}}>
+                        {({getRootProps, getInputProps}) => (
+                            <div {...getRootProps()} className='dropzone'>
+                                <input {...getInputProps()} />
+                                {
+                                    isDragActive ?
+                                        <p>Drop the files here ...</p> :
+                                        <p>Drag and drop cover photo here or <br/><br/><div style={{marginTop: '10px'}} className='selectButton'>Select file</div></p>
+                                }
+                            </div>
+                        )}
+                    </Dropzone>
                 </div>
 
                 <h4>Company Name*</h4>
@@ -428,6 +495,25 @@ function Onboard(props) {
                     width: 100%;
                     height: 100%;
                     border-radius: 100px;
+                    object-fit: cover;
+                    overflow: hidden;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                }
+                .coverPlaceholder {
+                    width: 100%;
+                    height: 150px;
+                    border: 2px solid #143968;
+                    background: #eee;
+                    margin: 0 auto;
+                    position: relative;
+                    padding: 0;
+                }
+
+                .coverPlaceholder>img {
+                    width: 100%;
+                    height: 100%;
                     object-fit: cover;
                     overflow: hidden;
                     position: absolute;
