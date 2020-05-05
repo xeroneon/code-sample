@@ -291,7 +291,7 @@ function Onboard(props) {
                 <h1>Prevention Generation</h1>
                 <p style={{marginBottom: '30px'}}>We are so excited that you have chosen to partner with The Prevention Generation! Please provide the below information so we can build your health partner supplier page! If you have any questions, please do not hesitate to reach out to us at <a href="mailto:hello@ahwa.com" target="_blank" rel="noopener noreferrer" style={{color: '#3778b7'}}>hello@ahwa.com</a></p>
                 <div className='imageWrapper'>
-                    { !src && <div className='imagePlaceholder'>&nbsp;{ profileImage && <img src={profileImage} /> }</div> }
+                    { profileImage && <div className='imagePlaceholder'>&nbsp;{ profileImage && <img src={profileImage} /> }</div> }
                     { src && <Cropper
                         src={src}
                         aspectRatio={1 / 1}
@@ -301,49 +301,19 @@ function Onboard(props) {
                         viewMode={1}
                         style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
                     {src && <div onClick={cropProfileImage} className='selectButton'>Save, Cropped Image</div>}
-                    <div {...getRootProps()} className='dropzone'>
+                    { !profileImage && !src && <div {...getRootProps()} className='dropzone'>
                         <input {...getInputProps()} />
                         {
                             isDragActive ?
                                 <p>Drop the files here ...</p> :
-                                <p>Drag and drop profile picture here<br/><br/>
-                            Or <br/><br/> <div className='selectButton'>Select file</div></p>
+                                <img src='/images/user-placeholder.png' />
                         }
-                    </div>
+                    </div> }
+                    <br />
+                    { !profileImage && !src && <p>Drag and drop a profile image here or tap above to choose an image</p> }
+                    { profileImage && <ActionButton onClick={() => setCoverPhoto(null)}>Remove Cover Photo</ActionButton>}
                 </div>
-                <div className='imageWrapper'>
-                    { !coverSrc && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
-                    { coverSrc && <Cropper
-                        src={coverSrc}
-                        // aspectRatio={1 / 1}
-                        ref={cropperCoverRef}
-                        zoomable={false}
-                        responsive={true}
-                        viewMode={1}
-                        style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
-                    {coverSrc && <div onClick={cropCoverPhoto} className='selectButton'>Save, Cropped Image</div>}
-                    {/* <div {...getRootProps()} className='dropzone'>
-                        <input {...getInputProps()} />
-                        {
-                            isDragActive ?
-                                <p>Drop the files here ...</p> :
-                                <p>Drag and drop profile picture here<br/><br/>
-                            Or <br/><br/> <div className='selectButton'>Select file</div></p>
-                        }
-                    </div> */}
-                    <Dropzone onDrop={acceptedFiles => {coverDrop(acceptedFiles)}}>
-                        {({getRootProps, getInputProps}) => (
-                            <div {...getRootProps()} className='dropzone'>
-                                <input {...getInputProps()} />
-                                {
-                                    isDragActive ?
-                                        <p>Drop the files here ...</p> :
-                                        <p>Drag and drop cover photo here or <br/><br/><div style={{marginTop: '10px'}} className='selectButton'>Select file</div></p>
-                                }
-                            </div>
-                        )}
-                    </Dropzone>
-                </div>
+                
 
                 <h4>Company Name*</h4>
                 <Input type="text" name="companyName" value={form?.companyName} placeholder="" onChange={handleChange} />
@@ -369,6 +339,33 @@ function Onboard(props) {
                 <Input type="text" name="name" value={form?.name} placeholder="" onChange={handleChange} />
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
+                <div className='imageWrapper'>
+                    { coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
+                    { coverSrc && <Cropper
+                        src={coverSrc}
+                        // aspectRatio={1 / 1}
+                        ref={cropperCoverRef}
+                        zoomable={false}
+                        responsive={true}
+                        viewMode={1}
+                        style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
+                    {coverSrc && <div onClick={cropCoverPhoto} className='selectButton'>Save, Cropped Image</div>}
+                    { !coverSrc && !coverPhoto && <Dropzone onDrop={acceptedFiles => {coverDrop(acceptedFiles)}}>
+                        {({getRootProps, getInputProps}) => (
+                            <div {...getRootProps()} className='cropDropzone'>
+                                <input {...getInputProps()} />
+                                {
+                                    isDragActive ?
+                                        <p>Drop the files here ...</p> :
+                                        <img src='/images/cover-placeholder.png' />
+                                }
+                            </div>
+                        )}
+                    </Dropzone>}
+                    <br/>
+                    { !coverSrc && !coverPhoto && <p>Drag and drop a cover photo here or tap above to choose a photo</p> }
+                    { coverPhoto && <ActionButton onClick={() => setCoverPhoto(null)}>Remove Cover Photo</ActionButton>}
+                </div>
                 <h3>Add Products</h3>
                 <div className='product-wrapper'>
                     {productArray.length > 0 && <h3>Products</h3>}
@@ -542,16 +539,41 @@ function Onboard(props) {
 
                 .dropzone {
                     border: #eee 2px dashed;
-                    /* background: #FAFAFA; */
+                    background: #FAFAFA;
                     color: #BDBDBD;
-                    height: 150px;
-                    width: 300px;
+                    height: 200px;
+                    width: 200px;
+                    border-radius: 20vw;
                     margin: 20px auto;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
                     align-items: center;
                     text-align: center;
+                    display: grid;
+                    place-items: center;
+                }
+                .dropzone>img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    overflow: hidden;
+                }
+                .cropDropzone {
+                    border: #eee 2px dashed;
+                    background: #FAFAFA;
+                    color: #BDBDBD;
+                    height: 150px;
+                    width: 100%;
+                    margin: 20px auto;
+                    align-items: center;
+                    text-align: center;
+                    display: grid;
+                    place-items: center;
+                }
+
+                .cropDropzone>img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    overflow: hidden;
                 }
 
                 .dropzone p {
