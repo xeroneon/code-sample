@@ -343,7 +343,7 @@ function Onboard(props) {
                     { coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
                     { coverSrc && <Cropper
                         src={coverSrc}
-                        // aspectRatio={1 / 1}
+                        aspectRatio={1 / .18}
                         ref={cropperCoverRef}
                         zoomable={false}
                         responsive={true}

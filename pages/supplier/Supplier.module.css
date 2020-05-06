@@ -1,6 +1,7 @@
 .hero {
 	background: #101E41;
-	width: 100%;
+	width: 100vw;
+	height: 18vw;
 	/* min-height: 300px; */
 }
 
