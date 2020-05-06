@@ -148,6 +148,7 @@ function Index(props) {
                         prefix={partner?.prefix}
                         title={partner?.title}
                         isReviewBoard={partner?.isReviewBoard}
+                        industry={partner?.industry}
                     />
                 })}
             </Carousel>
