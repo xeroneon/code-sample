@@ -162,9 +162,6 @@ function Supplier(props) {
                     );
                 })}
             </Carousel> }
-            { props.articles.length === 0 && <Carousel header={[`Our `, <span key="usernoarticles"> Health </span>, <br key="dkjfhg"/>, 'posts' ]}>
-                <div id="noArticles"><h4>No Articles to display</h4></div>
-            </Carousel> }
             <style jsx>
                 {`
                     
