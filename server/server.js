@@ -116,7 +116,16 @@ nextApp.prepare().then(() => {
         if(!req.user.isAdmin) {
             return res.redirect('/')
         }
-        return handle(req,res); // for all the react stuff
+        return handle(req,res);
+    });
+    app.get(/^\/chiropractic-providers/, (req,res) => {
+        res.redirect(301, 'https://preventiongeneration.com')
+    });
+    app.get(/^\/page/, (req,res) => {
+        res.redirect(301, 'https://preventiongeneration.com')
+    });
+    app.get(/^\/provider\/page/, (req,res) => {
+        res.redirect(301, 'https://preventiongeneration.com')
     });
     app.get("*", (req,res) => {
         return handle(req,res); // for all the react stuff
