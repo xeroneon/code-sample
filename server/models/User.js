@@ -82,7 +82,8 @@ const UserSchema = new Schema({
     isAdmin: Boolean,
     coverPhoto: String,
     favorites: Array,
-    isReviewBoard: Boolean
+    isReviewBoard: Boolean,
+    industry: String
     
 });
 UserSchema.index({ location: "2dsphere" });

@@ -55,10 +55,11 @@ function PartnerCard(props) {
                         {props.type === 'supplier' && <h4 className={styles.name}>{props.companyName}</h4>}
                         <p className={styles.address}>{props.address}</p>
                         { props.specialty && <p className={styles.specialty}>{props.specialty}</p> }
+                        { props.industry && !props.sponsoredTag && <p className={styles.specialty}>{props.industry}</p> }
                         { props.title && <p className={styles.specialty}>{props.title}</p> }
                         { props.sponsoredTag && <Tag style={{marginBottom: '0'}} name={props.sponsoredTag} link sponsored />  }
                         { props.primaryCategory && <p className={styles.specialty}>{props.primaryCategory}</p> }
-                        { !props.specialty && !props.primaryCategory && !props.sponsoredTag && !props.title && <p className={styles.specialty}>&nbsp;</p>}
+                        { !props.specialty && !props.primaryCategory && !props.sponsoredTag && !props.title && !props.industry && <p className={styles.specialty}>&nbsp;</p>}
                         <div className={styles.bio}>
                             <p>
                                 {props.bio}
@@ -92,7 +93,8 @@ PartnerCard.propTypes = {
     suffix: PropTypes.string,
     sponsoredTag: PropTypes.string,
     title: PropTypes.string,
-    isReviewBoard: PropTypes.bool
+    isReviewBoard: PropTypes.bool,
+    industry: PropTypes.string
 }
 
 export default PartnerCard;

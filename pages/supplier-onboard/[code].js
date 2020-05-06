@@ -58,6 +58,7 @@ function Onboard(props) {
     const productCropperRef = useRef(null);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
+    const [ errors, setErrors ] = useState({});
     const cropperRef = useRef(null);
     const cropperCoverRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
@@ -126,6 +127,38 @@ function Onboard(props) {
                 ...state,
                 phone: normalizeInput(e.target.value, state.phone)
             }))
+        }
+        if (e.target.name === 'industry') {
+            console.log('industry')
+            if (e.target.value.length > 30) {
+                return setErrors(state => ({
+                    ...state,
+                    industry: 'Industry cannot exceed more than 30 characters'
+                }))
+            } else {
+                setErrors(state => ({
+                    ...state,
+                    industry: null
+                }))
+            }
+        }
+        if (e.target.name === 'shortBio') {
+            if (e.target.value.length < 120) {
+                setErrors(state => ({
+                    ...state,
+                    shortBio: 'Company Summary must be at least 120 characters'
+                }))
+            } else if (e.target.value.length > 132) {
+                setErrors(state => ({
+                    ...state,
+                    shortBio: 'We recommend keeping your summary under 132 characters'
+                }))
+            } else {
+                setErrors(state => ({
+                    ...state,
+                    shortBio: null
+                }))
+            }
         }
         setForm(state => ({
             ...state,
@@ -317,10 +350,14 @@ function Onboard(props) {
 
                 <h4>Company Name*</h4>
                 <Input type="text" name="companyName" value={form?.companyName} placeholder="" onChange={handleChange} />
+                <h4>Industry*</h4>
+                <Input type="text" name="industry" value={form?.industry} placeholder="" onChange={handleChange} />
+                { errors?.industry && <p className='errors'>{errors?.industry}</p> }
                 <h4>Company Overview*</h4>
                 <textarea rows="5" placeholder='' onChange={handleChange} value={form?.bio} name='bio'></textarea>
-                <h4>Company Summary*</h4>
+                <h4>Company Summary* Characters: {form?.shortBio?.length || 0} (Min. 120)</h4>
                 <Input type="text" name="shortBio" value={form?.shortBio} placeholder="" onChange={handleChange} />
+                { errors?.shortBio && <p className='errors'>{errors?.shortBio}</p> }
                 <h4>Log In Email Address*</h4>
                 <Input type="text" name="email" value={form?.email} placeholder="" onChange={handleChange} />
                 {emailError && <span style={{color: "#D34240", padding: '5px'}}>{emailError}</span>}
@@ -339,6 +376,7 @@ function Onboard(props) {
                 <Input type="text" name="name" value={form?.name} placeholder="" onChange={handleChange} />
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
+                <br />
                 <div className='imageWrapper'>
                     { coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
                     { coverSrc && <Cropper
@@ -349,7 +387,7 @@ function Onboard(props) {
                         responsive={true}
                         viewMode={1}
                         style={{height: '30vh', width: '100%', marginBottom: '10px'}}/> }
-                    {coverSrc && <div onClick={cropCoverPhoto} className='selectButton'>Save, Cropped Image</div>}
+                    {coverSrc && <div onClick={cropCoverPhoto} className='selectButton'>Save... Cropped Image</div>}
                     { !coverSrc && !coverPhoto && <Dropzone onDrop={acceptedFiles => {coverDrop(acceptedFiles)}}>
                         {({getRootProps, getInputProps}) => (
                             <div {...getRootProps()} className='cropDropzone'>
@@ -412,7 +450,7 @@ function Onboard(props) {
                             viewMode={1}
                             style={{height: '30vh', width: '100%', marginBottom: '10px'}}
                         />
-                        {productSrc && <div onClick={cropProductImage} className='selectButton'>{ cropLoading ? 'Loading...' : 'Crop'}</div>}
+                        {productSrc && <div onClick={cropProductImage} className='selectButton'>{ cropLoading ? 'Loading...' : 'Save... Cropped Image'}</div>}
                         { error ==='cropError' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
                     </>}
                     {newProduct && <>
@@ -469,6 +507,10 @@ function Onboard(props) {
                 }
                 h3 {
                     margin: 20px 0;
+                }
+
+                .errors {
+                    color: #D34240;
                 }
 
                 .imageWrapper {
