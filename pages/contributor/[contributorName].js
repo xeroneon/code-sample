@@ -135,9 +135,6 @@ function Contributor(props) {
                     );
                 })}
             </Carousel> }
-            { props.articles.length === 0 && <Carousel header={[`Our `, <span key="usernoarticles"> Health </span>, <br key="lkdajshfbv"/>, 'posts' ]}>
-                <div id="noArticles"><h4>No Articles to display</h4></div>
-            </Carousel> }
             <style jsx>
                 {`
                     
