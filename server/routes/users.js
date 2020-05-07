@@ -4,11 +4,13 @@ const User = require("../models/User");
 const contentful = require('../../helpers/contentful');
 const { client, managementClient } = contentful;
 const axios = require('axios');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 // const mongoose = require('mongoose');
 
 router.post("/create", async (req, res) => {
     try {
-        const { name, lastname, accountType } = req.body;
+        const { name, lastname, accountType, alerts, email } = req.body;
         let lat;
         let lng;
         let user;
@@ -47,6 +49,21 @@ router.post("/create", async (req, res) => {
             return res.send({
                 user: {...user._doc, password: null}
             })
+        }
+
+        if (alerts && accountType === 'personal') {
+            const msg = {
+                to: email,
+                from: {
+                    email: 'info@preventiongeneration.com',
+                    name: 'Prevention Generation'
+                },
+                templateId: 'd-0fa6c8720ade4de08c61d566d7bc7f9f',
+                dynamic_template_data: {
+                    name
+                },
+            };
+            sgMail.send(msg);
         }
 
         req.login(user._doc, function(err) {
@@ -227,7 +244,7 @@ router.get('/search', async (req, res) => {
     try {
         const { query } = req.query;
         console.log(query)
-        const users = await User.fuzzySearch({query, prefixOnly: true,}, { 'accountType': 'provider', subActive: true }).select('-password');
+        const users = await User.fuzzySearch({query, prefixOnly: true,}, { 'accountType': 'provider' }).select('-password');
         console.log(users);
 
         return res.send({

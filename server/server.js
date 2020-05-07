@@ -18,11 +18,13 @@ const basicAuth = require('express-basic-auth');
 const expressSitemapXml = require('express-sitemap-xml');
 const getUrls = require('./routes/sitemap');
 const enforce = require('express-sslify');
+const newsletter = require('./crons/newsletter');
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 
 nextApp.prepare().then(() => {
     // express code here
+    newsletter.start();
     const app = express();
     const sess = {
         secret: 'keyboard cat',

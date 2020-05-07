@@ -135,6 +135,7 @@ router.get("/user", async (req, res) => {
             include: 10,
             'fields.primaryTag[in]': req.user.personalTags.toString()
         })
+        console.log('USERS', user.following.toString())
         const authorEntries = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,

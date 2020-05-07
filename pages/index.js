@@ -98,7 +98,7 @@ function Index(props) {
             <div className={styles.hero}>
                 <div className={styles.heroText}>
                     <h1>the prevention generation</h1>
-                    <h5>lifestyle health & wellness guidance personalized to you</h5>
+                    <h5>where medically reviewed health content meets social media personalization</h5>
                 </div>
             </div>
             { user && userArticles && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
