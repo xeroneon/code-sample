@@ -10,6 +10,8 @@ import Cropper from 'react-cropper';
 // import md5 from 'md5';
 import ActionButton from 'components/ActionButton/ActionButton';
 import Router from 'next/router';
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 const normalizeInput = (value, previousValue) => {
     if (!value) return value;
@@ -67,11 +69,17 @@ function Onboard(props) {
     const [ productType, setProductType ] = useState(null);
     const [ emailError, setEmailError] = useState(null);
     const [ cropLoading, setCropLoading ] = useState(false);
+    const [ snackbar, setSnackbar] = useState(false);
+    const [ snackMessage, setSnackMessage ] = useState('');
 
     const onDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
         reader.onload = function(e) {
             setSrc(e.target.result);
+        }
+        reader.onerror = function() {
+            setSnackbar(true);
+            setSnackMessage('There was an error reading the file, try again')
         }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
@@ -81,12 +89,20 @@ function Onboard(props) {
         reader.onload = function(e) {
             setProductSrc(e.target.result);
         }
+        reader.onerror = function() {
+            setSnackbar(true);
+            setSnackMessage('There was an error reading the file, try again')
+        }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
     const coverDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
         reader.onload = function(e) {
             setCoverSrc(e.target.result);
+        }
+        reader.onerror = function() {
+            setSnackbar(true);
+            setSnackMessage('There was an error reading the file, try again')
         }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
@@ -225,8 +241,14 @@ function Onboard(props) {
                     password: process.env.BASIC_AUTH_PASS
                 }});
                 console.log(res)
-                setProfileImage(res.data.imagePath);
-                setSrc(undefined);
+                if (res.data.success) {
+                    setProfileImage(res.data.imagePath);
+                    setSrc(undefined);
+                } else {
+                    setSnackbar(true);
+                    setSnackMessage('There was an error uploading your image, try again')
+                    setSrc(undefined);
+                }
 
             } catch(e) {
                 setLoading(false);
@@ -247,9 +269,15 @@ function Onboard(props) {
                     username: 'admin',
                     password: process.env.BASIC_AUTH_PASS
                 }});
+                if (res.data.success) {
+                    setCoverPhoto(res.data.imagePath);
+                    setCoverSrc(undefined);
+                } else {
+                    setSnackbar(true);
+                    setSnackMessage('There was an error uploading your image, try again')
+                    setCoverSrc(undefined);
+                }
                 console.log(res)
-                setCoverPhoto(res.data.imagePath);
-                setCoverSrc(undefined);
 
             } catch(e) {
                 setLoading(false);
@@ -272,10 +300,17 @@ function Onboard(props) {
                     password: process.env.BASIC_AUTH_PASS
                 }});
                 console.log(res)
-                setProductImage(res.data.imagePath);
-                setProductSrc(undefined);
-                setProductType(res.data.type);
-                setCropLoading(false);
+                if (res.data.success) {
+                    setProductImage(res.data.imagePath);
+                    setProductSrc(undefined);
+                    setProductType(res.data.type);
+                    setCropLoading(false);
+                } else {
+                    setSnackbar(true);
+                    setSnackMessage('There was an error uploading your image, try again')
+                    setProductSrc(undefined);
+                    setCropLoading(false);
+                }
             } catch(e) {
                 setCropLoading(false);
                 return setError('cropError');
@@ -344,7 +379,7 @@ function Onboard(props) {
                     </div> }
                     <br />
                     { !profileImage && !src && <p>Drag and drop a profile image here or tap above to choose an image</p> }
-                    { profileImage && <ActionButton onClick={() => setCoverPhoto(null)}>Remove Cover Photo</ActionButton>}
+                    { profileImage && <ActionButton onClick={() => setProfileImage(null)}>Remove Profile Photo</ActionButton>}
                 </div>
                 
 
@@ -471,6 +506,16 @@ function Onboard(props) {
                 </span>
                 { error === 'createError' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
             </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                open={snackbar}
+                autoHideDuration={6000}
+                message={snackMessage}
+                onClose={() => setSnackbar(false)}
+            />
 
             <style jsx>{`
                 .root {
