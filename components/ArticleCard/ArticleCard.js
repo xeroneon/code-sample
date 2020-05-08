@@ -16,7 +16,7 @@ function ArticleCard(props) {
                 <div className={styles.wrapper}>
                     <div className={styles.root}>
                         <div className={styles.thumbnail}>
-                            <img src={props.featuredImage} className={styles.thumbnailImage}/>
+                            <img src={`${props.featuredImage}?w=700`} className={styles.thumbnailImage}/>
                         </div>
                         { props.series &&
                     <img src={props.series.fields.seriesImage.fields.file.url} className={styles.authorImage} onClick={(e) => {e.stopPropagation(); Router.push(`/series/${props.series.fields.name}`)}}/>
