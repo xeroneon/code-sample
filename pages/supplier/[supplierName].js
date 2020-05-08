@@ -12,6 +12,7 @@ import Tag from "components/Tag/Tag";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
+import getValidUrl from 'helpers/getValidUrl';
 
 
 
@@ -59,7 +60,7 @@ function Supplier(props) {
                     <div className={styles.companyName}>{supplier.companyName}</div>
                     <div className={styles.bio}>{supplier.bio}</div>
                     <div className={styles.contactWrapper}>
-                        <a href={supplier.website} target="_blank" rel="noopener noreferrer">
+                        <a href={getValidUrl(supplier.website)} target="_blank" rel="noopener noreferrer">
                             <div className={styles.contactButton}><i className="material-icons-outlined">language</i></div>
                         </a>
                         < a href={`tel:${supplier.phone}`} target="_blank" rel="noopener noreferrer">

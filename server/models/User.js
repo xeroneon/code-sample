@@ -81,6 +81,7 @@ const UserSchema = new Schema({
     title: String,
     isAdmin: Boolean,
     coverPhoto: String,
+    coverVideo: String,
     favorites: Array,
     isReviewBoard: Boolean,
     industry: String

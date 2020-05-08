@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Dropzone, {  useDropzone } from 'react-dropzone';
 import UploadIcon from 'components/Icons/UploadIcon';
 import Input from 'components/Input/Input';
-import Select from 'components/Select/Select';
+// import Select from 'components/Select/Select';
 import { UserContext } from 'contexts/UserProvider';
 import Tag from "components/Tag/Tag";
 import ActionButton from "components/ActionButton/ActionButton";
@@ -25,7 +25,7 @@ function dataURLtoBlob(dataurl) {
 }
 
 // const countryList = ["United States", "Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
-const statesList = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ];
+// const statesList = [ 'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY' ];
 const formSchema = yup.object({
     name: yup.string(),
     lastname: yup.string(),
@@ -63,6 +63,7 @@ function EditProfile() {
     const cropperCoverRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
     const [ coverPhoto, setCoverPhoto ] = useState(null);
+    const [ password, setPassword ] = useState('');
 
     useEffect(() => {
         if (Cookies.get('connect.sid') === undefined) {
@@ -76,18 +77,19 @@ function EditProfile() {
             Router.push('/')
         }
         setForm({
-            name: user?.name || '',
-            lastname: user?.lastname || '',
-            email: user?.email || '',
-            bio: user?.bio || '',
-            personalTags: user?.personalTags || [],
-            tags: user?.tags || [],
-            image: user?.image || '',
-            address: user?.address || '',
-            zip: user?.zip || '',
-            city: user?.city || '',
-            state: user?.state || '',
-            companyName: user?.companyName || '',
+            // name: user?.name || '',
+            // lastname: user?.lastname || '',
+            // email: user?.email || '',
+            // bio: user?.bio || '',
+            // personalTags: user?.personalTags || [],
+            // tags: user?.tags || [],
+            // image: user?.image || '',
+            // address: user?.address || '',
+            // zip: user?.zip || '',
+            // city: user?.city || '',
+            // state: user?.state || '',
+            // companyName: user?.companyName || '',
+            ...user
         })
     }, [user])
 
@@ -153,12 +155,12 @@ function EditProfile() {
         }))
     }
 
-    function handleSelectChange(selectedOption, e) {
-        setForm(state => ({
-            ...state,
-            [e.name]: selectedOption.value
-        }))
-    }
+    // function handleSelectChange(selectedOption, e) {
+    //     setForm(state => ({
+    //         ...state,
+    //         [e.name]: selectedOption.value
+    //     }))
+    // }
 
     const coverDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
@@ -179,6 +181,26 @@ function EditProfile() {
             const updatedUser = await fetch('put', '/api/users/update', {email: user.email, updates: form});
             setUser(updatedUser.data.user)
             setLoading(false);
+        } catch (error) {
+            console.log('e', error)
+            setErrors(error.errors)
+            setLoading(false);
+        }
+    }
+
+    async function updatePassword() {
+        try {
+
+            // await formSchema.validate(form, {abortEarly: false})
+            // if (user?.accountType !== 'personal') {
+            //     await partnerSchema.validate(form, {abortEarly: false})
+            // }
+            if (password.length > 1) {
+                const updatedUser = await fetch('put', '/api/users/update', {email: user.email, updates: {password}});
+                setUser(updatedUser.data.user)
+                setLoading(false);
+                setPassword('');
+            }
         } catch (error) {
             console.log('e', error)
             setErrors(error.errors)
@@ -245,20 +267,30 @@ function EditProfile() {
                     {errors.map(error => <li key={error}>* {error}</li>)}
                 </ul>
                 <form>
-                    <Input type="text" name="name" value={form.name || ''} placeholder="First Name" onChange={handleChange} />
-                    <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name" onChange={handleChange} />
-                    <Input type="text" name="email" value={form.email || ''} placeholder="Email" onChange={handleChange} />
-                    {/* <Input type="text" name="password" value={form.password || ''} placeholder="Password" onChange={handleChange} /> */}
-                    <Input type="text" name="zip" value={form.zip || ''} placeholder="Zip Code" onChange={handleChange} />
+                    <h4 className='inputTitle'>Name</h4>
+                    <Input type="text" name="name" value={form?.name} placeholder="First Name" onChange={handleChange} />
+                    <h4 className='inputTitle'>Last Name</h4>
+                    <Input type="text" name="lastname" value={form?.lastname} placeholder="Last Name" onChange={handleChange} />
+                    <h4 className='inputTitle'>Email</h4>
+                    <Input type="text" name="email" value={form?.email} placeholder="Email" onChange={handleChange} />
+                    {/* <Input type="text" name="password" value={form.password} placeholder="Password" onChange={handleChange} /> */}
+                    <h4 className='inputTitle'>Zip Code</h4>
+                    <Input type="text" name="zip" value={form?.zip} placeholder="Zip Code" onChange={handleChange} />
                     {/* <Select name="country" placeholder="Country" options={countryList.map(country => ({value: country, label: country}))} onChange={handleSelectChange} /> */}
                     {/* values only for health partners */}
                     {user?.accountType !== 'personal' && 
                         <>
-                            <Input type="text" name="city" value={form.city || ''} placeholder="City" onChange={handleChange} />
-                            <textarea rows="5" placeholder='Bio'></textarea>
-                            <Input type="text" name="address" value={form.address || ''} placeholder="Address" onChange={handleChange} />
-                            <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} />
-                            <Input type="text" name="companyName" value={form.companyName || ''} placeholder="Company Name" onChange={handleChange} />
+                            <h4 className='inputTitle'>City</h4>
+                            <Input type="text" name="city" value={form?.city} placeholder="City" onChange={handleChange} />
+                            <h4 className='inputTitle'>Bio</h4>
+                            <textarea rows="5" placeholder='Bio' name='bio' value={form?.bio} onChange={handleChange}></textarea>
+                            <h4 className='inputTitle'>Short Bio</h4>
+                            <textarea rows="5" placeholder='Short Bio' name='shortBio' value={form?.shortBio} onChange={handleChange}></textarea>
+                            <h4 className='inputTitle'>Address</h4>
+                            <Input type="text" name="address" value={form?.address} placeholder="Address" onChange={handleChange} />
+                            {/* <Select name="state" placeholder="State" options={statesList.map(state => ({value: state, label: state}))} onChange={handleSelectChange} /> */}
+                            <h4 className='inputTitle'>Company Name</h4>
+                            <Input type="text" name="companyName" value={form?.companyName} placeholder="Company Name" onChange={handleChange} />
                         </>
                     }
                     {/* <Select name="alerts" value={form.alerts} placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/> */}
@@ -269,7 +301,14 @@ function EditProfile() {
                     {user && user.accountType === 'personal' && form?.personalTags?.map(tag => <Tag key={tag} name={tag} />)}
                     {user && user.accountType !== 'personal' && form?.tags?.map(tag => <Tag key={tag} name={tag} />)}
                 </div>
-                <ActionButton onClick={updateUser}>{ loading ? 'Loading...' : 'Save'}</ActionButton>
+                <ActionButton onClick={updateUser}>{ loading ? 'Loading...' : 'Save Changes'}</ActionButton>
+                <br/>
+                <div className='updatePassword'>
+                    <h4 className='inputTitle'>Change Password</h4>
+                    <Input type="text" name="passwrod" value={password} placeholder="New Password" onChange={e => setPassword(e.target.value)} />
+                </div>
+                <br/>
+                <ActionButton onClick={updatePassword}>{ loading ? 'Loading...' : 'Update Password'}</ActionButton>
             </div>
 
             <style jsx>{`
@@ -295,9 +334,17 @@ function EditProfile() {
                 
                 }
 
+                .updatePassword {
+                    width: 70%;
+                }
+
                 h4 {
                     color: #092048;
-                    margin-bottom: 10px;
+                    margin: 5px 0;
+                }
+
+                .inputTitle {
+                    margin-bottom: -10px;
                 }
 
                 form {

@@ -12,6 +12,7 @@ import ActionButton from "components/ActionButton/ActionButton";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
+import getValidUrl from 'helpers/getValidUrl';
 
 
 function Contributor(props) {
@@ -60,7 +61,7 @@ function Contributor(props) {
 
                         <div className={styles.info}>
                             <i className={`material-icons-outlined`}>language</i>
-                            <a href={props.contributor.website} target="_blank" rel="noopener noreferrer">
+                            <a href={getValidUrl(props.contributor.website)} target="_blank" rel="noopener noreferrer">
                                 <p>{props.contributor.website}</p>
                             </a>
                         </div>
@@ -83,7 +84,7 @@ function Contributor(props) {
 
                         <div className={styles.info}>
                             <i className={`material-icons-outlined`}>language</i>
-                            <a href={props.contributor.website} target="_blank" rel="noopener noreferrer">
+                            <a href={getValidUrl(props.contributor.website)} target="_blank" rel="noopener noreferrer">
                                 <p>{props.contributor.website}</p>
                             </a>
                         </div>
