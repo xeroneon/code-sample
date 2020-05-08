@@ -4,7 +4,6 @@ import Nav from 'components/Nav/Nav';
 import Footer from 'components/Footer/Footer';
 import Modal from 'react-modal';
 import AuthModal from 'components/AuthModal/AuthModal';
-// import ReactTooltip from 'react-tooltip'
 
 import Head from 'next/head';
 import 'public/reset.css';
@@ -19,36 +18,14 @@ import { UserProvider } from 'contexts/UserProvider';
 import { ModalProvider } from 'contexts/ModalProvider';
 
 
+
 Modal.setAppElement('#__next');
 
 class MyApp extends App {
-    // Only uncomment this method if you have blocking data requirements for
-    // every single page in your application. This disables the ability to
-    // perform automatic static optimization, causing every page in your app to
-    // be server-side rendered.
-    //
-    // static async getInitialProps(appContext) {
-    //   // calls page's `getInitialProps` and fills `appProps.pageProps`
-    //   const appProps = await App.getInitialProps(appContext);
-    //
-    //   return { ...appProps }
-    // }
-    // success = (position) => {
-    //     // console.log(position)
-    //     localStorage.setItem('lat', position.coords.latitude)
-    //     localStorage.setItem('lon', position.coords.longitude)
-
-    // }
-
-    // error = () => {
-
-    // }
-    // componentDidMount() {
-    //     navigator.geolocation.getCurrentPosition(this.success, this.error)
-    // }
         
     render() {
         const { Component, pageProps } = this.props;
+
         return (
             <>
                 <Head>
@@ -79,7 +56,6 @@ class MyApp extends App {
                         <Component {...pageProps} />
                         <Footer />
                         <AuthModal />
-                        {/* <ReactTooltip place='right' effect="solid" backgroundColor='black' id='radio' className="tooltip"/> */}
                     </ModalProvider>
                 </UserProvider>
 
