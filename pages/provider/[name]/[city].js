@@ -13,6 +13,7 @@ import ActionButton from "components/ActionButton/ActionButton";
 import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
+import getValidUrl from 'helpers/getValidUrl';
 
 
 function Provider(props) {
@@ -84,7 +85,7 @@ function Provider(props) {
                         </div>
                         <div className={styles.info}>
                             <i className={`material-icons-outlined`}>language</i>
-                            <a href={props.provider.website} target="_blank" rel="noopener noreferrer">
+                            <a href={getValidUrl(props.provider.website)} target="_blank" rel="noopener noreferrer">
                                 <p>{props.provider.website}</p>
                             </a>
                         </div>
@@ -138,7 +139,7 @@ function Provider(props) {
                         </div>
                         <div className={styles.info}>
                             <i className={`material-icons-outlined`}>language</i>
-                            <a href={props.provider.website} target="_blank" rel="noopener noreferrer">
+                            <a href={getValidUrl(props.provider.website)} target="_blank" rel="noopener noreferrer">
                                 <p>{props.provider.website}</p>
                             </a>
                         </div>

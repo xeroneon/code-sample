@@ -19,6 +19,11 @@ const expressSitemapXml = require('express-sitemap-xml');
 const getUrls = require('./routes/sitemap');
 const enforce = require('express-sslify');
 const newsletter = require('./crons/newsletter');
+const Sentry = require('@sentry/node');
+
+if (process.env.NODE_ENV === 'production') {
+    Sentry.init({ dsn: 'https://2e2eb1272349408db3de3da4456311ed@o389832.ingest.sentry.io/5228883' });
+}
 
 mongoose.connect(process.env.DEV_DB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 

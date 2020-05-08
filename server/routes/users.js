@@ -10,7 +10,8 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 router.post("/create", async (req, res) => {
     try {
-        const { name, lastname, accountType, alerts, email } = req.body;
+        const { name, lastname, accountType, alerts, email, address } = req.body;
+        const { address2 , ...userSafeData} = req.body
         let lat;
         let lng;
         let user;
@@ -19,12 +20,12 @@ router.post("/create", async (req, res) => {
             // console.log('LATLON', res)
             lat = googleRes.data.results[0].geometry.location.lat;
             lng = googleRes.data.results[0].geometry.location.lng;
-            user = await User.create({...req.body, location: {
+            user = await User.create({...userSafeData, address: address + ' ' + address2 , location: {
                 type: "Point",
                 coordinates: [lng, lat]
             }}).catch(e => res.send(e));
         } else {
-            user = await User.create({...req.body}).catch(e => res.send(e));
+            user = await User.create({...userSafeData, address: address + ' ' + address2 }).catch(e => res.send(e));
         }
 
         if (accountType !== "personal") {

@@ -159,12 +159,7 @@ function Onboard(props) {
             }
         }
         if (e.target.name === 'shortBio') {
-            if (e.target.value.length < 120) {
-                setErrors(state => ({
-                    ...state,
-                    shortBio: 'Company Summary must be at least 120 characters'
-                }))
-            } else if (e.target.value.length > 132) {
+            if (e.target.value.length > 132) {
                 setErrors(state => ({
                     ...state,
                     shortBio: 'We recommend keeping your summary under 132 characters'
@@ -173,6 +168,19 @@ function Onboard(props) {
                 setErrors(state => ({
                     ...state,
                     shortBio: null
+                }))
+            }
+        }
+        if (e.target.name === 'bio') {
+            if (e.target.value.length > 425) {
+                return setErrors(state => ({
+                    ...state,
+                    bio: 'Company Overview cannot exceed 425 characters'
+                }))
+            } else {
+                setErrors(state => ({
+                    ...state,
+                    bio: null
                 }))
             }
         }
@@ -388,9 +396,10 @@ function Onboard(props) {
                 <h4>Industry*</h4>
                 <Input type="text" name="industry" value={form?.industry} placeholder="" onChange={handleChange} />
                 { errors?.industry && <p className='errors'>{errors?.industry}</p> }
-                <h4>Company Overview*</h4>
+                <h4>Company Overview* Characters: {form?.bio?.length || 0}</h4>
                 <textarea rows="5" placeholder='' onChange={handleChange} value={form?.bio} name='bio'></textarea>
-                <h4>Company Summary* Characters: {form?.shortBio?.length || 0} (Min. 120)</h4>
+                { errors?.bio && <p className='errors'>{errors?.bio}</p> }
+                <h4>Company Summary* Characters: {form?.shortBio?.length || 0}</h4>
                 <Input type="text" name="shortBio" value={form?.shortBio} placeholder="" onChange={handleChange} />
                 { errors?.shortBio && <p className='errors'>{errors?.shortBio}</p> }
                 <h4>Log In Email Address*</h4>
@@ -412,6 +421,8 @@ function Onboard(props) {
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
                 <br />
+                <h4>Cover Video URL</h4>
+                <Input type="text" name="coverVideo" value={form?.coverVideo} placeholder="" onChange={handleChange} />
                 <div className='imageWrapper'>
                     { coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
                     { coverSrc && <Cropper
