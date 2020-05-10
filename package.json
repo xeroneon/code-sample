@@ -41,6 +41,7 @@
     "cors": "^2.8.5",
     "cron": "^1.8.2",
     "data-uri-to-file": "^0.1.8",
+    "decode-uri-component": "^0.2.0",
     "dotenv": "^8.2.0",
     "emotion": "^10.0.27",
     "express": "^4.17.1",
