@@ -127,7 +127,7 @@ function Index(props) {
             <TrendingCarousel items={trending} loading={trendingLoading} onScrollEnd={loadMoreTrending}/>
 
 
-            <Carousel header={[`Prevention Generation`, <span key="partners"> Network </span>, <br key="xcnmbv"/>, "& Partners" ]}>
+            <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {
                     return <PartnerCard 
                         key={partner._id}
