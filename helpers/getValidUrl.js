@@ -1,5 +1,8 @@
+const decodeUriComponent = require('decode-uri-component');
+
+
 const getValidUrl = (url = "") => {
-    let newUrl = window.decodeURIComponent(url);
+    let newUrl = decodeUriComponent(url);
     newUrl = newUrl.trim().replace(/\s/g, "");
 
     if(/^(:\/\/)/.test(newUrl)){

@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import fetch from "helpers/fetch";
 import styles from "./Supplier.module.css";
@@ -13,6 +13,7 @@ import Head from 'next/head';
 import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
 import getValidUrl from 'helpers/getValidUrl';
+import ReactPlayer from 'react-player';
 
 
 
@@ -20,6 +21,7 @@ function Supplier(props) {
     const { supplier } = props;
     const { user, setUser } = useContext(UserContext);
     const { setOpen, setPage } = useContext(ModalContext);
+    const [ playing, setPlaying ] = useState(false);
 
     async function handleFollow() {
         if (!user) {
@@ -30,7 +32,7 @@ function Supplier(props) {
 
         const res = await fetch('post', '/api/users/follow', {userId: user._id, followId: props.supplier._id});
 
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data.user);
     }
 
@@ -41,7 +43,7 @@ function Supplier(props) {
 
         const res = await fetch('post', '/api/users/unfollow', {userId: user._id, followId: props.supplier._id});
 
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data.user);
 
     }
@@ -53,9 +55,21 @@ function Supplier(props) {
                 <title>{supplier.companyName}</title>
                 <meta name="keywords" content={`${supplier.companyName}`} />
             </Head>
-            <div className={styles.hero}>{ supplier.coverPhoto && <img src={supplier.coverPhoto} />}</div>
+            <div className={`${styles.hero} ${playing ? styles.heroVideo : null}`}>
+                { supplier.coverPhoto && !playing && <img src={supplier.coverPhoto} className={styles.heroImage}/>}
+                { supplier.coverVideo && !playing && <img src="/images/play-button.png" className={styles.playButton} onClick={() => setPlaying(true)} />}
+                { supplier.coverVideo && playing &&  <ReactPlayer
+                    // ref={this.setPlayerRef}
+                    controls={true}
+                    url={supplier.coverVideo}
+                    width='100%'
+                    height='100%'
+                    className={styles.reactPlayer}
+                    playing={playing}
+                />}
+            </div>
             <div className={styles.supplierInfo}>
-                <div className={styles.supplierCard}>
+                <div className={`${styles.supplierCard} ${playing ? styles.supplierCardDown : null}`}>
                     <img src={supplier.image} className={styles.supplierImage} />
                     <div className={styles.companyName}>{supplier.companyName}</div>
                     <div className={styles.bio}>{supplier.bio}</div>

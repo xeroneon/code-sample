@@ -421,7 +421,7 @@ function Onboard(props) {
                 <h4>Last Name*</h4>
                 <Input type="text" name="lastname" value={form?.lastname} placeholder="" onChange={handleChange} />
                 <br />
-                <h4>Cover Video URL</h4>
+                <h4>Cover Video URL (Must be a youtube or vimeo link)</h4>
                 <Input type="text" name="coverVideo" value={form?.coverVideo} placeholder="" onChange={handleChange} />
                 <div className='imageWrapper'>
                     { coverPhoto && <div className='coverPlaceholder'>&nbsp;{ coverPhoto && <img src={coverPhoto} /> }</div> }
