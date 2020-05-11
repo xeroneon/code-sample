@@ -158,6 +158,7 @@ router.get("/logout", async (req, res) => {
 router.put('/update', async (req, res) => {
 
     const { email, updates } = req.body
+    const { address2 , ...userSafeData} = req.body.updates
     try {
         let lat;
         let lng;
@@ -172,7 +173,10 @@ router.put('/update', async (req, res) => {
             }});
         }
 
-        await User.update({email: email}, {...updates});
+        await User.update({email: email}, {...userSafeData});
+        if (userSafeData.address && address2) {
+            await User.update({email: email}, {address: userSafeData.address + ' ' + address2});
+        }
         // await User.updateOne({email: email}, {password: updates.password});
         const user = await User.find({email: email}).select('-password');
         return res.send({

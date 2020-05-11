@@ -48,8 +48,8 @@ function Footer() {
                         <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
                             <span className={styles.link}>About Us | </span>
                         </a>
-                        <a href='/terms-of-service'>
-                            <span className={styles.link}>Terms of service | </span>
+                        <a href='/terms-of-use'>
+                            <span className={styles.link}>Terms of use | </span>
                         </a>
                         <a href="mailto:info@preventiongeneration.com">
                             <span className={styles.link}>Contact | </span>
