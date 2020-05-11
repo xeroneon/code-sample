@@ -163,7 +163,9 @@ function Signup() {
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code*" onChange={handleChange} />}
 
                     <p style={{color: '#959595', fontSize: '.8em', margin: '20px 5px 5px 0'}}>I acknowledge and agree to the use of my contact information to communicate with me about AHWA or its third-party partners&apos; products, services, events and research opportunities. The use of the information I provide will be consistent with the AHWA
-                        <a href="https://www.ahwa.com/privacy-policy" target="_blank" rel='noreferrer noopener' style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy</a>
+                        <a href="/privacy-policy" style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy </a>
+                        and
+                        <a href='/terms-of-service' style={{color: '#225B91', textDecoration: 'none'}}> Terms of Service</a>
                     </p>
                     <FormControlLabel
                         control={
