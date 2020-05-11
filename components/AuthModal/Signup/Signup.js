@@ -79,6 +79,7 @@ function Signup() {
 
     const { form, setForm, setPage } = useContext(ModalContext);
     const [ errors, setErrors ] = useState([]);
+    const [ agreeError, setAgreeError ] = useState(false);
     // const { user, setUser } = useContext(UserContext)
     // const [ step, setStep ] = useState(1)
 
@@ -110,6 +111,9 @@ function Signup() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if (form?.agree !== true) {
+            return setAgreeError(true);
+        }
         try {
 
             form.accountType === 'personal'
@@ -161,12 +165,24 @@ function Signup() {
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="website" value={form.website || ''} placeholder="Website URL*" icon="web" onChange={handleChange} />}
 
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="adminCode" value={form.adminCode || ''} placeholder="Admin Code*" onChange={handleChange} />}
-
-                    <p style={{color: '#959595', fontSize: '.8em', margin: '20px 5px 5px 0'}}>I acknowledge and agree to the use of my contact information to communicate with me about AHWA or its third-party partners&apos; products, services, events and research opportunities. The use of the information I provide will be consistent with the AHWA
-                        <a href="/privacy-policy" style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy </a>
+                    { agreeError && <ul className={styles.errors}>
+                        <li>please accept our terms/privacy to join</li>
+                    </ul>}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={form.agree}
+                                onChange={() => setForm(state => ({...state, agree: !form.agree}))}
+                                name="agree"
+                                color="#143968"
+                            />
+                        }
+                        label={<p style={{color: '#959595', fontSize: '.8em', margin: '20px 5px 5px 0'}}>I acknowledge and agree to the use of my contact information to communicate with me about AHWA or its third-party partners&apos; products, services, events and research opportunities. The use of the information I provide will be consistent with the AHWA
+                            <a href="/privacy-policy" style={{color: '#225B91', textDecoration: 'none'}}> Privacy Policy </a>
                         and
-                        <a href='/terms-of-service' style={{color: '#225B91', textDecoration: 'none'}}> Terms of Service</a>
-                    </p>
+                            <a href='/terms-of-use' style={{color: '#225B91', textDecoration: 'none'}}> Terms of Use</a>
+                        </p>}
+                    />
                     <FormControlLabel
                         control={
                             <Checkbox
