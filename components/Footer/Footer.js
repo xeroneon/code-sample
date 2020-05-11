@@ -48,11 +48,15 @@ function Footer() {
                         <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
                             <span className={styles.link}>About Us | </span>
                         </a>
-                        <span className={styles.link}>Terms of service | </span>
+                        <a href='/terms-of-service'>
+                            <span className={styles.link}>Terms of service | </span>
+                        </a>
                         <a href="mailto:info@preventiongeneration.com">
                             <span className={styles.link}>Contact | </span>
                         </a>
-                        <span className={styles.link}>Privacy Policy</span>
+                        <a href="/privacy-policy">
+                            <span className={styles.link}>Privacy Policy</span>
+                        </a>
                         <p>© {new Date().getFullYear()} AHWA LLC All rights reserved. | Reproduction in whole or part is prohibited.</p>
                     </div>
                 </div>
