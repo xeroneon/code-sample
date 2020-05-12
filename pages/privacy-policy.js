@@ -100,7 +100,7 @@ function TermsOfService() {
                 
                 <p>We are committed to protecting the privacy of children. This Site is not designed or intended to attract children under the age of 13. This Site does not collect personal information from any person we actually know is under the age of 13. A parent or guardian, however, may use this Site to establish an account for a minor. The parent or guardian assumes full responsibility for ensuring that the registration information is kept secure and that the information submitted is accurate. The parent or guardian also assumes full responsibility for the interpretation and use of any information or suggestions provided through the Site for the minor.</p>
                 
-                <h3>6. CHANGES TO OUR h3RIVACY POLICY</h3>
+                <h3>6. CHANGES TO OUR PRIVACY POLICY</h3>
                 
                 <p>We reserve the right to change or modify this Privacy Policy at any time and any changes will be effective upon being posted unless we advise otherwise. If we make any material changes to this Privacy Policy, we will notify you by means of a notice on the Site and/or by email prior to the change becoming effective. By continuing to use the Site after changes are made to this Privacy Policy, you agree to such changes. We encourage you to periodically review this Privacy Policy for the latest information on our privacy practices. If you do not accept the terms of this Privacy Policy, we ask that you do not register with us and that you do not use this Site.&nbsp;</p>
                 
@@ -116,7 +116,7 @@ function TermsOfService() {
                 Orlando, FL 32806
                 </p>
                 
-                <h3>8. CALIFORNIA CONSUMER h3RIVACY ACT</h3>
+                <h3>8. CALIFORNIA CONSUMER PRIVACY ACT</h3>
                 
                 <p>As required by the new California Consumer Privacy Act (CCPA), you may record your preference to opt-out from the sale of your personal information, or to avail yourself of any of your CCPA rights, by sending an email requesting such to info@preventiongeneration.com or sending a letter to the address in the Contact Information section above.</p>
                 
