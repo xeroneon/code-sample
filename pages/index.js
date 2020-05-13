@@ -8,60 +8,60 @@ import { UserContext } from 'contexts/UserProvider';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
 
-function mergePartners(providers, suppliers, contributors) {
-    const combinedArray = [...providers, ...suppliers, ...contributors];
-    let providersArr = [...providers];
-    let suppliersArr = [...suppliers];
-    let contributorsArr = [...contributors];
-    const finalArray = [];
-    for (let i = 0; i < combinedArray.length; i++) {
-        if (i % 2 === 0) {
+// function mergePartners(providers, suppliers, contributors) {
+//     const combinedArray = [...providers, ...suppliers, ...contributors];
+//     let providersArr = [...providers];
+//     let suppliersArr = [...suppliers];
+//     let contributorsArr = [...contributors];
+//     const finalArray = [];
+//     for (let i = 0; i < combinedArray.length; i++) {
+//         if (i % 2 === 0) {
 
-            //push contents to array
-            if (providersArr.length > 0) {
-                finalArray.push(providersArr[0])
-            }
-            if (providersArr.length > 1) {
-                finalArray.push(providersArr[1])
-            }
-            if(suppliersArr.length > 0) {
-                finalArray.push(suppliersArr[0])
-            }
-            if(contributorsArr.length > 0) {
-                finalArray.push(contributorsArr[0])
-            }
+//             //push contents to array
+//             if (providersArr.length > 0) {
+//                 finalArray.push(providersArr[0])
+//             }
+//             if (providersArr.length > 1) {
+//                 finalArray.push(providersArr[1])
+//             }
+//             if(suppliersArr.length > 0) {
+//                 finalArray.push(suppliersArr[0])
+//             }
+//             if(contributorsArr.length > 0) {
+//                 finalArray.push(contributorsArr[0])
+//             }
 
-            //remove the pushed content from the arrays
-            if (providersArr.length > 1) {
-                providersArr = providersArr.slice(2);
-            } else if (providersArr.length > 0) {
-                providersArr = providersArr.slice(1);
-            }
-            if (suppliersArr.length > 0) {
-                suppliersArr = suppliersArr.slice(1)
-            }
-            if (contributorsArr.length > 0) {
-                contributorsArr = contributorsArr.slice(1)
-            }
-        } else {
-            //push contents to array
-            if (providersArr.length > 0) {
-                finalArray.push(providersArr[0])
-            }
-            if (providersArr.length > 1) {
-                finalArray.push(providersArr[1])
-            }
+//             //remove the pushed content from the arrays
+//             if (providersArr.length > 1) {
+//                 providersArr = providersArr.slice(2);
+//             } else if (providersArr.length > 0) {
+//                 providersArr = providersArr.slice(1);
+//             }
+//             if (suppliersArr.length > 0) {
+//                 suppliersArr = suppliersArr.slice(1)
+//             }
+//             if (contributorsArr.length > 0) {
+//                 contributorsArr = contributorsArr.slice(1)
+//             }
+//         } else {
+//             //push contents to array
+//             if (providersArr.length > 0) {
+//                 finalArray.push(providersArr[0])
+//             }
+//             if (providersArr.length > 1) {
+//                 finalArray.push(providersArr[1])
+//             }
 
-            //remove the pushed content from the arrays
-            if (providersArr.length > 1) {
-                providersArr = providersArr.slice(2);
-            } else if (providersArr.length > 0) {
-                providersArr = providersArr.slice(1);
-            }
-        }
-    }
-    return finalArray;
-}
+//             //remove the pushed content from the arrays
+//             if (providersArr.length > 1) {
+//                 providersArr = providersArr.slice(2);
+//             } else if (providersArr.length > 0) {
+//                 providersArr = providersArr.slice(1);
+//             }
+//         }
+//     }
+//     return finalArray;
+// }
 
 function Index(props) {
 
@@ -128,29 +128,31 @@ function Index(props) {
 
 
             <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
-                {mergePartners(props.providers, props.suppliers, props.contributors).map(partner => {
-                    return <PartnerCard 
-                        key={partner._id}
-                        image={partner.image}
-                        name={partner.name}
-                        lastname={partner.lastname}
-                        tags={partner.tags}
-                        sponsoredTag={partner?.sponsoredTag}
-                        city={partner.city}
-                        lat={partner.lat}
-                        lng={partner.lng}
-                        type={partner.accountType}
-                        companyName={partner.companyName}
-                        bio={partner?.shortBio}
-                        specialty={partner?.specialty?.name}
-                        primaryCategory={partner?.primaryCategory}
-                        suffix={partner?.suffix}
-                        prefix={partner?.prefix}
-                        title={partner?.title}
-                        isReviewBoard={partner?.isReviewBoard}
-                        industry={partner?.industry}
-                    />
-                })}
+                {[...props.providers, ...props.suppliers, ...props.contributors]
+                    .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
+                    .map(partner => {
+                        return <PartnerCard 
+                            key={partner._id}
+                            image={partner.image}
+                            name={partner.name}
+                            lastname={partner.lastname}
+                            tags={partner.tags}
+                            sponsoredTag={partner?.sponsoredTag}
+                            city={partner.city}
+                            lat={partner.lat}
+                            lng={partner.lng}
+                            type={partner.accountType}
+                            companyName={partner.companyName}
+                            bio={partner?.shortBio}
+                            specialty={partner?.specialty?.name}
+                            primaryCategory={partner?.primaryCategory}
+                            suffix={partner?.suffix}
+                            prefix={partner?.prefix}
+                            title={partner?.title}
+                            isReviewBoard={partner?.isReviewBoard}
+                            industry={partner?.industry}
+                        />
+                    })}
             </Carousel>
 
             <style jsx>

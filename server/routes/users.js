@@ -20,15 +20,22 @@ router.post("/create", async (req, res) => {
             // console.log('LATLON', res)
             lat = googleRes.data.results[0].geometry.location.lat;
             lng = googleRes.data.results[0].geometry.location.lng;
-            user = await User.create({...userSafeData, address: address + ' ' + address2 , location: {
+            const maxPlacementUser = await User.findOne({accountType: {$ne: 'personal'}}).sort('-placement');
+            user = await User.create({...userSafeData, address: address + ' ' + address2, placement: maxPlacementUser.placement + 1 , location: {
                 type: "Point",
                 coordinates: [lng, lat]
             }}).catch(e => res.send(e));
-        } else {
+        } else if (accountType === 'personal') {
             user = await User.create({...userSafeData, address: address + ' ' + address2 }).catch(e => res.send(e));
+        } else {
+            const maxPlacementUser = await User.findOne({accountType: {$ne: 'personal'}}).sort('-placement');
+            console.log(maxPlacementUser)
+            user = await User.create({...userSafeData, address: address + ' ' + address2,  placement: maxPlacementUser.placement + 1 }).catch(e => res.send(e));
+
         }
 
         if (accountType !== "personal") {
+
             const environment = await managementClient();
             const entry = await environment.createEntry('author', {
                 fields: {
@@ -158,7 +165,7 @@ router.get("/logout", async (req, res) => {
 router.put('/update', async (req, res) => {
 
     const { email, updates } = req.body
-    const { address2 , ...userSafeData} = req.body.updates
+    const { address2, placement , ...userSafeData} = req.body.updates
     try {
         let lat;
         let lng;
@@ -177,7 +184,37 @@ router.put('/update', async (req, res) => {
         if (userSafeData.address && address2) {
             await User.update({email: email}, {address: userSafeData.address + ' ' + address2});
         }
+
         // await User.updateOne({email: email}, {password: updates.password});
+        if (placement) {
+            const user = await User.findOne({email: email});
+            await User.update({email: email}, {placement: parseInt(placement)});
+
+            const newPlacement = parseInt(placement)
+            if (user.placement > newPlacement) {
+                const greaterUsers = await User.find({email: {$ne: email}, placement: { $gte: newPlacement}, accountType: {$ne: 'personal'}});
+                for (let i = 0; i < greaterUsers.length; i++) {
+                    greaterUsers[i].placement = greaterUsers[i].placement + 1
+                    await greaterUsers[i].save();
+                }
+            }
+
+            if (user.placement < newPlacement) {
+                const lessUsers = await User.find({email: {$ne: email}, placement: { $lte: newPlacement}, accountType: {$ne: 'personal'}});
+                for (let i = 0; i < lessUsers.length; i++) {
+                    lessUsers[i].placement = lessUsers[i].placement - 1
+                    await lessUsers[i].save();
+                }
+            }
+
+            const partners = await User.find({accountType: {$ne: 'personal'}}).sort({placement: 1});
+
+            for (let i = 0; i < partners.length; i++) {
+                partners[i].placement = i + 1;
+                await partners[i].save();    
+            }
+
+        }
         const user = await User.find({email: email}).select('-password');
         return res.send({
             user: user[0],
@@ -417,23 +454,29 @@ router.post('/contributor', async (req, res) => {
     }
 })
 
-router.get('/migrate-tags', async (req, res) => {
+router.get('/add-placement', async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find({accountType: {$ne: 'personal'}});
         // console.log(users);
-        Promise.all(users.map(async user => {
-            console.log("user", user)
-            await User.updateOne({ email: user.email }, { personalTags: [...user.tags] })
-        }))
-        const updatedUsers = await User.find();
-        console.log(updatedUsers);
+        // Promise.all(users.map(async user => {
+        //     console.log("user", user)
+        //     await User.updateOne({ email: user.email }, { personalTags: [...user.tags] })
+        // }))
+        for (let i = 0; i < users.length; i++ ) {
+            users[i].placement = i + 1;
+            // console.log(users[i]);
+            await users[i].save();
+        }
+        // const updatedUsers = await User.find();
+        // console.log(updatedUsers);
         res.send({
             users
         });
     } catch(e) {
+        console.log(e)
         return res.status(500).send({
             success: false,
-            message: "Error deleting user",
+            message: "Error updating users",
             error: e
         })
     }

@@ -84,7 +84,8 @@ const UserSchema = new Schema({
     coverVideo: String,
     favorites: Array,
     isReviewBoard: Boolean,
-    industry: String
+    industry: String,
+    placement: Number
     
 });
 UserSchema.index({ location: "2dsphere" });
