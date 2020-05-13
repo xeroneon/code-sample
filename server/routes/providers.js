@@ -50,7 +50,7 @@ router.get("/all", async (req, res) => {
         //             $maxDistance: 32186
         //         }
         //     }}).select('-password') :
-            await User.find({accountType: 'provider'}).select('-password')
+            await User.find({accountType: 'provider'}).select('-password').sort({placement: 1});
 
         res.send({
             providers

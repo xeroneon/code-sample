@@ -11,7 +11,7 @@ function EditUser(props) {
     const [ snackbar, setSnackbar ] = useState(false);
     const [ snackMessage, setSnackMessage ] = useState('');
 
-    const { email, name, lastname, companyName, accountType, zip, city, state, address, image, sponsoredTag, bio, shortBio, website, phone } = props.user
+    const { email, name, lastname, companyName, accountType, zip, city, state, address, image, sponsoredTag, bio, shortBio, website, phone, placement } = props.user
 
     const [ form, setForm ] = useState({
         email,
@@ -28,7 +28,8 @@ function EditUser(props) {
         bio,
         shortBio,
         website,
-        phone
+        phone,
+        placement
     });
 
     function handleChange(e) {
@@ -46,6 +47,24 @@ function EditUser(props) {
         }
         try {
             const res = await fetch('put', '/api/users/update', body);
+            setForm({
+                email: res.data.user.email,
+                name: res.data.user.name,
+                lastname: res.data.user.lastname,
+                companyName: res.data.user.companyName,
+                accountType: res.data.user.accountType,
+                zip: res.data.user.zip,
+                city: res.data.user.city,
+                state: res.data.user.state,
+                address: res.data.user.address,
+                image: res.data.user.image,
+                sponsoredTag: res.data.user.sponsoredTag,
+                bio: res.data.user.bio,
+                shortBio: res.data.user.shortBio,
+                website: res.data.user.website,
+                phone: res.data.user.phone,
+                placement: res.data.user.placement
+            })
             console.log(res.data);
         }catch (e) {
             console.log(e)
@@ -164,6 +183,14 @@ function EditUser(props) {
                         placeholder="Phone"
                         label="Phone"
                         value={form?.phone}
+                        variant="outlined"
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        name="placement"
+                        placeholder="Placement in carousel"
+                        label="Placement"
+                        value={form?.placement?.toString()}
                         variant="outlined"
                         onChange={handleChange}
                     />

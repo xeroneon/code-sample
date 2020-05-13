@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 router.get("/all", async (req, res) => {
 
     try{
-        const contributors = await User.find({accountType: 'contributor'}).select('-password')
+        const contributors = await User.find({accountType: 'contributor'}).select('-password').sort({placement: 1})
 
         // console.log(providers)
         res.send({

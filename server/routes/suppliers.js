@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 router.get("/all", async (req, res) => {
 
     try{
-        const suppliers = await User.find({accountType: 'supplier', subActive: true}).select('-password')
+        const suppliers = await User.find({accountType: 'supplier', subActive: true}).select('-password').sort({placement: 1})
 
         // console.log(providers)
         res.send({
