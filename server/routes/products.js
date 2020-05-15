@@ -3,6 +3,8 @@ const router = express.Router();
 const contentful = require('../../helpers/contentful');
 const User = require("../models/User");
 const { client, managementClient } = contentful;
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 router.get("/", async (req, res) => {
 
@@ -116,6 +118,92 @@ router.post("/create-products", async (req, res) => {
     } catch(e) {
         console.error(e)
         res.status(500).send({
+            success: false,
+            message: 'error creating products',
+            error: e
+        })
+    }
+
+})
+
+router.post("/create-product", async (req, res) => {
+    const { productName, contentType, image, tags, productLink } = req.body;
+    try {
+
+        const environment = await managementClient();
+        const asset = await environment.createAsset({
+            fields: {
+                title: {
+                    'en-US': productName
+                },
+                description: {
+                    'en-US': productName
+                },
+                file: {
+                    'en-US': {
+                        contentType: contentType,
+                        fileName: productName,
+                        upload: image
+                    }
+                }
+            }
+        })
+        const processedAsset = await asset.processForLocale('en-US');
+        await processedAsset.publish();
+        const postProcessedAsset = await client.getAsset(processedAsset.sys.id);
+        const authors = await client.getEntries({
+            content_type: 'author',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.authorId': req.body.authorId
+        })
+        const entry = await environment.createEntry('product', {
+            fields: {
+                productName: {
+                    'en-US': productName
+                },
+                productUrl: {
+                    'en-US': productLink
+                },
+                author: {
+                    'en-US': {
+                        sys: {
+                            type: "Link",
+                            linkType: "Entry",
+                            id: authors.items[0].sys.id
+                        }
+                    }
+                },
+                featuredImage: {
+                    "en-US": {
+                        sys: {
+                            type: "Link",
+                            linkType: "Asset",
+                            id: postProcessedAsset.sys.id
+                        }
+                    }
+                },
+                tags: {
+                    'en-US': tags
+                }
+            }
+        });
+
+        const msg = {
+            to: process.env.EMAIL_TO,
+            from: process.env.EMAIL_FROM,
+            subject: `${authors.items[0].fields.companyName} Submitted a new product`,
+            html: `To view the submitted product click <a href="https://app.contentful.com/spaces/${process.env.CONTENTFUL_DEV_SPACEID}/environments/${process.env.CONTENTFUL_DEV_ENVIRONMENT}/entries/${entry.sys.id}" target='_blank'>here</a> `
+        };
+        sgMail.send(msg);
+
+        res.send({
+            product: entry,
+            success: true
+        });
+    } catch(e) {
+        console.error(e)
+        res.send({
             success: false,
             message: 'error creating products',
             error: e
