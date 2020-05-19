@@ -31,6 +31,10 @@ nextApp.prepare().then(() => {
     // express code here
     newsletter.start();
     const app = express();
+    // The request handler must be the first middleware on the app
+    // app.use(Sentry.Handlers.requestHandler());
+    // The error handler must be before any other error middleware
+    // app.use(Sentry.Handlers.errorHandler());
     const sess = {
         secret: 'keyboard cat',
         resave: false,

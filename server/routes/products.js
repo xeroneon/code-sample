@@ -336,6 +336,11 @@ router.put('/', async (req, res) => {
     }
 })
 
+// eslint-disable-next-line no-unused-vars
+router.get('/test', async (req, res) => {
+    throw 'some error happened'
+})
+
 
 
 
