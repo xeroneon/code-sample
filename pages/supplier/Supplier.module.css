@@ -51,6 +51,11 @@
 	height: 200px;
 }
 
+.videoWrapper {
+	width: 80vw;
+	height: 45vw;
+}
+
 .supplierCardDown {
 	top: 20px;
 }

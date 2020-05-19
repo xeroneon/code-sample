@@ -14,13 +14,24 @@ import { UserContext } from 'contexts/UserProvider';
 import { ModalContext } from 'contexts/ModalProvider';
 import getValidUrl from 'helpers/getValidUrl';
 import ReactPlayer from 'react-player';
+import Backdrop from '@material-ui/core/Backdrop';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
 
 
 
 function Supplier(props) {
+    const classes = useStyles();
     const { supplier } = props;
     const { user, setUser } = useContext(UserContext);
     const { setOpen, setPage } = useContext(ModalContext);
+    const [ backdropOpen, setBackdropOpen ] = useState(false);
     const [ playing, setPlaying ] = useState(false);
 
     async function handleFollow() {
@@ -48,6 +59,11 @@ function Supplier(props) {
 
     }
 
+    const handleClose = () => {
+        setBackdropOpen(false);
+        setPlaying(false);
+    };
+
 
     return (
         <>
@@ -55,18 +71,11 @@ function Supplier(props) {
                 <title>{supplier.companyName}</title>
                 <meta name="keywords" content={`${supplier.companyName}`} />
             </Head>
-            <div className={`${styles.hero} ${playing ? styles.heroVideo : null}`}>
-                { supplier.coverPhoto && !playing && <img src={supplier.coverPhoto} className={styles.heroImage}/>}
-                { supplier.coverVideo && !playing && <img src="/images/play-button.png" className={styles.playButton} onClick={() => setPlaying(true)} />}
-                { supplier.coverVideo && playing &&  <ReactPlayer
-                    // ref={this.setPlayerRef}
-                    controls={true}
-                    url={supplier.coverVideo}
-                    width='100%'
-                    height='100%'
-                    className={styles.reactPlayer}
-                    playing={playing}
-                />}
+            <div className={`${styles.hero}`}>
+                { supplier.coverPhoto && <img src={supplier.coverPhoto} className={styles.heroImage}/>}
+                { supplier.coverVideo && <img src="/images/play-button.png" className={styles.playButton} onClick={() => {setPlaying(true); setBackdropOpen(true)}} />}
+
+
             </div>
             <div className={styles.supplierInfo}>
                 <div className={`${styles.supplierCard} ${playing ? styles.supplierCardDown : null}`}>
@@ -100,6 +109,19 @@ function Supplier(props) {
 
                 </div>
             </div>
+            { supplier.coverVideo && playing && <Backdrop className={classes.backdrop} open={backdropOpen} onClick={handleClose}>
+                <div className={styles.videoWrapper}>
+                    <ReactPlayer
+                        // ref={this.setPlayerRef}
+                        controls={true}
+                        url={supplier.coverVideo}
+                        width='100%'
+                        height='100%'
+                        // className={styles.reactPlayer}
+                        playing={playing}
+                    />
+                </div>
+            </Backdrop>}
             {/* <div className={styles.supplierCard}>
                 <div className={styles.info}>
                     <div className={styles.actionButtons}>
