@@ -241,6 +241,101 @@ router.get("/tag", async (req, res) => {
 
 })
 
+router.delete('/', async (req, res) => {
+    const { id } = req.query
+    try {
+        const environment = await managementClient();
+        environment.getEntry(id).then(entry => {
+            if (!entry.sys.publishedVersion) {
+                return entry.delete().then(() => {
+                    res.status(200).send({
+                        success: true,
+                        message: 'Product was deleted successfully'
+                    })
+                })
+            }
+
+            else {
+
+                entry.unpublish().then(entry => {
+                    entry.delete().then(() => {
+                        return res.status(200).send({
+                            success: true,
+                            message: 'Product was deleted successfully'
+                        })
+                    })
+                })
+            }
+        })
+
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            message: 'An error occurred while attempting to delete product',
+            error: e.toString()
+        })
+    }
+})
+
+router.put('/', async (req, res) => {
+    const { id } = req.body
+    const { productName, featuredImage, productUrl, tags, contentType } = req.body.updates
+    try {
+        const environment = await managementClient();
+        environment.getEntry(id).then(async entry => {
+            if (productName) {
+                entry.fields.productName['en-US'] = productName
+            }
+            if (productUrl) {
+                entry.fields.productUrl['en-US'] = productUrl
+            }
+            if (tags) {
+                entry.fields.tags['en-US'] = tags
+            }
+
+            if (featuredImage && contentType) {
+                const asset = await environment.createAsset({
+                    fields: {
+                        title: {
+                            'en-US': entry.fields.productName['en-US']
+                        },
+                        description: {
+                            'en-US': entry.fields.productName['en-US']
+                        },
+                        file: {
+                            'en-US': {
+                                contentType: contentType,
+                                fileName: productName,
+                                upload: featuredImage
+                            }
+                        }
+                    }
+                })
+                const processedAsset = await asset.processForLocale('en-US');
+                await processedAsset.publish();
+                const postProcessedAsset = await client.getAsset(processedAsset.sys.id);
+
+                // eslint-disable-next-line require-atomic-updates
+                entry.fields.featuredImage['en-US'].sys.id = postProcessedAsset.sys.id
+            }
+
+            entry.update().then(entry => {
+                res.status(200).send({
+                    success: true,
+                    message: 'Product has been updated',
+                    product: entry
+                })
+            })
+        })
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            message: 'An error occurred while attempting to update product',
+            error: e.toString()
+        })
+    }
+})
+
 
 
 
