@@ -86,6 +86,82 @@ function EditUser(props) {
         }
     }
 
+    if (props.user.accountType === 'provider') {
+        return (
+            <>
+                <form>
+                    <div id='simpleInputs'>
+                        <TextField
+                            name="placement"
+                            placeholder="Placement in carousel"
+                            label="Placement"
+                            value={form?.placement?.toString()}
+                            variant="outlined"
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <ActionButton onClick={submit} className='actionButton'>Save</ActionButton>
+                    <br/>
+                    <input type='submit' onClick={deleteUser} className='delete' value='Delete User'/>
+
+                </form>
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    open={snackbar}
+                    autoHideDuration={6000}
+                    message={snackMessage}
+                    onClose={() => setSnackbar(false)}
+                />
+
+                <style jsx>{`
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px 10px;
+                    width: 100%;
+                    min-height: 80vh;
+                    padding: 30px;
+                    box-sizing: border-box;
+                }
+                #simpleInputs {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, 300px);
+                    gap: 10px 10px;
+                    width: 100%;
+                    margin-bottom: 10px;
+                    justify-content: center;
+                }
+                #textAreas {
+                    display: grid;
+                    width: 100%;
+                    grid-template-columns: repeat(auto-fit, 1fr);
+                    gap: 10px 10px;
+                    margin-bottom: 20px;
+                }
+                .input {
+                    margin: 50px;
+                }
+                .delete {
+                    background: #D34240;
+                    padding: 15px 30px;
+                    display: flex;
+                    align-items: center;
+                    border: none;
+                    border-radius: 1000px;
+                    color: white;
+                    font-weight: bold;
+                    margin-top: 50px;
+                }
+            `}</style>
+            </>
+        )
+    }
+
     return (
         <>
             <form>
