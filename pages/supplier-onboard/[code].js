@@ -158,10 +158,7 @@ function Onboard(props) {
 
     function toggleTag(e, tag) {
         e.persist();
-        if (form.tags.length >= 8) {
-            setSnackbar(true);
-            return setSnackMessage('You can only choose up to 8 tags')
-        }
+
         const i = form.tags.indexOf(tag);
         if (i > -1 ) {
             return setForm(state => ({
@@ -170,6 +167,10 @@ function Onboard(props) {
             }))
 
         } else {
+            if (form.tags.length >= 8) {
+                setSnackbar(true);
+                return setSnackMessage('You can only choose up to 8 tags')
+            }
             return setForm(state => ({
                 ...state,
                 tags: [...form.tags, tag]

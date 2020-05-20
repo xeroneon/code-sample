@@ -64,15 +64,21 @@ router.post("/test", async (req, res) => {
         while(cont) {
             const item = await Newsletter.find({contentful_id: entries.items[index].sys.id});
             if (item === null) {
+                const entry = await client.getEntry(entries[index].sys.id);
+                //need to send to all users
+
                 const msg = {
                     to: 'andrew@s2ui.com',
                     from: {
-                        email: 'jsiefert@ahwa.com',
-                        name: 'John Siefert'
+                        email: 'info@preventiongeneration.com',
+                        name: 'Prevention Generation'
                     },
-                    templateId: 'd-0fa6c8720ade4de08c61d566d7bc7f9f',
+                    templateId: 'd-9b20849c201f4f68957d187ccbf1f8f1',
                     dynamic_template_data: {
-                        name: 'name'
+                        name: 'test',
+                        title: entry.fields.title,
+                        image: entry.fields.featuredImage.fields.file.url,
+                        body: entry.fields.body
                     },
                 };
                 sgMail.send(msg);
