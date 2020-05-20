@@ -158,6 +158,7 @@ function Onboard(props) {
 
     function toggleTag(e, tag) {
         e.persist();
+
         const i = form.tags.indexOf(tag);
         if (i > -1 ) {
             return setForm(state => ({
@@ -166,6 +167,10 @@ function Onboard(props) {
             }))
 
         } else {
+            if (form.tags.length >= 8) {
+                setSnackbar(true);
+                return setSnackMessage('You can only choose up to 8 tags')
+            }
             return setForm(state => ({
                 ...state,
                 tags: [...form.tags, tag]
@@ -314,7 +319,7 @@ function Onboard(props) {
                 <Input type="text" name="website" value={form?.website} placeholder="" onChange={handleChange} />
                 <h4>Your Company Phone Number</h4>
                 <Input type="text" name="phone" value={form?.phone} placeholder="" onChange={handleChange} />
-                <h3>Applicable Health Tags</h3>
+                <h3>Applicable Health Tags (Choose up to 8)</h3>
                 <div >
                     {props.tags.map(tag => <Tag key={tag.name} active={form.tags.includes(tag.name)} name={tag.name} onClick={(e) => toggleTag(e, tag.name)}/>)}
                 </div>
