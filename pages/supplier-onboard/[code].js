@@ -52,12 +52,7 @@ function Onboard(props) {
     });
     const { setUser } = useContext(UserContext);
     const [ src, setSrc ] = useState(undefined);
-    const [ productArray, setProductArray ] = useState([]);
-    const [ productSrc, setProductSrc] = useState(undefined);
     const [ coverSrc, setCoverSrc] = useState(undefined);
-    const [ productTags, setProductTags ] = useState([]);
-    const [ newProduct, setNewProduct ] = useState(false);
-    const productCropperRef = useRef(null);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
     const [ errors, setErrors ] = useState({});
@@ -65,10 +60,7 @@ function Onboard(props) {
     const cropperCoverRef = useRef(null);
     const [ profileImage, setProfileImage ] = useState(null);
     const [ coverPhoto, setCoverPhoto ] = useState(null);
-    const [ productImage, setProductImage ] = useState(null);
-    const [ productType, setProductType ] = useState(null);
     const [ emailError, setEmailError] = useState(null);
-    const [ cropLoading, setCropLoading ] = useState(false);
     const [ snackbar, setSnackbar] = useState(false);
     const [ snackMessage, setSnackMessage ] = useState('');
 
@@ -84,17 +76,6 @@ function Onboard(props) {
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
 
-    const productDrop = useCallback(acceptedFiles => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            setProductSrc(e.target.result);
-        }
-        reader.onerror = function() {
-            setSnackbar(true);
-            setSnackMessage('There was an error reading the file, try again')
-        }
-        reader.readAsDataURL(acceptedFiles[0]);
-    }, [])
     const coverDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -106,33 +87,6 @@ function Onboard(props) {
         }
         reader.readAsDataURL(acceptedFiles[0]);
     }, [])
-
-    async function saveProduct() {
-        setProductArray(state => ([
-            ...state,
-            {
-                image: productImage,
-                contentType: productType,
-                productName: form?.productName,
-                productLink: form?.productLink,
-                tags: productTags
-            }
-        ]))
-        setProductTags([]);
-        setForm(state => ({
-            ...state,
-            productName: '',
-            productLink: ''
-        }))
-        setProductSrc(undefined);
-        setNewProduct(false);
-        setProductImage(undefined)
-    }
-
-    function removeProduct(productName) {
-        const newArray = productArray.filter(item => item.productName !== productName);
-        setProductArray(newArray);
-    }
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, multiple: false})
 
@@ -218,22 +172,6 @@ function Onboard(props) {
             }))
         }
     }
-    function toggleProductTag(e, tag) {
-        e.persist();
-        const i = productTags.indexOf(tag);
-        if (i > -1 ) {
-            return setProductTags(state => ([
-                ...state,
-                tag
-            ]))
-
-        } else {
-            return setProductTags(state => ([
-                ...state,
-                tag
-            ]))
-        }
-    }
 
     async function cropProfileImage(e) {
         e.preventDefault();
@@ -293,38 +231,6 @@ function Onboard(props) {
             }
         }
     }
-    async function cropProductImage(e) {
-        e.preventDefault();
-        setCropLoading(true)
-        setError(null);
-        const formData = new FormData();
-        if(productCropperRef && productCropperRef.current) {
-            const dataUri = productCropperRef.current.getCroppedCanvas().toDataURL()
-            const blob = dataURLtoBlob(dataUri)
-            formData.append('image', blob)
-            try {
-                const res = await axios.post('/api/uploads/create', formData, { headers: { 'content-type': 'multipart/form-data'}, auth: {
-                    username: 'admin',
-                    password: process.env.BASIC_AUTH_PASS
-                }});
-                console.log(res)
-                if (res.data.success) {
-                    setProductImage(res.data.imagePath);
-                    setProductSrc(undefined);
-                    setProductType(res.data.type);
-                    setCropLoading(false);
-                } else {
-                    setSnackbar(true);
-                    setSnackMessage('There was an error uploading your image, try again')
-                    setProductSrc(undefined);
-                    setCropLoading(false);
-                }
-            } catch(e) {
-                setCropLoading(false);
-                return setError('cropError');
-            }
-        }
-    }
 
     async function submit(e) {
         e.preventDefault();
@@ -345,9 +251,6 @@ function Onboard(props) {
                     setUser(res.data.user);
                     localStorage.setItem('loggedIn', true)
                     setLoading(false);
-                    fetch('post', '/api/products/create-products', {authorId: res.data.user._id, products: productArray}).then(res => {
-                        console.log(res);
-                    })
                     fetch('delete', `/api/codes?uid=${props.code}`);
 
                     Router.push('/');
@@ -450,68 +353,7 @@ function Onboard(props) {
                     { !coverSrc && !coverPhoto && <p>Drag and drop a cover photo here or tap above to choose a photo</p> }
                     { coverPhoto && <ActionButton onClick={() => setCoverPhoto(null)}>Remove Cover Photo</ActionButton>}
                 </div>
-                <h3>Add Products</h3>
-                <div className='product-wrapper'>
-                    {productArray.length > 0 && <h3>Products</h3>}
-                    {productArray.map(product => {
-                        return <div key={product.image} className='product-item'>
-                            <div className='product-item-info'>
-                                <img src={product.image} />
-                                <div>
-                                    <p>{product.productName}</p>
-                                    <br/>
-                                    <p>{product.productLink}</p>
-                                </div>
-                                <span style={{marginRight: '20px'}} onClick={() => removeProduct(product.productName)}><i className='material-icons-outlined'>close</i></span>
-                            </div>
-                            <div>{product.tags.map(tag => <Tag key={tag} name={tag}/>)}</div>
-                        </div>
-                        
-                    })}
-                </div>
-                <div className='product-dropzone-wrapper'>
-                    { newProduct && <Dropzone onDrop={acceptedFiles => {productDrop(acceptedFiles)}}>
-                        {({getRootProps, getInputProps}) => (
-                            <div {...getRootProps()} className='product-dropzone'>
-                                <input {...getInputProps()} />
-                                {
-                                    isDragActive ?
-                                        <p>Drop the files here ...</p> :
-                                        <p>Drag and drop product image here or <br/><br/><div style={{marginTop: '10px'}} className='selectButton'>Select file</div></p>
-                                }
-                            </div>
-                        )}
-                    </Dropzone> }
-                    { !productSrc && productImage && <div className='productPlaceholder'>&nbsp;{ productImage && <img src={productImage} /> }</div> }
 
-                    { !newProduct && !productSrc && <div onClick={() => setNewProduct(true)} style={{marginTop: '10px'}} className='selectButton addButton'><i className='material-icons-outlined'>add_circle</i> &nbsp;Add{productArray.length > 0 && ' Another'} Product</div>}
-                    { productSrc && !productImage &&
-                    <>
-                        <Cropper
-                            src={productSrc}
-                            aspectRatio={1 / 1}
-                            ref={productCropperRef}
-                            zoomable={false}
-                            responsive={true}
-                            viewMode={1}
-                            style={{height: '30vh', width: '100%', marginBottom: '10px'}}
-                        />
-                        {productSrc && <div onClick={cropProductImage} className='selectButton'>{ cropLoading ? 'Loading...' : 'Save... Cropped Image'}</div>}
-                        { error ==='cropError' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
-                    </>}
-                    {newProduct && <>
-                        <Input type="text" name="productName" value={form?.productName} placeholder="Product Name*" onChange={handleChange} />
-                        <Input type="text" name="productLink" value={form?.productLink} placeholder="Product Link*" onChange={handleChange} />
-                        <div >
-                            {props.tags.map(tag => <Tag key={tag.name} active={productTags.includes(tag.name)} name={tag.name} onClick={(e) => toggleProductTag(e, tag.name)}/>)}
-                        </div>
-                        <br/>
-                        <div style={{margin: '0 auto'}} className='selectButton' onClick={saveProduct}>Save</div>
-                        { error === 'saveProduct' && <p style={{color: "#D34240", padding: '10px 0'}}>*There was an error please try again</p> }
-                    </>}
-                    
-
-                </div>
                 <span className='actionButton'>
                     <ActionButton onClick={submit}>{ loading ? 'Loading...' : 'Create Account'}</ActionButton>
                 </span>
