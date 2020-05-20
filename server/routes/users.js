@@ -50,7 +50,7 @@ router.post("/create", async (req, res) => {
                     }
                 }
             });
-            entry.publish();
+            await entry.publish();
         }
 
         if (accountType === 'provider') {
