@@ -18,7 +18,7 @@ function Article() {
                 <meta property="article:author" content="prevention generation" />
             </Head>
             <div className={styles.core}>
-                <div style={{width: '100%', height: '300px'}}>
+                <div style={{width: '100%', height: '550px'}}>
                     <ReactPlayer
                         controls={true}
                         url='https://vimeo.com/417673496'
