@@ -53,6 +53,7 @@ function Nav() {
                         <img src="/images/pg-logo.png" className={styles.logo}/>
                     </Link>
                 </div>
+                <button className={styles.button} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>Get to know us!</button>
                 <Search hidden/>
                 { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
                 {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Sign Up</button> }

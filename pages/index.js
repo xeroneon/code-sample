@@ -126,9 +126,38 @@ function Index(props) {
 
             <TrendingCarousel items={trending} loading={trendingLoading} onScrollEnd={loadMoreTrending}/>
 
-
-            <Carousel header={[`Featured `, <span key="partners"> Health </span>, <br key="xcnmbv"/>, "partners" ]}>
+            <Carousel header={[`Medical `, <span key="partners"> Review </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {[...props.providers, ...props.suppliers, ...props.contributors]
+                    .filter(partner => partner.isReviewBoard)
+                    .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
+                    .map(partner => {
+                        return <PartnerCard 
+                            key={partner._id}
+                            image={partner.image}
+                            name={partner.name}
+                            lastname={partner.lastname}
+                            tags={partner.tags}
+                            sponsoredTag={partner?.sponsoredTag}
+                            city={partner.city}
+                            lat={partner.lat}
+                            lng={partner.lng}
+                            type={partner.accountType}
+                            companyName={partner.companyName}
+                            bio={partner?.shortBio}
+                            specialty={partner?.specialty?.name}
+                            primaryCategory={partner?.primaryCategory}
+                            suffix={partner?.suffix}
+                            prefix={partner?.prefix}
+                            title={partner?.title}
+                            isReviewBoard={partner?.isReviewBoard}
+                            industry={partner?.industry}
+                        />
+                    })}
+            </Carousel>
+
+            <Carousel header={[`Healthy `, <span key="partners"> Lifestyle </span>, <br key="xcnmbv"/>, "partners" ]}>
+                {[...props.providers, ...props.suppliers, ...props.contributors]
+                    .filter(partner => !partner.isReviewBoard)
                     .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
                     .map(partner => {
                         return <PartnerCard 
