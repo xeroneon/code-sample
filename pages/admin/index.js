@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import ActionButton from 'components/ActionButton/ActionButton';
 import fetch from 'helpers/fetch';
 import PropTypes from 'prop-types';
+import Carousel from 'components/Carousel/Carousel';
+import PartnerCard from 'components/PartnerCard/PartnerCard';
 //Next.js
 import Router from 'next/router'
 //materialui
@@ -214,6 +216,33 @@ function Admin(props) {
                     </div>
                 </div>
             </div>
+            <Carousel header={[`Healthy `, <span key="partners"> Lifestyle </span>, <br key="xcnmbv"/>, "partners" ]}>
+                {[...props.providers, ...props.suppliers, ...props.contributors]
+                    .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
+                    .map(partner => {
+                        return <PartnerCard 
+                            key={partner._id}
+                            image={partner.image}
+                            name={partner.name}
+                            lastname={partner.lastname}
+                            tags={partner.tags}
+                            sponsoredTag={partner?.sponsoredTag}
+                            city={partner.city}
+                            lat={partner.lat}
+                            lng={partner.lng}
+                            type={partner.accountType}
+                            companyName={partner.companyName}
+                            bio={partner?.shortBio}
+                            specialty={partner?.specialty?.name}
+                            primaryCategory={partner?.primaryCategory}
+                            suffix={partner?.suffix}
+                            prefix={partner?.prefix}
+                            title={partner?.title}
+                            isReviewBoard={partner?.isReviewBoard}
+                            industry={partner?.industry}
+                        />
+                    })}
+            </Carousel>
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
@@ -273,12 +302,18 @@ function Admin(props) {
 Admin.getInitialProps = async () => {
     const tags = await fetch('get', '/api/tags/all');
     const users = await fetch('get', '/api/users/all');
-    return {tags: tags.data.tags, users: users.data.users}
+    const providers = await fetch('get',`/api/providers/all`);
+    const suppliers = await fetch('get',`/api/suppliers/all`);
+    const contributors = await fetch('get',`/api/contributors/all`);
+    return {tags: tags.data.tags, users: users.data.users, providers: providers.data.providers, suppliers: suppliers.data.suppliers, contributors: contributors.data.contributors}
 }
 
 Admin.propTypes = {
     tags: PropTypes.array,
-    users: PropTypes.array
+    users: PropTypes.array,
+    providers: PropTypes.array,
+    suppliers: PropTypes.array,
+    contributors: PropTypes.array,
 }
 
 export default Admin;
