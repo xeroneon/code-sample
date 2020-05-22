@@ -127,8 +127,8 @@ function Index(props) {
             <TrendingCarousel items={trending} loading={trendingLoading} onScrollEnd={loadMoreTrending}/>
 
             <Carousel header={[`Health `, <span key="partners"> Care </span>, <br key="xcnmbv"/>, "partners" ]}>
-                {[...props.providers, ...props.suppliers, ...props.contributors]
-                    .filter(partner => partner.isReviewBoard)
+                {[...props.providers]
+                    // .filter(partner => partner.isReviewBoard)
                     .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
                     .map(partner => {
                         return <PartnerCard 
@@ -156,8 +156,8 @@ function Index(props) {
             </Carousel>
 
             <Carousel header={[`Healthy `, <span key="partners"> Lifestyle </span>, <br key="xcnmbv"/>, "partners" ]}>
-                {[...props.providers, ...props.suppliers, ...props.contributors]
-                    .filter(partner => !partner.isReviewBoard)
+                {[...props.suppliers, ...props.contributors]
+                    // .filter(partner => !partner.isReviewBoard)
                     .sort((a, b) => (a.placement > b.placement) ? 1 : -1)
                     .map(partner => {
                         return <PartnerCard 
