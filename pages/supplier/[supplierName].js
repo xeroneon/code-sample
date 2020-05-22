@@ -16,6 +16,7 @@ import getValidUrl from 'helpers/getValidUrl';
 import ReactPlayer from 'react-player';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
+import EmailDialog from "components/EmailDialog/EmailDialog";
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -33,6 +34,7 @@ function Supplier(props) {
     const { setOpen, setPage } = useContext(ModalContext);
     const [ backdropOpen, setBackdropOpen ] = useState(false);
     const [ playing, setPlaying ] = useState(false);
+    const [ contactOpen, setContactOpen ] = useState(false);
 
     async function handleFollow() {
         if (!user) {
@@ -64,6 +66,10 @@ function Supplier(props) {
         setPlaying(false);
     };
 
+    const handleContactClose = () => {
+        setContactOpen(false);
+    };
+
 
     return (
         <>
@@ -89,9 +95,9 @@ function Supplier(props) {
                         < a href={`tel:${supplier.phone}`} target="_blank" rel="noopener noreferrer">
                             <div className={styles.contactButton}><i className="material-icons-outlined">phone</i></div>
                         </a>
-                        <a href={`mailto:${supplier.email}`} target="_blank" rel="noopener noreferrer">
-                            <div className={styles.contactButton}><i className="material-icons-outlined">email</i></div>
-                        </a>
+                        {/* <a href={`mailto:${supplier.email}`} target="_blank" rel="noopener noreferrer"> */}
+                        <div className={styles.contactButton} onClick={() => setContactOpen(true)}><i className="material-icons-outlined">email</i></div>
+                        {/* </a> */}
                     </div>
                     {user?._id !== supplier._id && !user?.following?.includes(props.supplier._id) && <div className={styles.follow} onClick={handleFollow}>+ Follow</div> }
                     {user?._id !== supplier._id && user && user.following.includes(props.supplier._id) && <div className={`${styles.unfollow} ${styles.follow}`} onClick={handleUnfollow}>- Unfollow</div> }
@@ -199,6 +205,7 @@ function Supplier(props) {
                     );
                 })}
             </Carousel> }
+            <EmailDialog open={contactOpen} handleClose={handleContactClose} email={props.supplier.email} name={props.supplier.companyName}/>
             <style jsx>
                 {`
                     
