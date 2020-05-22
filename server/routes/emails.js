@@ -46,6 +46,32 @@ router.post("/sendgrid", async (req, res) => {
 
 })
 
+router.post('/contact', async (req, res) => {
+    const msg = {
+        to: req.body.partnerEmail,
+        from: 'info@preventiongeneration.com',
+        subject: 'Request From PreventionGeneration.com',
+        html: `<p>You have recieved a message from ${req.body.userName}, their reply email is <a href='mailto:${req.body.userEmail}'>${req.body.userEmail}</a></p>
+                <br/>
+                <p>${req.body.message}</p>
+        ` 
+    };
+
+    try {
+        await sgMail.send(msg);
+        return res.send({
+            success: true,
+            message: 'Email sent succesfully'
+        })
+    } catch (e) {
+        res.send({
+            success: false,
+            message: 'We had trouble sending the email, please try again',
+            error: e
+        })
+    }
+})
+
 router.post("/test", async (req, res) => {
     try {
         const entries = await client.getEntries({

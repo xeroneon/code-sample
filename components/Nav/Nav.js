@@ -53,11 +53,11 @@ function Nav() {
                         <img src="/images/pg-logo.png" className={styles.logo}/>
                     </Link>
                 </div>
-                <button className={styles.button} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>Get to know us!</button>
+                <button className={styles.button} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>What is Prevention Generation?</button>
                 <Search hidden/>
                 { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
-                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Sign Up</button> }
-                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Log In</button> }
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>SIGN UP</button> }
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>LOG IN</button> }
             </nav>
             <ReactTooltip place='bottom' id='nav' type='light' effect='solid' globalEventOff='click' className={styles.tooltip} clickable={true}>
                 { user?.accountType !== 'provider' && <p style={{color: '#0C3668'}} onClick={() => Router.push('/account')}>Account</p> }
