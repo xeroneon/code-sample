@@ -235,6 +235,7 @@ function SubmitContent(props) {
         <>
             <div className='root'>
                 <form>
+                    <a href='/content-guidelines' target='_blank'><p id='guidelines'>Click Here To Read our Content Guidelines</p></a>
                     <h1>Submit an article</h1>
                     <h4>Title*</h4>
                     <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
@@ -337,6 +338,17 @@ function SubmitContent(props) {
                 }
                 #submitted {
                     color: #64ae64;
+                }
+                #guidelines {
+                    text-align: right;
+                    font-size: 1.2em;
+                    color: #143968;
+                    font-weight: bold;
+                    text-decoration: underline;
+                    padding: 10px 0;
+                }
+                #guidelines:hover {
+                    cursor: pointer;
                 }
                 .hide {
                     display: none;
