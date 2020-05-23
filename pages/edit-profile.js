@@ -293,7 +293,7 @@ function EditProfile() {
                             <Input type="text" name="companyName" value={form?.companyName} placeholder="Company Name" onChange={handleChange} />
                         </>
                     }
-                    {user.accountType === 'contributor' && <Input type="text" name="title" value={form?.title} placeholder="Title" onChange={handleChange} />}
+                    {user?.accountType === 'contributor' && <Input type="text" name="title" value={form?.title} placeholder="Title" onChange={handleChange} />}
                     {/* <Select name="alerts" value={form.alerts} placeholder="Alerts" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange}/> */}
                     {/* <Select name="deals" value={form.deals} placeholder="Special Health Deals" options={[{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]} onChange={handleSelectChange} /> */}
                 </form>
