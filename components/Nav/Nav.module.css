@@ -73,6 +73,14 @@
 
 }
 
+.whatIs {
+    color: #225B91;
+}
+
+.whatIs:hover {
+    color: #092048;
+}
+
 .mobileIcon {
     color: #225B91;
     padding: 5px;
