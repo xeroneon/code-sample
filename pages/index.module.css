@@ -49,6 +49,17 @@
         font-size: 1.2em;
         line-height: 1.2em;
     }
+
+    .heroBot {
+        flex-direction: column;
+    }
+    .heroBot>* {
+        margin: 5px 0;
+    }
+
+    .slidingBackground {
+        /* height: 30vh !important; */
+    }
 }
 
 .heroTop {
