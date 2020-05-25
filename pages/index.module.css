@@ -50,3 +50,56 @@
         line-height: 1.2em;
     }
 }
+
+.heroTop {
+    background: #143968;
+    background-image:
+    linear-gradient(
+      45deg, 
+      #272965, #1E78BC, #272965
+    );
+    color: #FFF;
+    padding: 10px;
+    /* height: 50px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heroBot {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+    color: #FFF;
+    background-image:
+    linear-gradient(
+      45deg, 
+      #272965, #1E78BC, #272965
+    );
+}
+
+.heroTop>h5 {
+    font-size: 3vw;
+}
+
+.container {
+    overflow: hidden;
+}
+  
+.slidingBackground {
+    background: url("/images/header-image-2b.jpg") repeat;
+    height: 50vh;
+    background-position: 0px;
+    /* width: 13200px; */
+    animation: slide 80s linear infinite;
+}
+
+@keyframes slide {
+    0%{
+      background-position: 0;
+    }
+    100%{
+      background-position: 4400px; /* The image width */
+    }
+  }
