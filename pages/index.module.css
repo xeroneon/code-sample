@@ -54,11 +54,15 @@
         flex-direction: column;
     }
     .heroBot>* {
-        margin: 5px 0;
+        margin: 10px 0;
     }
 
     .slidingBackground {
         /* height: 30vh !important; */
+    }
+
+    .heroTop>h5 {
+        font-size: 3vw !important;
     }
 }
 
@@ -70,7 +74,7 @@
       #272965, #1E78BC, #272965
     );
     color: #FFF;
-    padding: 10px;
+    padding: 20px;
     /* height: 50px; */
     display: flex;
     align-items: center;
@@ -91,7 +95,7 @@
 }
 
 .heroTop>h5 {
-    font-size: 3vw;
+    font-size: 2.5vw;
 }
 
 .container {
