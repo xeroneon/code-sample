@@ -86,11 +86,16 @@ router.post("/test", async (req, res) => {
         //aister 5e8ca10a6202930017e1dd90
         //pfaff 5e946226d369ff0017a8a54e
         let index = entries.items.length - 1;
+        console.log(index);
+        console.log(entries.items.length)
+        console.log(entries.items[58].sys);
         let cont = true;
         while(cont) {
-            const item = await Newsletter.find({contentful_id: entries.items[index].sys.id});
+            const item = await Newsletter.findOne({contentful_id: entries.items[index].sys.id});
+            console.log(item)
             if (item === null) {
-                const entry = await client.getEntry(entries[index].sys.id);
+                const entry = await client.getEntry(entries.items[index].sys.id);
+                console.log(entry)
                 //need to send to all users
 
                 const msg = {
@@ -101,12 +106,15 @@ router.post("/test", async (req, res) => {
                     },
                     templateId: 'd-9b20849c201f4f68957d187ccbf1f8f1',
                     dynamic_template_data: {
+                        subject: `Daily Prevention - ${entry.fields.title}`,
                         name: 'test',
                         title: entry.fields.title,
-                        image: entry.fields.featuredImage.fields.file.url,
-                        body: entry.fields.body
+                        featuredImage: `https:${entry.fields.featuredImage.fields.file.url}`,
+                        body: entry.fields.metaDescription,
+                        link: `https://www.preventiongeneration.com/${entry.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${entry.fields.slug}`
                     },
                 };
+                console.log(entry.fields.featuredImage.fields.file.url)
                 sgMail.send(msg);
 
                 await Newsletter.create({
@@ -121,6 +129,7 @@ router.post("/test", async (req, res) => {
             entries: entries.items
         })
     } catch (e) {
+        console.log(e)
         res.send({
             success: false,
             error: e
