@@ -104,8 +104,8 @@
   
 .slidingBackground {
     background: url("/images/long-hero.jpg") repeat;
-    height: 40vh;
-    background-size: auto 40vh;
+    height: 50vh;
+    background-size: auto 50vh;
     background-position: 0px;
     animation: slide 80s linear infinite;
     box-shadow:inset 0 0 0 2000px rgba(230, 230, 230, 0.7);
@@ -115,7 +115,8 @@
 }
 
 .heroImage {
-    height: 30%;
+    max-height: 40%;
+    max-width: 80%;
 }
 
 @keyframes slide {
