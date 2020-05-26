@@ -115,7 +115,8 @@
 }
 
 .heroImage {
-    height: 30%;
+    max-height: 45%;
+    max-width: 80%;
 }
 
 @keyframes slide {
