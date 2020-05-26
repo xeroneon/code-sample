@@ -101,18 +101,20 @@ function Index(props) {
                     <h5>medically reviewed health content + social media personalization</h5>
                 </div>
             </div> */}
-            <div className={styles.heroTop}><h5>medically reviewed health content + social media personalization</h5></div>
+            {/* <div className={styles.heroTop}><h5>medically reviewed health content + social media personalization</h5></div> */}
             <div className={styles.container}>
 
-                <div className={styles.slidingBackground}></div>
+                <div className={styles.slidingBackground}>
+                    <img src="/images/pg-logo.png" className={styles.heroImage}/>
+                </div>
 
             </div>
-            <div className={styles.heroBot}>
+            {/* <div className={styles.heroBot}>
                 <p>Get Started now:</p>
                 <p><span>1.</span> Tap Sign Up</p>
                 <p><span>2.</span> Register Your Account</p>
                 <p><span>3.</span> Pick the health tags you want to follow</p>
-            </div>
+            </div> */}
             { user && userArticles && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
                 {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>}
                 {userArticles.map(article => {
