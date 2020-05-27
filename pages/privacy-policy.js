@@ -139,12 +139,13 @@ function TermsOfService() {
                 h1 {
                     text-align: center;
                     line-height: 1.2em;
+                    margin-top: 40px;
                 }
                 h3 {
                     font-style: bold;
                 }
                 p {
-                    margin: 20px 0; 
+                    margin: 40px 0; 
                 }
                 ol {
                     list-style: upper-alpha;
