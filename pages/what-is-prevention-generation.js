@@ -22,6 +22,7 @@ function Article() {
                     <ReactPlayer
                         controls={true}
                         url='https://vimeo.com/417673496'
+                        // url='https://www.youtube.com/watch?v=d_VsR-WIBPg'
                         width='100%'
                         height='100%'
                     />

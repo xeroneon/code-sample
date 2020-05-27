@@ -105,6 +105,10 @@
 		display: flex;
 		flex-direction: column;
 	}
+
+	.links>a {
+		padding: 10px;
+	}
 }
 /*
 .image {
