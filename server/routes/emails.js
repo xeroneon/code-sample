@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Email = require("../models/Email");
+const User = require("../models/User");
 const Newsletter = require("../models/Newsletter");
 const contentful = require('../../helpers/contentful');
 const { client } = contentful;
@@ -97,9 +98,11 @@ router.post("/test", async (req, res) => {
                 const entry = await client.getEntry(entries.items[index].sys.id);
                 console.log(entry)
                 //need to send to all users
+                const users = await User.find({accountType: 'personal', alerts: true});
+                // users.map(user => {
 
                 const msg = {
-                    to: 'andrew@s2ui.com',
+                    to: users.map(user => user.email),
                     from: {
                         email: 'info@preventiongeneration.com',
                         name: 'Prevention Generation'
@@ -116,6 +119,7 @@ router.post("/test", async (req, res) => {
                 };
                 console.log(entry.fields.featuredImage.fields.file.url)
                 sgMail.send(msg);
+                // })
 
                 await Newsletter.create({
                     contentful_id: entries.items[index].sys.id
@@ -125,16 +129,11 @@ router.post("/test", async (req, res) => {
             index--
         }
         // console.log(entries);
-        res.send({
-            entries: entries.items
-        })
     } catch (e) {
         console.log(e)
-        res.send({
-            success: false,
-            error: e
-        })
     }
+
+    res.end()
   
 
 })
