@@ -99,27 +99,28 @@ router.post("/test", async (req, res) => {
                 console.log(entry)
                 //need to send to all users
                 const users = await User.find({accountType: 'personal', alerts: true});
-                // users.map(user => {
+                users.map(user => {
 
-                const msg = {
-                    to: users.map(user => user.email),
-                    from: {
-                        email: 'info@preventiongeneration.com',
-                        name: 'Prevention Generation'
-                    },
-                    templateId: 'd-9b20849c201f4f68957d187ccbf1f8f1',
-                    dynamic_template_data: {
-                        subject: `Daily Prevention - ${entry.fields.title}`,
-                        name: 'test',
-                        title: entry.fields.title,
-                        featuredImage: `https:${entry.fields.featuredImage.fields.file.url}`,
-                        body: entry.fields.metaDescription,
-                        link: `https://www.preventiongeneration.com/${entry.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${entry.fields.slug}`
-                    },
-                };
-                console.log(entry.fields.featuredImage.fields.file.url)
-                sgMail.send(msg);
-                // })
+                    const msg = {
+                        to: 'info@preventiongeneration.com',
+                        bcc: user.email,
+                        from: {
+                            email: 'info@preventiongeneration.com',
+                            name: 'Prevention Generation'
+                        },
+                        templateId: 'd-9b20849c201f4f68957d187ccbf1f8f1',
+                        dynamic_template_data: {
+                            subject: `Daily Prevention - ${entry.fields.title}`,
+                            name: 'test',
+                            title: entry.fields.title,
+                            featuredImage: `https:${entry.fields.featuredImage.fields.file.url}`,
+                            body: entry.fields.metaDescription,
+                            link: `https://www.preventiongeneration.com/${entry.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${entry.fields.slug}`
+                        },
+                    };
+                    console.log(entry.fields.featuredImage.fields.file.url)
+                    sgMail.send(msg);
+                })
 
                 await Newsletter.create({
                     contentful_id: entries.items[index].sys.id

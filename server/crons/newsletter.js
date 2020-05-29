@@ -39,7 +39,8 @@ async function newsletterFunc() {
                 // users.map(user => {
 
                 const msg = {
-                    to: users.map(user => user.email),
+                    to: 'info@preventiongeneration.com',
+                    bcc: users.map(user => user.email),
                     from: {
                         email: 'info@preventiongeneration.com',
                         name: 'Prevention Generation'
