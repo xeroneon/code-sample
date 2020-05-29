@@ -8,8 +8,13 @@ function Footer() {
 
     const [ email, setEmail ] = useState('');
     const [ sent, setSent ] = useState(false);
+    const [ error, setError ] = useState(false);
 
     function addEmail() {
+        setError(false);
+        if (!email.match(new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))) {
+            return setError(true)
+        }
         try {
             fetch('post', '/api/emails', {email});
             setEmail('');
@@ -43,6 +48,7 @@ function Footer() {
                             </>
                         )}
                         {sent && <h4>Thanks for joining us in our prevention journey.</h4>}
+                        {error && <h4 style={{color: "#D34240"}}>Please provide a valid email</h4>}
                     </div>
                     <div className={styles.links}>
                         <a href="https://ahwa.com" target="_blank" rel="noopener noreferrer">
