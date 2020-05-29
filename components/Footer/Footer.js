@@ -20,9 +20,9 @@ function Footer() {
             setEmail('');
             setSent(true);
         } catch(e) {
-            console.log(e)
+            console.log(e);
             setEmail('');
-            setSent(true)
+            setSent(true);
         }
     }
     return (

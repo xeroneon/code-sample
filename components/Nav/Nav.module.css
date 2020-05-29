@@ -63,13 +63,14 @@
     /* text-transform: uppercase; */
     font-weight: 700;
     font-size: 16px;
-    color: rgb(67, 69, 78);
+    color: #225B91;
     margin: 0 20px 0 0;
+    
     
 }
 
 .button:hover {
-    color: #225B91;
+    color: #092048;
 
 }
 

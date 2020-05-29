@@ -7,7 +7,11 @@ export const ModalContext = createContext()
 export function ModalProvider(props) {
     const [ open, setOpen ] = useState(false);
     const [ page, setPage ] = useState('signup')
-    const [ form, setForm ] = useState({personalTags: [], alerts: true})
+    const [ form, setForm ] = useState({
+        personalTags: [],
+        alerts: true,
+        accountType: 'personal'
+    })
 
     useEffect(() => {
         ReactTooltip.rebuild();
