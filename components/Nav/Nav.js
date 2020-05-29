@@ -54,9 +54,9 @@ function Nav() {
                     </Link>
                 </div>
                 <button className={`${styles.button} ${styles.whatIs}`} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>What is Prevention Generation?</button>
-                <Search hidden/>
                 { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
-                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Personalize Your Health Feed</button> }
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Personalize Your Feed</button> }
+                <Search hidden/>
                 {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Log In</button> }
             </nav>
             <ReactTooltip place='bottom' id='nav' type='light' effect='solid' globalEventOff='click' className={styles.tooltip} clickable={true}>
