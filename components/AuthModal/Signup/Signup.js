@@ -6,7 +6,7 @@ import Select from 'components/Select/Select';
 import ActionButton from 'components/ActionButton/ActionButton'
 import { ModalContext } from 'contexts/ModalProvider';
 import * as yup from 'yup';
-import Radio from 'components/Radio/Radio';
+// import Radio from 'components/Radio/Radio';
 import ReactTooltip from 'react-tooltip';
 import fetch from 'helpers/fetch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -137,10 +137,10 @@ function Signup() {
                     {errors.map(error => <li key={error}>* {error}</li>)}
                 </ul>
                 <form>
-                    <h4 style={{marginTop: '30px'}}>Account type*</h4>
+                    {/* <h4 style={{marginTop: '30px'}}>Account type*</h4>
                     <Radio name="accountType" id="personal" value='personal' tooltip='personal tooltip here' onChange={handleChange}>Personal</Radio>
-                    <Radio name="accountType" id="supplier" value='supplier' tooltip='supplier tooltip here' onChange={handleChange}>Supplier</Radio>
-                    <div onClick={() => window.open('https://ahwa.com', '_blank')}>
+                    <Radio name="accountType" id="supplier" value='supplier' tooltip='supplier tooltip here' onChange={handleChange}>Supplier</Radio> */}
+                    {/* <div onClick={() => window.open('https://ahwa.com', '_blank')}>
                         <Radio name="accountType" id="provider" value='provider' tooltip='provider tooltip here' disabled onChange={handleChange}>
                             Provider 
                             <p style={{color: '#959595', fontSize: '.7em', margin: '10px 0', paddingLeft: '15px'}}>
@@ -150,7 +150,7 @@ function Signup() {
                                 </span>
                             </p>
                         </Radio>
-                    </div>
+                    </div> */}
                     { form.accountType && form.accountType === 'personal' && <Input type="text" name="name" value={form.name || ''} placeholder="First Name*" icon='account_circle' onChange={handleChange} />}
                     { form.accountType && form.accountType === 'personal' && <Input type="text" name="lastname" value={form.lastname || ''} placeholder="Last Name*" icon='account_circle' onChange={handleChange} />}
                     { form.accountType && form.accountType !== 'personal' && <Input type="text" name="companyName" icon="storefront" value={form.companyName || ''} placeholder="Company Name*" onChange={handleChange} />}
