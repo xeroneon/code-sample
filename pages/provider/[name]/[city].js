@@ -52,6 +52,8 @@ function Provider(props) {
                 <title>{props.provider.prefix} {props.provider.name} {props.provider.lastname} {props.provider.suffix} - {props.provider.city}, {props.provider.state} - {props.provider.specialty.name}</title>
                 <meta name="keywords" content={`${props.provider.prefix}, ${props.provider.name}, ${props.provider.lastname}, ${props.provider.suffix}, ${props.provider.city}, ${props.provider.state}`} />
                 <meta property="og:description" content={`Information on ${props.provider.specialty.name} ${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix} of ${props.provider.city}, ${props.provider.state} including practice phone and address information, specialties, products and more.`} />
+                <meta property="og:image" content='http://www.preventiongeneration.com/favicon.ico' />
+                <meta property="og:image:secure_url" content='https://www.preventiongeneration.com/favicon.ico' />
             </Head>
             {/* <div className={styles.hero}></div> */}
             <div className={styles.wrapper}>
@@ -154,13 +156,14 @@ function Provider(props) {
                     if (specialty.fields.specialtyName === props.provider.specialty.name) {
                         return <SpecialtyCard link={props.provider.specialty.url} specialtyName={props.provider.specialty.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
                     }
-                    
-                    return props.provider.secondarySpecialties.map(item => {
-                        if (specialty.fields.specialtyName === item.name) {
-                            return <SpecialtyCard key={item.name} link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
-                        }
-
-                    })
+                    if (props.provider.secondarySpecialties.length > 0 ) {
+                        return props.provider.secondarySpecialties.map(item => {
+                            if (specialty.fields.specialtyName === item.name) {
+                                return <SpecialtyCard key={item.name} link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
+                            }
+    
+                        })
+                    }
                  
                 })}
                 {/* </div> */}

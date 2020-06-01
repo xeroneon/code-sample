@@ -180,7 +180,7 @@ router.put('/update', async (req, res) => {
             }});
         }
 
-        await User.update({email: email}, {...userSafeData});
+        await User.update({email: email}, {...userSafeData });
         if (userSafeData.address && address2) {
             await User.update({email: email}, {address: userSafeData.address + ' ' + address2});
         }
