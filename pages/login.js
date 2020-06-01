@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'helpers/fetch';
-import Router from 'next/router';
+// import Router from 'next/router';
 import { UserContext } from 'contexts/UserProvider';
 
 function Login(props) {
@@ -9,12 +9,16 @@ function Login(props) {
     const { setUser } = useContext(UserContext);
     
     useEffect(() => {
+        // console.log('useEffect')
         fetch('post', `/api/users/login`, {email, password}).then(res => {
             if (res.data.success) {
+                // console.log('success')
                 setUser(res.data.user)
-                Router.push('/')
+                window.location = '/'
             } else {
-                Router.push('/')
+                // console.log('failed')
+                window.location = '/'
+                // Router.push('/')
             }
         })
     },[])
