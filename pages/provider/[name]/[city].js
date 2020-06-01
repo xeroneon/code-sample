@@ -154,13 +154,14 @@ function Provider(props) {
                     if (specialty.fields.specialtyName === props.provider.specialty.name) {
                         return <SpecialtyCard link={props.provider.specialty.url} specialtyName={props.provider.specialty.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
                     }
-                    
-                    return props.provider.secondarySpecialties.map(item => {
-                        if (specialty.fields.specialtyName === item.name) {
-                            return <SpecialtyCard key={item.name} link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
-                        }
-
-                    })
+                    if (props.provider.secondarySpecialties.length > 0 ) {
+                        return props.provider.secondarySpecialties.map(item => {
+                            if (specialty.fields.specialtyName === item.name) {
+                                return <SpecialtyCard key={item.name} link={item.url} specialtyName={item.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
+                            }
+    
+                        })
+                    }
                  
                 })}
                 {/* </div> */}
