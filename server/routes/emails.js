@@ -28,6 +28,25 @@ router.post("/", async (req, res) => {
 
 })
 
+router.post("/unsubscribe", async (req, res) => {
+    const { email } = req.body
+
+    try {
+        await User.updateOne({ email }, { alerts: false});
+
+        res.send({
+            success: true,
+            message: "You have been unsubscribed from our mailing list"
+        });
+    } catch (e) {
+        res.send({
+            success: false,
+            error: e
+        })
+    }
+
+})
+
 router.post("/sendgrid", async (req, res) => {
     const msg = {
         to: 'andrew@s2ui.com',
