@@ -314,6 +314,76 @@ router.post("/create", async (req, res) => {
     }
 })
 
+router.post("/first-post", async (req, res) => {
+    try {
+        const authors = await client.getEntries({
+            content_type: 'author',
+            'sys.revision[gte]': 1,
+            include: 10,
+            'fields.authorId': req.body.authorId
+        })
+        if (authors.items.length === 0) {
+            return res.send({
+                message: "Couldn't find author",
+                success: false
+            })
+        }
+        const environment = await managementClient();
+        const featuredImage = await environment.getAsset("6366Y2eO5Hh52IDT60Nw3m");
+
+        await environment.createEntry('article', {
+            fields: {
+                title: {
+                    'en-US': req.body.title
+                },
+                featuredImage: {
+                    'en-US': featuredImage
+                },
+                featuredImageCaption: {
+                    'en-US': req.body.featuredImageCaption
+                },
+                slug: {
+                    'en-US': `Get-To-Know-Dr-${req.body.authorName}`
+                },
+                author: {
+                    'en-US': {
+                        sys: {
+                            type: "Link",
+                            linkType: "Entry",
+                            id: authors.items[0].sys.id
+                        }
+                    }
+                },
+                markdown: {
+                    'en-US': req.body.markdown
+                },
+                primaryTag: {
+                    'en-US': 'Wellness'
+                },
+                tags: {
+                    'en-US': ["Healthy", "Awesome", "Good Life"]
+                }
+            }
+        }).then(entry => {
+            entry.publish().then(entry => {
+                res.send({
+                    entry,
+                    message: 'Post published successfully',
+                    success: true
+                })
+            })
+        });
+
+       
+    } catch (e) {
+        console.log(e)
+        res.send({
+            error: e,
+            success: false
+        });
+    }
+})
+
 router.get("/favorites", async (req, res) => {
     try {
 

@@ -32,6 +32,7 @@ class MyApp extends App {
                     {process.env.NODE_ENV !== 'production' && <meta name="robots" content="noindex" />}
                     <title>Prevention Generation - Medically Reviewed Health Content + Social Media Personalization</title>
                     <meta property="og:description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
+                    <meta name="description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="keywords" content="Prevention Generation" />
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                     <link rel="shortcut icon" href="/favicon.ico" />
