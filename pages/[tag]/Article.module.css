@@ -64,6 +64,11 @@
 	max-width: 960px;
 	color: #686868;
 }
+.core ul {
+	list-style-type: disc;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
 .core a {
 	color: #143968 !important;
 	text-decoration: underline;
