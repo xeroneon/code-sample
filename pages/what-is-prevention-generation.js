@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './[tag]/Article.module.css';
 import Head from 'next/head';
 import ReactPlayer from 'react-player';
+import { ModalContext } from 'contexts/ModalProvider';
 
 function Article() {
+
+    const { setOpen, setPage } = useContext(ModalContext);
 
     return (
         <>
@@ -37,7 +40,7 @@ function Article() {
                     <h1>How does it work?</h1>
                     <p className={styles.paragraph}>
                         <ol style={{listStyleType: 'decimal', marginLeft: '30px'}}>
-                            <li>Tap sign up</li>
+                            <li>Tap “Personalize Your Feed” to <span id='signup' onClick={() => {setOpen(true); setPage('signup')}}>sign up</span></li>
                             <li>Put in your name, location &amp; email</li>
                             <li>Pick the “health tags” you want to follow</li>
                         </ol>
@@ -88,7 +91,15 @@ function Article() {
             <style jsx>{`
                 i {
                     font-style: italic;
-                }    
+                }
+
+                #signup {
+                    text-decoration: underline;
+                }
+
+                #signup:hover {
+                    cursor: pointer;
+                }
             `}</style>
         </>
     )
