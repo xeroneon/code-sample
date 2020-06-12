@@ -44,7 +44,7 @@ function Footer() {
                                 <TextField id="standard-basic" label="Enter Your Email" onChange={e => setEmail(e.target.value)} value={email} />
                                 <br/>
                                 <ActionButton onClick={addEmail}>Subscribe</ActionButton>
-                                <p>Your privacy is important to us</p>
+                                <p>Your <a href="/privacy-policy">privacy</a> is important to us</p>
                             </>
                         )}
                         {sent && <h4>Thanks for joining us in our prevention journey.</h4>}
