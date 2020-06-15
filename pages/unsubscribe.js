@@ -19,7 +19,8 @@ function Unsubscribe() {
         }))
     }
 
-    async function submit() {
+    async function submit(e) {
+        e.preventDefault();
         const res = await fetch('post', '/api/emails/unsubscribe', { email: form?.email})
         if (res.data.success) {
             setSnackMessage(res.data.message)
@@ -32,9 +33,11 @@ function Unsubscribe() {
 
     return (
         <>
-            <h3>Enter your email here to unsubscribe</h3>
             <form>
+                <h3>Enter your email here to unsubscribe</h3>
+                <br/>
                 <Input type="text" name="email" placeholder="Email" value={form.email || ''} onChange={handleChange} />
+                <br/>
                 <ActionButton type='submit' onClick={submit}>Unsubscribe</ActionButton>
             </form>
             <Snackbar
@@ -47,6 +50,17 @@ function Unsubscribe() {
                 message={snackMessage}
                 onClose={() => setSnackbar(false)}
             />
+
+            <style jsx>{`
+                form {
+                    max-width: 720px;
+                    margin: 30px auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    min-height: 60vh;
+                }
+                `}</style>
         </>
     )
 }
