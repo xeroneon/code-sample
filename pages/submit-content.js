@@ -98,9 +98,9 @@ function SubmitContent(props) {
 
     async function submit() {
         setLoading(true);
-        if (form.markdown.length < 1500 ) {
+        if (form.markdown.length < 1000 ) {
             setLoading(false)
-            return setError('Body must be at least 1,500 characters')
+            return setError('Body must be at least 1,000 characters')
         }
         if (form?.markdown.length > 10000) {
             setLoading(false);
@@ -239,7 +239,7 @@ function SubmitContent(props) {
                     <h1>Submit an article</h1>
                     <h4>Title*</h4>
                     <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
-                    <h4>Body* (enter article content here)   {form?.markdown?.length || 0}/10000</h4>
+                    <h4>Body (enter article content here - 250 words minimum)   {form?.markdown?.length || 0}/10000</h4>
                     {/* <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea> */}
                     <ReactMde
                         value={form?.markdown}
@@ -253,9 +253,9 @@ function SubmitContent(props) {
                     <h4>Notes (notes to the editor)</h4>
                     <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
                     <h4>Choose primary tag</h4>
-                    {props.tags.map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
+                    {props.tags.sort().map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
                     <h4>Choose secondary tags</h4>
-                    {props.tags.map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
+                    {props.tags.sort().map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
                     <div className='submit'>
                         <ActionButton onClick={submit}>{`${loading ? 'Loading...' : 'Submit Article'}`}</ActionButton>
                     </div>
@@ -305,7 +305,7 @@ function SubmitContent(props) {
                     <h4>Product Link</h4>
                     <Input type="text" name="productUrl" value={productForm?.productUrl} placeholder="" onChange={handleProductChange} />
                     
-                    {props.tags.map(tag => <Tag key={tag} active={productForm.tags.includes(tag)} name={tag} onClick={(e) => toggleProductTag(e, tag)}/>)}
+                    {props.tags.sort().map(tag => <Tag key={tag} active={productForm.tags.includes(tag)} name={tag} onClick={(e) => toggleProductTag(e, tag)}/>)}
                     <div className='submit'>
                         <ActionButton onClick={submitProduct}>{`${productLoading ? 'Loading...' : 'Submit Product'}`}</ActionButton>
                     </div>
