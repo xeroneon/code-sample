@@ -101,7 +101,7 @@ router.post('/webhook/article-published', async (req, res) => {
             return primaryTag
         } else {
             const matches = tags.filter(tag => userTags.includes(tag));
-            return matches [0];
+            return matches[0];
         }
     }
 
