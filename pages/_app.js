@@ -34,6 +34,8 @@ class MyApp extends App {
                     <meta property="og:description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="keywords" content="Prevention Generation" />
+                    <meta property="og:image" content='/images/pg-profile.png' />
+                    <meta property="og:image:secure_url" content='/images/pg-profile.png' />
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
