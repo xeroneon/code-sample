@@ -3,8 +3,8 @@ const router = express.Router();
 const Email = require("../models/Email");
 const User = require("../models/User");
 // const Newsletter = require("../models/Newsletter");
-// const contentful = require('../../helpers/contentful');
-// const { client } = contentful;
+const contentful = require('../../helpers/contentful');
+const { client } = contentful;
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
@@ -79,6 +79,58 @@ router.post('/contact', async (req, res) => {
 
     try {
         await sgMail.send(msg);
+        return res.send({
+            success: true,
+            message: 'Email sent succesfully'
+        })
+    } catch (e) {
+        res.send({
+            success: false,
+            message: 'We had trouble sending the email, please try again',
+            error: e
+        })
+    }
+})
+
+router.post('/webhook/article-published', async (req, res) => {
+
+    const { fields } = req.body
+
+    function getTag(primaryTag, tags, userTags) {
+        if (userTags.includes(primaryTag)) {
+            return primaryTag
+        } else {
+            const matches = tags.filter(tag => userTags.includes(tag));
+            return matches[0];
+        }
+    }
+
+
+    try {
+        const featuredImage = await client.getAsset(fields.featuredImage['en-US'].sys.id);
+        const users = await User.find({personalTags: {$in: [fields.primaryTag['en-US'], ...fields.tags['en-US']]}});
+
+        if (req.body.sys.revision === 1) {
+            users.map(user => {
+                const msg = {
+                    to: user.email,
+                    from: {
+                        email: 'info@preventiongeneration.com',
+                        name: 'Prevention Generation'
+                    },
+                    templateId: 'd-08d2dab9747b42f88ed94557c3c1b78f',
+                    dynamic_template_data: {
+                        subject: `PG alert: New ${getTag(fields.primaryTag['en-US'], fields.tags['en-US'], user.personalTags)} Tag Post`,
+                        name: user.name,
+                        title: fields.title['en-US'],
+                        featuredImage: `https:${featuredImage.fields.file.url}`,
+                        tag: getTag(fields.primaryTag['en-US'], fields.tags['en-US'], user.personalTags),
+                        link: `https://www.preventiongeneration.com/${fields.primaryTag['en-US'].toString().replace(/\s/g, '-').replace(/\//g, '_')}/${fields.slug['en-US']}`
+                    },
+                };
+                sgMail.send(msg);
+            })
+        }
         return res.send({
             success: true,
             message: 'Email sent succesfully'
