@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import Input from 'components/Input/Input';
 import ActionButton from 'components/ActionButton/ActionButton';
 import fetch from 'helpers/fetch';
 import PropTypes from 'prop-types';
 import Carousel from 'components/Carousel/Carousel';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
+import moment from 'moment';
 //Next.js
 import Router from 'next/router'
 //materialui
@@ -19,21 +20,28 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
+import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
 
 function createTagData(name, description) {
     return { name, description };
 }
-function createUsersData(email, companyName, name, accountType) {
-    return { email, companyName, name, accountType };
+function createUsersData(email, companyName, name, accountType, dateCreated) {
+    return { email, companyName, name, accountType, dateCreated: moment(dateFromObjectId(dateCreated)).format("MMM D YYYY") };
+}
+
+function dateFromObjectId (objectId) {
+    return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
 }
 function Admin(props) {
     
     const [ url, setUrl ] = useState(null);
     const [ users, setUsers ] = useState(props.users);// eslint-disable-line no-unused-vars
+    const [ dateOrder, setDateOrder ] = useState(false);
     const [ tagPage, setTagPage ] = React.useState(0);
     const [ usersPage, setUsersPage ] = React.useState(0);
     const tagRows = props.tags.map(tag => createTagData(tag.name, tag.description))
-    const usersRows = users.map(user => createUsersData(user.email, user?.companyName, `${user.name} ${user?.lastname ? user.lastname : ''}`, user.accountType))
+    const [ usersRows, setUserRows ] = useState(users.map(user => createUsersData(user.email, user?.companyName, `${user.name} ${user?.lastname ? user.lastname : ''}`, user.accountType, user._id)))
     const tagEmptyRows = 10 - Math.min(10, tagRows.length - tagPage * 10);
     const usersEmptyRows = 10 - Math.min(10, tagRows.length - tagPage * 10);
     const [ tagName, setTagName ] = useState('')
@@ -57,6 +65,34 @@ function Admin(props) {
             setUrl(`https://www.preventiongeneration.com/supplier-onboard/${res.data.code.uid}`)
         }
     }
+
+    function sortDateNewest(array) {
+        array.sort(function(a, b) {
+            return (dateFromObjectId(a._id) > dateFromObjectId(b._id)) ? -1 : ((dateFromObjectId(a._id) < dateFromObjectId(b._id)) ? 1 : 0);
+        });
+
+        return [...array]
+    }
+    function sortDateOldest(array) {
+        array.sort(function(a, b) {
+            return (dateFromObjectId(a._id) < dateFromObjectId(b._id)) ? -1 : ((dateFromObjectId(a._id) > dateFromObjectId(b._id)) ? 1 : 0);
+        });
+
+        return [...array]
+    }
+    
+    useEffect(() => {
+        if (dateOrder === true) {
+            setUsers(sortDateNewest(users))
+        } else if (dateOrder === false) {
+            setUsers(sortDateOldest(users))
+        }
+
+    }, [dateOrder])
+
+    useEffect(() => {
+        setUserRows(users.map(user => createUsersData(user.email, user?.companyName, `${user.name} ${user?.lastname ? user.lastname : ''}`, user.accountType, user._id)))
+    }, [users])
 
     async function createTag(e) {
         e.preventDefault();
@@ -164,7 +200,11 @@ function Admin(props) {
                 </div>
                 <div className='right'>
                     <div className="userWrapper">
-                        <h3>Users</h3>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            <h3>Users</h3>
+                            {/* <ActionButton onClick={() => setDateOrder(!dateOrder)}>Date <ArrowDownward/></ActionButton> */}
+                            <Button variant="contained" onClick={() => setDateOrder(!dateOrder)}>Date {dateOrder ? <ArrowUpward/> : <ArrowDownward/>}</Button>
+                        </div>
                         <TableContainer component={Paper}>
                             <Table aria-label="simple table">
                                 <TableHead>
@@ -173,6 +213,7 @@ function Admin(props) {
                                         <TableCell align="left">Company Name</TableCell>
                                         <TableCell align="left">Name</TableCell>
                                         <TableCell align="left">Account Type</TableCell>
+                                        <TableCell align="left">Date Created</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -185,6 +226,7 @@ function Admin(props) {
                                                 <TableCell align="left">{row.companyName}</TableCell>
                                                 <TableCell align="left">{row.name}</TableCell>
                                                 <TableCell align="left">{row.accountType}</TableCell>
+                                                <TableCell align="left">{row.dateCreated}</TableCell>
                                             </TableRow>
                                         ))}
 
