@@ -87,7 +87,11 @@ const UserSchema = new Schema({
     industry: String,
     placement: Number
     
-});
+},
+{
+    timestamps: true
+}
+);
 UserSchema.index({ location: "2dsphere" });
 UserSchema.plugin(bcrypt);
 UserSchema.plugin(mongoosePaginate);
