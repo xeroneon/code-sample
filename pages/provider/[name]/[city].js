@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import fetch from "helpers/fetch";
 import styles from "./Provider.module.css";
@@ -19,7 +19,18 @@ import getValidUrl from 'helpers/getValidUrl';
 function Provider(props) {
 
     const { user, setUser } = useContext(UserContext);
-    const { setOpen, setPage } = useContext(ModalContext);
+    const { setOpen, setPage, setPartner } = useContext(ModalContext);
+
+    useEffect(() => {
+        if (props.signup == 'true') {
+            setPartner({
+                linked: true,
+                partnerName: `${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix}`
+            })
+            setOpen(true);
+            setPage('signup');
+        }
+    }, [])
 
     async function handleFollow() {
         if (!user) {
@@ -30,7 +41,7 @@ function Provider(props) {
 
         const res = await fetch('post', '/api/users/follow', {userId: user._id, followId: props.provider._id});
 
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data.user);
     }
 
@@ -41,7 +52,7 @@ function Provider(props) {
 
         const res = await fetch('post', '/api/users/unfollow', {userId: user._id, followId: props.provider._id});
 
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data.user);
 
     }
@@ -152,7 +163,7 @@ function Provider(props) {
             <Carousel header={[`My `, <span key="partners"> Practice </span>, <br key="xcnmbv"/>, "specialties" ]}>
                 {/* <div className={styles.specialtyWrapper}> */}
                 {props.specialties.map(specialty => {
-                    console.log(specialty)
+                    // console.log(specialty)
                     if (specialty.fields.specialtyName === props.provider.specialty.name) {
                         return <SpecialtyCard link={props.provider.specialty.url} specialtyName={props.provider.specialty.name} featuredImage={specialty.fields.featuredImage.fields.file.url}/>
                     }
@@ -238,7 +249,7 @@ function Provider(props) {
 }
 
 Provider.getInitialProps = async ctx => {
-    const { name, city } = ctx.query;
+    const { name, city, signup } = ctx.query;
     const provider = await fetch(
         "get",
         `/api/providers/?providerName=${name}&city=${city}`
@@ -256,7 +267,8 @@ Provider.getInitialProps = async ctx => {
         provider: provider.data.provider,
         articles: articles.data.articles,
         specialties: provider.data.specialties,
-        products: products.data.products
+        products: products.data.products,
+        signup
     };
 };
 
@@ -264,7 +276,8 @@ Provider.propTypes = {
     provider: PropTypes.object,
     articles: PropTypes.array,
     specialties: PropTypes.array,
-    products: PropTypes.array
+    products: PropTypes.array,
+    signup: PropTypes.any
 };
 
 export default Provider;

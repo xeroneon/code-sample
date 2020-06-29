@@ -31,7 +31,7 @@ class MyApp extends App {
                 <Head>
                     {process.env.NODE_ENV !== 'production' && <meta name="robots" content="noindex" />}
                     <title>Medically Reviewed Health Content + Social Media Personalization</title>
-                    <meta property="og:description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
+                    <meta property="og:description" content='The Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="keywords" content="Prevention Generation" />
                     <meta property="og:title" content='Medically Reviewed Health Content + Social Media Personalization' />
