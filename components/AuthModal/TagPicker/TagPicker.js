@@ -51,7 +51,7 @@ function TagPicker() {
     return (
         <>
             <div className={styles.wrapper}>
-                <p style={{paddingLeft: '30px', marginTop: '15px', justifySelf: 'start'}}>Step 2 of 3</p>
+                <p style={{paddingLeft: '30px', marginTop: '15px', justifySelf: 'start'}}>Join our movement!</p>
                 <div className={styles.header}>
                     <h1>{form.accountType === 'personal' ? 'Pick the tags you are interested in' : 'Pick the tags that are aligned with your business'}</h1>
                 </div>

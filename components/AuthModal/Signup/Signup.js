@@ -77,7 +77,7 @@ const partnerSchema = yup.object({
 
 function Signup() {
 
-    const { form, setForm, setPage } = useContext(ModalContext);
+    const { form, setForm, setPage, partner } = useContext(ModalContext);
     const [ errors, setErrors ] = useState([]);
     const [ agreeError, setAgreeError ] = useState(false);
     // const { user, setUser } = useContext(UserContext)
@@ -129,10 +129,10 @@ function Signup() {
     return (
         <>
             <div className={styles.wrapper}>
-                <p style={{paddingLeft: '30px', marginTop: '15px'}}>Step 1 of 3</p>
-                <div className={styles.header}>
-                    <h4>Join our movement!</h4>
-                </div>
+                <p style={{paddingLeft: '30px', marginTop: '15px'}}>Join our movement!</p>
+                { partner.linked && <div className={styles.header}>
+                    <h4>Follow {partner.partnerName} Now &amp; Join Our Movement!</h4>
+                </div>}
                 <ul className={styles.errors}>
                     {errors.map(error => <li key={error}>* {error}</li>)}
                 </ul>
