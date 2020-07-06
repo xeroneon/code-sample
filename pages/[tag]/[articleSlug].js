@@ -137,22 +137,31 @@ function Article(props) {
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{article.fields.title}</title>
-                <meta property="og:title" content={article.fields.title} />
+                <meta name="title" content={article.fields.title} />
+                <meta name="description" content={article.fields.metaDescription} />
                 <meta name="keywords" content={`Prevention Generation,${article.fields.tags.map(tag => ` ${tag}`)}`} />
+                {article.fields.noIndex === true && <meta name='robots' content='noindex' /> }
+
+                {/* <!-- Open Graph / Facebook --> */}
+                <meta property="og:site_name" content="Prevention Generation" />
+                <meta property="og:type" content="article"/>
                 <meta property="og:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${article.fields.slug}`} />
-                <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
-                <meta property="og:image:secure_url" content={`https:${article.fields.featuredImage.fields.file.url}`} />
+                <meta property="og:title" content={article.fields.title} />
                 <meta property="og:description" content={article.fields.metaDescription} />
-                <meta property="og:type" content="article" />
+                <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
                 <meta property="article:published_time" content={moment(article.sys.createdAt).format("MMM DD, YYYY")} />
                 <meta property="article:author" content={authorTitle} />
                 {article.fields.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
-                <meta name="twitter:card" content="summary" />
-                <meta name="twitter:title" content={article.fields.title} />
-                <meta name="twitter:description" content={article.fields.metaDescription} />
-                <meta name="twitter:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
-                {article.fields.noIndex === true && <meta name='robots' content='noindex' /> }
+                <meta property="author" content={authorTitle} />
+
+                {/* <!-- Twitter --> */}
+                <meta property="twitter:card" content="summary_large_image"/>
+                <meta property="twitter:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${article.fields.slug}`} />
+                <meta property="twitter:title" content={article.fields.title} />
+                <meta property="twitter:description" content={article.fields.metaDescription}/>
+                <meta property="twitter:image" content={`https:${article.fields.featuredImage.fields.file.url}`} />
             </Head>
             <div className={styles.core}>
                 { article.fields?.series && <Link as={`/series/${article.fields.series.fields.name}`} href='/series/[seriesName]'>
