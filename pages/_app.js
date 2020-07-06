@@ -31,12 +31,12 @@ class MyApp extends App {
                 <Head>
                     {process.env.NODE_ENV !== 'production' && <meta name="robots" content="noindex" />}
                     <title>Medically Reviewed Health Content + Social Media Personalization</title>
-                    <meta property="og:description" content='The Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
+                    <meta property="og:description" content='The Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' key="og:description" />
                     <meta name="description" content='the Prevention Generation is a new digital experience delivering personalized health and wellness content from holistic and conventional healthcare professionals.' />
                     <meta name="keywords" content="Prevention Generation" />
-                    <meta property="og:title" content='Medically Reviewed Health Content + Social Media Personalization' />
-                    <meta property="og:image" content='/images/pg-profile.png' />
-                    <meta property="og:image:secure_url" content='/images/pg-profile.png' />
+                    <meta property="og:title" content='Medically Reviewed Health Content + Social Media Personalization' key="og:title" />
+                    <meta property="og:image" content='/images/pg-profile.png' key="og:image" />
+                    <meta property="og:image:secure_url" content='/images/pg-profile.png' key="og:image:secure_url" />
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
