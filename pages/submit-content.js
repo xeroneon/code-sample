@@ -11,6 +11,7 @@ import Dropzone from 'react-dropzone';
 import Cropper from 'react-cropper';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
+import SharedArticle from  'components/SharedArticle/SharedArticle';
 
 
 const converter = new Showdown.Converter({
@@ -40,6 +41,9 @@ function SubmitContent(props) {
     const [ submitted, setSubmitted ] = useState(false);
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
+    const [ errors, setErrors ] = useState({
+        sharedLink: false
+    })
     const { user } = useContext(UserContext);
     const [ productSrc, setProductSrc] = useState(undefined);
     const productCropperRef = useRef(null);
@@ -49,6 +53,9 @@ function SubmitContent(props) {
     const [ productLoading, setProductLoading ] = useState(false); 
     const [ snackbar, setSnackbar] = useState(false);
     const [ snackMessage, setSnackMessage ] = useState('');
+    const [ link, setLink ] = useState('');
+    const [ sharedLinkTags, setSharedLinkTags ] = useState([]);
+    const [ ogData, setOgData ] = useState(null);
     // const onDrop = useCallback(acceptedFiles => {
     //     const reader = new FileReader();
     //     reader.onload = function(e) {
@@ -143,6 +150,18 @@ function SubmitContent(props) {
             }))
         }
     }
+
+    function toggleSharedLinkTag(e, tag) {
+        e.persist();
+        const i = sharedLinkTags.indexOf(tag);
+        if (i > -1 ) {
+            return setSharedLinkTags(sharedLinkTags.filter(item => item !== tag))
+
+        } else {
+            setSharedLinkTags([...sharedLinkTags, tag])
+        }
+    }
+
     function toggleProductTag(e, tag) {
         e.persist();
         const i = productForm.tags.indexOf(tag);
@@ -230,11 +249,60 @@ function SubmitContent(props) {
             setProductLoading(false);
         }
     }
+    async function submitLink() {
+        setErrors(state => ({
+            ...state,
+            sharedLink: false
+        }))
+        const body = {
+            link,
+            authorId: user._id,
+            tags: sharedLinkTags
+        }
+        const res = await fetch('post', '/api/links/', body);
+        if (res.data.success) {
+            console.log('success')
+            setLink('')
+            setOgData(null);
+            setSharedLinkTags([]);
+        }
+        else {
+            console.log('failed')
+            setErrors(state => ({
+                ...state,
+                sharedLink: true
+            }))
+        }
+    }
+
+    async function preview() {
+        const res = await fetch('post', `/api/links/get-data`, { url: link});
+
+        if (res.data.success) {
+            setOgData(res.data);
+        }
+
+    }
 
     return (
         <>
             <div className='root'>
                 <form>
+                    <h1>Share a link</h1>
+                    { errors.sharedLink && <p id="error">There was an error submitting link, please try again</p> }
+                    <Input type='text' name='link' value={link} placeholder='' onChange={(e) => setLink(e.target.value)} />
+                    {props.tags.sort().map(tag => <Tag key={tag} active={sharedLinkTags.includes(tag)} name={tag} onClick={(e) => toggleSharedLinkTag(e, tag)}/>)}
+                    <div className="submit" >
+                        <ActionButton onClick={submitLink}>Share</ActionButton>
+                        <ActionButton onClick={preview}>Preview</ActionButton>
+                    </div>
+                    {ogData && <SharedArticle
+                        authorImage={user.image}
+                        author={`${user.prefix || ''} ${user.name} ${user.lastname} ${user.suffix || ''}`}
+                        url={ogData.url}
+                        tags={sharedLinkTags}
+                        title={ogData.title}
+                        image={ogData.image} />}
                     <a href='/content-guidelines' target='_blank'><p id='guidelines'>Click Here To Read our Content Guidelines</p></a>
                     <h1>Submit an article</h1>
                     <h4>Title*</h4>
@@ -329,7 +397,7 @@ function SubmitContent(props) {
                 }
                 .submit {
                     display: flex;
-                    justify-content: center;
+                    justify-content: space-around;
                     padding: 20px;
                 }
                 h4 {

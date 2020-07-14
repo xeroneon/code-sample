@@ -7,6 +7,7 @@ import Carousel from 'components/Carousel/Carousel';
 import { UserContext } from 'contexts/UserProvider';
 import ArticleCard from 'components/ArticleCard/ArticleCard';
 import PartnerCard from 'components/PartnerCard/PartnerCard';
+import SharedArticle from 'components/SharedArticle/SharedArticle';
 
 // function mergePartners(providers, suppliers, contributors) {
 //     const combinedArray = [...providers, ...suppliers, ...contributors];
@@ -84,7 +85,7 @@ function Index(props) {
 
     async function loadMoreTrending() {
         setTrendingLoading(true)
-        const res = await fetch('get',`/api/articles/trending?skip=${trending.length}`);
+        const res = await fetch('get',`/api/articles/trending?skip=${trending.filter(article => article.sharedLink !== true).length}`);
         // setTrendingSkip(state => state + 15)
         setTrendingLoading(false)
         setTrending(state => ([
@@ -118,6 +119,16 @@ function Index(props) {
             { user && userArticles && <Carousel header={[`${user.name}'s`, <span key="user"> Health </span>,<br key="cn"/>, "Feed" ]}>
                 {userArticles.length === 0 && <div id="noArticles"><h4>No Articles, Try following a tag or Health Partner</h4></div>}
                 {userArticles.map(article => {
+                    if (article.sharedLink) {
+                        return <SharedArticle
+                            key={article._id}
+                            authorImage={article.author.image}
+                            author={`${article.author.prefix || ''} ${article.author.name} ${article.author.lastname} ${article.author.suffix || ''}`}
+                            url={article.url}
+                            tags={article.tags}
+                            title={article.title}
+                            image={article.image} />
+                    }
                     const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                     return <ArticleCard 
                         key={article.sys.id}

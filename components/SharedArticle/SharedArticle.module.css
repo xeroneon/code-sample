@@ -1,0 +1,61 @@
+.root {
+    width: 360px;
+    height: 450px;
+    position: relative;
+    display: inline-block;
+    background: #F2F6F8;
+    /* margin: 20px; */
+}
+
+.root:hover {
+    cursor: pointer;
+}
+
+.wrapper {
+    display: flex;
+    margin: 20px;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow: rgba(67, 69, 78, 0.16) 0px 2px 9px;
+}
+
+.imageWrapper {
+    height: 300px;
+    width: 100%;
+}
+
+.title {
+    font-size: 1.1em;
+    line-height: 1.2em;
+    height: 2.4em;
+    padding-top: 10px;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; 
+    overflow: hidden;
+    /* display: block; */
+    /* height: 2.4em; */
+}
+
+.authorImage {
+    width: 30px;
+    border-radius: 50px;
+    margin: 5px;
+}
+
+.tags {
+    color: #222;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    height: 35px;
+    margin-bottom: auto;
+    width: 93%;
+}

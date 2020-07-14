@@ -5,7 +5,7 @@ import ArticleCard from 'components/ArticleCard/ArticleCard';
 import WelcomeArticle from 'components/ArticleCard/WelcomeArticle';
 import { UserContext } from 'contexts/UserProvider';
 import BeatLoader from "react-spinners/BeatLoader";
-
+import SharedArticle from 'components/SharedArticle/SharedArticle';
 function TrendingCarousel(props) {
     const { user } = useContext(UserContext);
 
@@ -14,6 +14,16 @@ function TrendingCarousel(props) {
             <Carousel onScrollEnd={props.onScrollEnd} header={["Trending", <span key="sfdgnhdfgn"> Health </span>, <br key="an"/>, "posts" ]}>
                 { !user && <WelcomeArticle key='welcome' /> }
                 {props.items.map(article => {
+                    if (article.sharedLink) {
+                        return <SharedArticle
+                            key={article._id}
+                            authorImage={article.author.image}
+                            author={`${article.author.prefix || ''} ${article.author.name} ${article.author.lastname} ${article.author.suffix || ''}`}
+                            url={article.url}
+                            tags={article.tags}
+                            title={article.title}
+                            image={article.image} />
+                    }
                     
                     const authorName = article.author.accountType === 'provider' ? [article.author.name, article.author.lastname].map(name => name.toLowerCase().replace(/\s/g, '_')).join('-') : article.author.name.replace(/\s/g, '-');
                     return <ArticleCard 
