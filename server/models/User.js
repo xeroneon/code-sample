@@ -52,6 +52,7 @@ const UserSchema = new Schema({
     },
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    sharedLinks: [{type: Schema.Types.ObjectId, ref: 'SharedLink'}],
     deals: {
         type: Boolean,
         // required: true

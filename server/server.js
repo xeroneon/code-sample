@@ -117,6 +117,7 @@ nextApp.prepare().then(() => {
     app.use("/api/specialties", require("./routes/specialties"));
     app.use("/api/codes", require("./routes/codes"));
     app.use("/api/emails", require("./routes/emails"));
+    app.use("/api/links", require("./routes/links"));
     if (process.env.NODE_ENV === 'production') {
         app.use(enforce.HTTPS({ trustProtoHeader: true }));
     }

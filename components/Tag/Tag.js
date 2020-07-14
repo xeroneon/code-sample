@@ -15,7 +15,7 @@ function Tag(props) {
                     id={props.id}
                 >
                     <span height="100%" style={{display: 'grid', placeContent: 'center', float: 'left'}}>{props.sponsored && <i className={`${styles.star} material-icons`}>star&nbsp;</i>}</span>
-                    {props.name}
+                    #{props.name}
                 </span>
             </ConditionalLink>
         </>

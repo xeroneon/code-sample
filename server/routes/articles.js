@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const SharedLink = require("../models/SharedLink");
 const contentful = require('../../helpers/contentful');
 const { client, managementClient } = contentful;
 const nodemailer = require('nodemailer');
@@ -33,14 +34,39 @@ router.get("/trending", async (req, res) => {
             limit: 15,
             skip: skip || 0
         })
+        
+        const sharedLinks = articles.items.length > 0 ? await SharedLink.find({
+            createdAt: {
+                $gte: articles.items[articles.items.length - 1].sys.createdAt
+            }
+        })
+            .populate('author') : [];
     
         const articlesWithAuthor = await Promise.all(articles.items.map(async article => {
             const user = await User.findById(article.fields.author.fields.authorId);
             const sponsor = await User.find({sponsoredTag: article.fields.primaryTag});
             return { ... article, author: {...user._doc }, sponsor: sponsor.length > 0 ? sponsor[0]: null}
         }))
+
+        if (sharedLinks.length > 0) {
+            const sortedData = [...articlesWithAuthor, ...sharedLinks]
+            
+            sortedData.sort(function(a, b) {
+                a = a.sharedLink ? a.createdAt : a.sys.updatedAt
+                b = b.sharedLink ? b.createdAt : b.sys.updatedAt
+                a = a.toString();
+                b = b.toString();
+                
+                return a > b ? -1 : a < b ? 1 : 0;
+            });
+
+            res.send(
+                sortedData
+            );
+        } else {
+            res.send(articlesWithAuthor);
+        }
     
-        res.send(articlesWithAuthor);
 
     } catch (e) {
         console.error(e);
@@ -135,7 +161,6 @@ router.get("/user", async (req, res) => {
             include: 10,
             'fields.primaryTag[in]': req.user.personalTags.toString()
         })
-        console.log('USERS', user.following.toString())
         const authorEntries = await client.getEntries({
             content_type: 'article',
             'sys.revision[gte]': 1,
@@ -156,9 +181,18 @@ router.get("/user", async (req, res) => {
             return { ... article, author: {...user._doc }, sponsor: sponsor[0]}
         }))
 
-        shuffle(articlesWithAuthor)
+        const sharedLinks = await SharedLink.find({
+            author: {
+                $in: user.following
+            }
+        })
+            .populate('author');
+
+        const mergedArray = [...articlesWithAuthor, ...sharedLinks]
+
+        shuffle(mergedArray)
         res.send({
-            articles: articlesWithAuthor.slice(0, 40)
+            articles: mergedArray.slice(0, 40)
         });
     } catch(e) {
         console.error(e)
