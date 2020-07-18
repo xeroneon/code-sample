@@ -53,9 +53,9 @@ function Nav() {
                         <img src="/images/pg-logo.png" className={styles.logo}/>
                     </Link>
                 </div>
-                { !user && <button className={`${styles.button} ${styles.whatIs}`} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>What is Prevention Generation?</button>}
+                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Sign Up To Personalize Your Feed</button> }
+                { !user && <button className={`${styles.button} ${styles.whatIs}`} onClick={(e) => {e.preventDefault(); Router.push('/what-is-prevention-generation')}}>About Us</button>}
                 { user !== null && <div className={styles.avatar} data-tip data-for="nav" data-event="click focus"><img src={user.image}/></div> }
-                {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('signup')}} className={styles.button}>Personalize Your Feed</button> }
                 <Search hidden/>
                 {!user && <button onClick={(e) => {e.preventDefault(); setOpen(true); setPage('login')}} className={styles.button}>Log In</button> }
             </nav>
