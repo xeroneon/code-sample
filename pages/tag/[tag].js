@@ -42,8 +42,8 @@ function Provider(props) {
             <Head>
                 <title>{`${props.tag} Overview | Symptoms, Treatments & Causes`}</title>
                 <meta property="og:title" content={`${props.tag} Overview | Symptoms, Treatments & Causes`} key="title" />
-                <meta property="og:description" content={`${props.tag} medically reviewed articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} key="description" />
-                <meta name="description" content={`${props.tag} medically reviewed articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} />
+                <meta property="og:description" content={`Medically reviewed ${props.tag} articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} key="description" />
+                <meta name="description" content={`Medically reviewed ${props.tag} articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} />
             </Head>
             <div className={styles.root}>
                 <div className={styles.header}><h2>{props.tag}</h2></div><br/>
