@@ -145,12 +145,12 @@ function Article(props) {
                 {article.fields.noIndex === true && <meta name='robots' content='noindex' /> }
 
                 {/* <!-- Open Graph / Facebook --> */}
-                <meta property="og:site_name" content="Prevention Generation" key="og:site_name" />
-                <meta property="og:type" content="article" key="og:type" />
-                <meta property="og:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${article.fields.slug}`} key="og:url" />
-                <meta property="og:title" content={article.fields.title} key="og:title" />
-                <meta property="og:description" content={article.fields.metaDescription} key="og:description" />
-                <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} key="og:image" />
+                <meta property="og:site_name" content="Prevention Generation" key="site_name" />
+                <meta property="og:type" content="article" key="type" />
+                <meta property="og:url" content={`${process.env.DOMAIN_NAME}/${article.fields.primaryTag.toString().replace(/\s/g, '-').replace(/\//g, '_')}/${article.fields.slug}`} key="url" />
+                <meta property="og:title" content={article.fields.title} key="title" />
+                <meta property="og:description" content={article.fields.metaDescription} key="description" />
+                <meta property="og:image" content={`https:${article.fields.featuredImage.fields.file.url}`} key="image" />
                 <meta property="article:published_time" content={moment(article.sys.createdAt).format("MMM DD, YYYY")} key="article:published_time" />
                 <meta property="article:author" content={authorTitle} key="article:author" />
                 {article.fields.tags.map(tag => <meta key={tag} property="article:tag" content={tag} />)}
