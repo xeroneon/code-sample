@@ -61,10 +61,11 @@ function Provider(props) {
         <>
             <Head>
                 <title>{props.provider.prefix} {props.provider.name} {props.provider.lastname} {props.provider.suffix} - {props.provider.city}, {props.provider.state} - {props.provider.specialty.name}</title>
+                <meta name="title" content={`${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix} - ${props.provider.city}, ${props.provider.state} - ${props.provider.specialty.name}`} key="title" />
                 <meta name="keywords" content={`${props.provider.prefix}, ${props.provider.name}, ${props.provider.lastname}, ${props.provider.suffix}, ${props.provider.city}, ${props.provider.state}`} />
-                <meta property="og:description" content={`Information on ${props.provider.specialty.name} ${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix} of ${props.provider.city}, ${props.provider.state} including practice phone and address information, specialties, products and more.`} key="og:description" />
-                <meta property="og:image" content='http://www.preventiongeneration.com/favicon.ico' key="og:image" />
-                <meta property="og:image:secure_url" content='https://www.preventiongeneration.com/favicon.ico' key="og:image:secure_url" />
+                <meta property="og:description" content={`Information on ${props.provider.specialty.name} ${props.provider.prefix} ${props.provider.name} ${props.provider.lastname} ${props.provider.suffix} of ${props.provider.city}, ${props.provider.state} including practice phone and address information, specialties, products and more.`} key="description" />
+                <meta property="og:image" content='http://www.preventiongeneration.com/favicon.ico' key="image" />
+                <meta property="og:image:secure_url" content='https://www.preventiongeneration.com/favicon.ico' key="image:secure_url" />
             </Head>
             {/* <div className={styles.hero}></div> */}
             <div className={styles.wrapper}>

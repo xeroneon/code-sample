@@ -8,6 +8,7 @@ import { ModalContext } from 'contexts/ModalProvider';
 import Carousel from 'components/Carousel/Carousel';
 import ProductCard from 'components/ProductCard/ProductCard';
 import Link from 'next/link';
+import Head from 'next/head';
 
 
 function Provider(props) {
@@ -38,6 +39,12 @@ function Provider(props) {
     // }, [user])
     return (
         <>
+            <Head>
+                <title>{`${props.tag} Overview | Symptoms, Treatments & Causes`}</title>
+                <meta property="og:title" content={`${props.tag} Overview | Symptoms, Treatments & Causes`} key="title" />
+                <meta property="og:description" content={`${props.tag} medically reviewed articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} key="description" />
+                <meta name="description" content={`${props.tag} medically reviewed articles that take a look at the ${props.tag} symptoms, types, causes, and treatments, including natural remedies.`} />
+            </Head>
             <div className={styles.root}>
                 <div className={styles.header}><h2>{props.tag}</h2></div><br/>
                 <div style={{display: "flex"}}>
