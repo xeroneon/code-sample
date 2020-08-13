@@ -12,7 +12,10 @@ import Cropper from 'react-cropper';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import SharedArticle from  'components/SharedArticle/SharedArticle';
-
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import FormControl from '@material-ui/core/FormControl';
 
 const converter = new Showdown.Converter({
     tables: true,
@@ -56,6 +59,7 @@ function SubmitContent(props) {
     const [ link, setLink ] = useState('');
     const [ sharedLinkTags, setSharedLinkTags ] = useState([]);
     const [ ogData, setOgData ] = useState(null);
+    const [ radioValue, setRadioValue ] = useState('');
     // const onDrop = useCallback(acceptedFiles => {
     //     const reader = new FileReader();
     //     reader.onload = function(e) {
@@ -284,59 +288,81 @@ function SubmitContent(props) {
 
     }
 
+    function handleRadioChange(e) {
+        setRadioValue(e.target.value)
+    }
+
     return (
         <>
             <div className='root'>
                 <form>
-                    <h1>Share a link</h1>
-                    { errors.sharedLink && <p id="error">There was an error submitting link, please try again</p> }
-                    <Input type='text' name='link' value={link} placeholder='' onChange={(e) => setLink(e.target.value)} />
-                    {props.tags.sort().map(tag => <Tag key={tag} active={sharedLinkTags.includes(tag)} name={tag} onClick={(e) => toggleSharedLinkTag(e, tag)}/>)}
-                    <div className="submit" >
-                        <ActionButton onClick={submitLink}>Share</ActionButton>
-                        <ActionButton onClick={preview}>Preview</ActionButton>
-                    </div>
-                    {ogData && <SharedArticle
-                        authorImage={user.image}
-                        author={`${user.prefix || ''} ${user.name} ${user.lastname} ${user.suffix || ''}`}
-                        url={ogData.url}
-                        tags={sharedLinkTags}
-                        title={ogData.title}
-                        image={ogData.image} />}
-                    <a href='/content-guidelines' target='_blank'><p id='guidelines'>Click Here To Read our Content Guidelines</p></a>
-                    <h1>Submit an article</h1>
-                    <h4>Title*</h4>
-                    <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
-                    <h4>Body (enter article content here - 250 words minimum)   {form?.markdown?.length || 0}/10000</h4>
-                    {/* <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea> */}
-                    <ReactMde
-                        value={form?.markdown}
-                        onChange={handleMarkdownChange}
-                        selectedTab={selectedTab}
-                        onTabChange={setSelectedTab}
-                        generateMarkdownPreview={markdown =>
-                            Promise.resolve(converter.makeHtml(markdown))
-                        }
-                    />
-                    <h4>Notes (notes to the editor)</h4>
-                    <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
-                    <h4>Choose primary tag</h4>
-                    {props.tags.sort().map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
-                    <h4>Choose secondary tags</h4>
-                    {props.tags.sort().map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
-                    <div className='submit'>
-                        <ActionButton onClick={submit}>{`${loading ? 'Loading...' : 'Submit Article'}`}</ActionButton>
-                    </div>
-                    <div className='submit'>
-                        <p id="submitted" className={`${submitted ? 'null' : 'hide'}`}>post has been submitted</p>
-                    </div>
-                    <div className='error'>
-                        <p id="error" className={`${error ? 'null' : 'hide'}`}>{error}</p>
-                    </div>
+                    <h1>What would you like to submit?</h1>
+                    <FormControl component="fieldset">
+                        <RadioGroup aria-label="select what to create" name="select what to create" value={radioValue} onChange={handleRadioChange}>
+                            <FormControlLabel color='secondary' value="article" control={<Radio />} label="Article" />
+                            <FormControlLabel value="product" control={<Radio />} label="Product" />
+                            <FormControlLabel value="link" control={<Radio />} label="External Article Link" />
+                        </RadioGroup>
+                    </FormControl>
+                    {/* share link */}
+                    { radioValue === 'link' && 
+                    <>
+                        <h1>Share a link</h1>
+                        { errors.sharedLink && <p id="error">There was an error submitting link, please try again</p> }
+                        <Input type='text' name='link' value={link} placeholder='' onChange={(e) => setLink(e.target.value)} />
+                        {props.tags.sort().map(tag => <Tag key={tag} active={sharedLinkTags.includes(tag)} name={tag} onClick={(e) => toggleSharedLinkTag(e, tag)}/>)}
+                        <div className="submit" >
+                            <ActionButton onClick={submitLink}>Share</ActionButton>
+                            <ActionButton onClick={preview}>Preview</ActionButton>
+                        </div>
+                        {ogData && <SharedArticle
+                            authorImage={user.image}
+                            author={`${user.prefix || ''} ${user.name} ${user.lastname} ${user.suffix || ''}`}
+                            url={ogData.url}
+                            tags={sharedLinkTags}
+                            title={ogData.title}
+                            image={ogData.image} />}
+                    </>
+                    }
+                    {/* submit article */}
+                    { radioValue === 'article' &&
+                    <>
+                        <a href='/content-guidelines' target='_blank'><p id='guidelines'>Click Here To Read our Content Guidelines</p></a>
+                        <h1>Submit an article</h1>
+                        <h4>Title*</h4>
+                        <Input type="text" name="title" value={form?.title} placeholder="" onChange={handleChange} />
+                        <h4>Body (enter article content here - 250 words minimum)   {form?.markdown?.length || 0}/10000</h4>
+                        {/* <textarea col='10' maxLength='12000' onChange={handleChange} name='markdown' value={form?.markdown}></textarea> */}
+                        <ReactMde
+                            value={form?.markdown}
+                            onChange={handleMarkdownChange}
+                            selectedTab={selectedTab}
+                            onTabChange={setSelectedTab}
+                            generateMarkdownPreview={markdown =>
+                                Promise.resolve(converter.makeHtml(markdown))
+                            }
+                        />
+                        <h4>Notes (notes to the editor)</h4>
+                        <Input type="text" name="notes" value={form?.notes} placeholder="" onChange={handleChange} />
+                        <h4>Choose primary tag</h4>
+                        {props.tags.sort().map(tag => <Tag key={tag} active={form.primaryTag === tag} name={tag} onClick={(e) => togglePrimaryTag(e, tag)}/>)}
+                        <h4>Choose secondary tags</h4>
+                        {props.tags.sort().map(tag => <Tag key={tag} active={form.tags.includes(tag)} name={tag} onClick={(e) => toggleTag(e, tag)}/>)}
+                        <div className='submit'>
+                            <ActionButton onClick={submit}>{`${loading ? 'Loading...' : 'Submit Article'}`}</ActionButton>
+                        </div>
+                        <div className='submit'>
+                            <p id="submitted" className={`${submitted ? 'null' : 'hide'}`}>post has been submitted</p>
+                        </div>
+                        <div className='error'>
+                            <p id="error" className={`${error ? 'null' : 'hide'}`}>{error}</p>
+                        </div>
+                    </>
+                    }
 
                 </form>
 
-                <form>
+                { radioValue === 'product' && <form>
                     <h1>Submit a product</h1>
                     { !productSrc && <Dropzone onDrop={acceptedFiles => {productDrop(acceptedFiles)}}>
                         {({getRootProps, getInputProps, isDragActive}) => (
@@ -377,7 +403,7 @@ function SubmitContent(props) {
                     <div className='submit'>
                         <ActionButton onClick={submitProduct}>{`${productLoading ? 'Loading...' : 'Submit Product'}`}</ActionButton>
                     </div>
-                </form>
+                </form>}
             </div>
             <Snackbar
                 anchorOrigin={{
