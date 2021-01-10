@@ -18,6 +18,13 @@ router.post("/create", async (req, res) => {
         if (req.body.address && req.body.city && req.body.state) {
             const googleRes = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address},${req.body.city},${req.body.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
             // console.log('LATLON', res)
+            if (!googleRes.data.results[0]) {
+                return res.send({
+                    success: false,
+                    message: "Address is invalid, apt/building numbers should be in the field 'address2'",
+                    error: 'invalid address'
+                })
+            }
             lat = googleRes.data.results[0].geometry.location.lat;
             lng = googleRes.data.results[0].geometry.location.lng;
             const maxPlacementUser = await User.findOne({accountType: {$ne: 'personal'}}).sort('-placement');
@@ -187,10 +194,17 @@ router.put('/update', async (req, res) => {
         let lat;
         let lng;
         if (updates.address && updates.city && updates.state) {
-            const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${updates.address},${updates.city},${updates.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+            const googleRes = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${updates.address},${updates.city},${updates.state}&key=${process.env.GOOGLE_MAPS_API_KEY}`);
             // console.log('LATLON', res)
-            lat = res.data.results[0].geometry.location.lat;
-            lng = res.data.results[0].geometry.location.lng;
+            if (!googleRes.data.results[0]) {
+                return res.send({
+                    success: false,
+                    message: "Address is invalid, apt/building numbers should be in the field 'address2'",
+                    error: 'invalid address'
+                })
+            }
+            lat = googleRes.data.results[0].geometry.location.lat;
+            lng = googleRes.data.results[0].geometry.location.lng;
             await User.updateOne({email: email}, { location: {
                 type: "Point",
                 coordinates: [lng, lat]
