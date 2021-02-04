@@ -66,7 +66,7 @@ function PartnerCard(props) {
                             </p>
                         </div>
                         <div className={styles.tags}>
-                            {props.tags.slice(0,4).map(tag => <Tag link key={tag} name={tag} />)}
+                            {props.tags?.slice(0,4).map(tag => <Tag link key={tag} name={tag} />)}
                         </div>
                     </div>
                 </div>
