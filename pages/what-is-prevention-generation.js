@@ -34,7 +34,7 @@ function Article() {
                     <h1>What is the Prevention Generation?</h1>
                     <p className={styles.paragraph}>Prevention Generation(PG) is a member-based community movement that has one primary goal: <i>to reverse the trend of chronic illness impacting six in ten Americans</i>. PG provides our audience access to medically reviewed content they can use to develop (and live) a healthier lifestyle.</p>
 
-                    <h1>What are you Preventing?-</h1>
+                    <h1>What are you Preventing?</h1>
                     <p className={styles.paragraph}>It isn’t what WE are preventing. It is what YOU, as a member of PG, have the potential to prevent: <i>chronic disease</i>. Did you know, <a href="https://www.cdc.gov/chronicdisease/about/index.htm" target="_blank" rel="noopener noreferrer">according to the Center for Diseases Control</a>, the leading causes of death and disability in the US are heart disease, cancer and diabetes? The foundational cause of these diseases includes poor nutrition, lack of physical activity, poor sleep, tobacco use and alcohol intake--All of these disease processes can be positively impacted through lifestyle choices.</p>
 
                     <h1>How does it work?</h1>
