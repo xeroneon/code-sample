@@ -178,7 +178,7 @@ function Index(props) {
                             industry={partner?.industry}
                         />
                     })}
-            </Carousel>*/
+            </Carousel> */
 
             <Carousel header={[`Healthy `, <span key="partners"> Lifestyle </span>, <br key="xcnmbv"/>, "partners" ]}>
                 {[...props.suppliers, ...props.contributors]
